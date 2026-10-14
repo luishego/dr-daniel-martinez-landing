@@ -1,0 +1,313 @@
+---
+/**
+ * Navegación fija con anclas a las seis secciones de la landing.
+ *
+ * En escritorio el nombre del doctor es el enlace a Inicio, igual que en el
+ * lienzo de diseño, así que los elementos marcados con `enEscritorio: false`
+ * en `src/content/sitio/sitio.json` solo aparecen en el menú móvil, que sí
+ * lista las seis.
+ */
+import { getEntry } from 'astro:content';
+
+const sitio = await getEntry('sitio', 'sitio');
+if (!sitio) {
+  throw new Error('Falta src/content/sitio/sitio.json');
+}
+
+const { nombre, especialidad, navegacion, ctaHeader } = sitio.data;
+const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
+---
+
+<header class="header">
+  <div class="contenedor header__fila">
+    <a class="marca" href="#inicio">
+      <span class="marca__nombre">{nombre}</span>
+      <span class="marca__especialidad">{especialidad}</span>
+    </a>
+
+    <nav class="nav" aria-label="Secciones del sitio">
+      <ul class="nav__lista">
+        {navEscritorio.map((enlace) => (
+          <li>
+            <a class="nav__enlace" href={enlace.ancla}>
+              {enlace.etiqueta}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a class="boton boton--principal boton--compacto header__cta" href={ctaHeader.ancla}>
+      {ctaHeader.etiqueta}
+    </a>
+
+    <button
+      class="hamburguesa"
+      id="abrir-menu"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+    >
+      <span class="visualmente-oculto hamburguesa__texto">Abrir el menú de secciones</span>
+      <svg
+        class="hamburguesa__icono hamburguesa__icono--abrir"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 7h16"></path>
+        <path d="M4 12h16"></path>
+        <path d="M4 17h16"></path>
+      </svg>
+      <svg
+        class="hamburguesa__icono hamburguesa__icono--cerrar"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M6 6l12 12"></path>
+        <path d="M18 6L6 18"></path>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="menu" id="menu-movil" aria-label="Menú de secciones" hidden>
+    <div class="contenedor menu__interior">
+      <ul class="menu__lista">
+        {navegacion.map((enlace) => (
+          <li>
+            <a class="menu__enlace" href={enlace.ancla}>
+              {enlace.etiqueta}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a class="boton boton--principal menu__cta" href={ctaHeader.ancla}>
+        {ctaHeader.etiqueta}
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const boton = document.getElementById('abrir-menu');
+  const menu = document.getElementById('menu-movil');
+  const rotulo = boton?.querySelector<HTMLElement>('.hamburguesa__texto');
+  // Mismo umbral que el CSS: a partir de aquí la navegación va completa a la
+  // vista y el botón del menú desaparece.
+  const escritorio = window.matchMedia('(min-width: 64rem)');
+
+  if (boton && menu) {
+    const abrir = (estado: boolean) => {
+      boton.setAttribute('aria-expanded', String(estado));
+      menu.hidden = !estado;
+      if (rotulo) {
+        rotulo.textContent = estado ? 'Cerrar el menú de secciones' : 'Abrir el menú de secciones';
+      }
+    };
+
+    boton.addEventListener('click', () => {
+      abrir(boton.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Al tocar una sección el menú se cierra solo.
+    menu.addEventListener('click', (evento) => {
+      if (evento.target instanceof Element && evento.target.closest('a')) {
+        abrir(false);
+      }
+    });
+
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
+        abrir(false);
+        boton.focus();
+      }
+    });
+
+    document.addEventListener('click', (evento) => {
+      if (
+        boton.getAttribute('aria-expanded') === 'true' &&
+        evento.target instanceof Node &&
+        !menu.contains(evento.target) &&
+        !boton.contains(evento.target)
+      ) {
+        abrir(false);
+      }
+    });
+
+    // Al pasar a escritorio el menú móvil deja de existir en pantalla.
+    escritorio.addEventListener('change', (evento) => {
+      if (evento.matches) {
+        abrir(false);
+      }
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .header__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.75rem;
+    padding-block: 0.875rem;
+  }
+
+  .marca {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .marca__nombre {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: var(--peso-titulo);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .marca__especialidad {
+    display: block;
+    margin-top: 0.1875rem;
+    font-size: 0.625rem;
+    font-weight: var(--peso-fuerte);
+    letter-spacing: var(--espaciado-marca);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .nav,
+  .header__cta {
+    display: none;
+  }
+
+  .nav__lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .nav__enlace {
+    color: var(--color-ink);
+    font-size: var(--texto-menu);
+    font-weight: var(--peso-fuerte);
+    text-decoration: none;
+  }
+
+  .nav__enlace:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+  }
+
+  .hamburguesa {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--alto-control);
+    height: var(--alto-control);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radio-campo);
+    background-color: transparent;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .hamburguesa[aria-expanded='true'] .hamburguesa__icono--abrir,
+  .hamburguesa[aria-expanded='false'] .hamburguesa__icono--cerrar {
+    display: none;
+  }
+
+  .menu {
+    border-top: 1px solid var(--color-line);
+    background-color: var(--color-surface);
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  .menu__interior {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-block: 1.25rem 1.5rem;
+  }
+
+  .menu__lista {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu__enlace {
+    display: flex;
+    align-items: center;
+    min-height: var(--alto-control);
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    font-weight: var(--peso-fuerte);
+    text-decoration: none;
+  }
+
+  .menu__cta {
+    width: 100%;
+  }
+
+  /* Tablet: ya cabe el CTA, pero no las cinco secciones; el menú sigue
+     resolviéndose con el botón. */
+  @media (min-width: 48rem) {
+    .header__fila {
+      padding-block: 1.125rem;
+    }
+
+    .marca__nombre {
+      font-size: 1.375rem;
+    }
+
+    .marca__especialidad {
+      font-size: 0.6875rem;
+    }
+
+    .header__cta {
+      display: inline-flex;
+    }
+  }
+
+  /* Escritorio: navegación completa a la vista, como en el lienzo. */
+  @media (min-width: 64rem) {
+    .nav {
+      display: flex;
+    }
+
+    .hamburguesa,
+    .menu {
+      display: none;
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .nav__lista {
+      gap: 1.625rem;
+    }
+  }
+</style>

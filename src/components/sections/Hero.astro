@@ -1,0 +1,156 @@
+---
+/**
+ * Sección Inicio (HU-02) y la franja de credenciales que va justo debajo.
+ * Todo el texto viene de `src/content/inicio/hero.json`.
+ */
+import { getEntry } from 'astro:content';
+
+const inicio = await getEntry('inicio', 'hero');
+if (!inicio) {
+  throw new Error('Falta src/content/inicio/hero.json');
+}
+
+const { antetitulo, titulo, entrada, ctaPrincipal, ctaSecundario, imagen, franja } = inicio.data;
+---
+
+<section class="hero" id="inicio">
+  <div class="contenedor hero__fila">
+    <div class="hero__texto">
+      <p class="antetitulo antetitulo--primario hero__antetitulo">{antetitulo}</p>
+      <h1 class="hero__titulo">{titulo}</h1>
+      <p class="hero__entrada">{entrada}</p>
+      <div class="hero__acciones">
+        <a class="boton boton--principal" href={ctaPrincipal.ancla}>
+          {ctaPrincipal.etiqueta}
+        </a>
+        <a class="boton boton--secundario" href={ctaSecundario.ancla}>
+          {ctaSecundario.etiqueta}
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__figura">
+      <!-- Marcador provisional: se sustituye por <Image> cuando el cliente
+           entregue el retrato profesional. -->
+      <div class="marco-imagen hero__marco">
+        <span class="marco-imagen__titulo">{imagen.marcador}</span>
+        {imagen.nota && <span class="marco-imagen__nota">{imagen.nota}</span>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="franja" aria-label="Formación destacada">
+  <ul class="contenedor franja__lista">
+    {franja.map((dato) => (
+      <li>
+        <p class="franja__titulo">{dato.titulo}</p>
+        <p class="franja__detalle">{dato.detalle}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--espacio-hero-arriba) var(--espacio-hero-abajo);
+  }
+
+  .hero__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3.5rem;
+  }
+
+  .hero__texto {
+    /* El bloque de texto se queda con el espacio sobrante; la figura solo
+       crece cuando caben las dos columnas. */
+    flex: 999 1 28.75rem;
+    min-width: 0;
+  }
+
+  .hero__antetitulo {
+    margin-bottom: 1.125rem;
+  }
+
+  .hero__titulo {
+    margin-bottom: 1.375rem;
+    font-size: var(--texto-h1);
+    line-height: var(--alto-h1);
+    letter-spacing: var(--espaciado-titulo);
+    color: var(--color-primary);
+  }
+
+  .hero__entrada {
+    max-width: 34ch;
+    margin-bottom: 2.125rem;
+    font-size: var(--texto-entrada);
+    line-height: var(--alto-entrada);
+  }
+
+  .hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+  }
+
+  /* En teléfono los dos CTA van apilados y a todo el ancho, como en el
+     artboard de 390px; los dos juntos dejan de caber en una fila antes
+     de los 34rem. */
+  @media (max-width: 33.9375rem) {
+    .hero__acciones {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  .hero__figura {
+    flex: 1 1 23.75rem;
+    min-width: 0;
+    /* Cuando las columnas se apilan, el marco no debe crecer sin medida. */
+    max-width: 27.5rem;
+  }
+
+  .hero__marco {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radio-imagen-grande);
+  }
+
+  /* Las dos columnas dejan de caber por debajo de ~960px (28.75rem + 23.75rem
+     + 3.5rem de hueco, dentro del contenedor). A partir de ahí el marco se
+     centra; en teléfono ya ocupa el ancho disponible y el centrado no se nota. */
+  @media (max-width: 59.9375rem) {
+    .hero__figura {
+      margin-inline: auto;
+    }
+  }
+
+  .franja {
+    background-color: var(--color-band);
+  }
+
+  .franja__lista {
+    display: grid;
+    gap: 1.125rem 2.25rem;
+    padding-block: 1.75rem;
+  }
+
+  .franja__titulo {
+    margin-bottom: 0.25rem;
+    font-size: 0.9375rem;
+    font-weight: var(--peso-titulo);
+  }
+
+  .franja__detalle {
+    font-size: 0.875rem;
+    line-height: var(--alto-compacto);
+  }
+
+  @media (min-width: 48rem) {
+    .franja__lista {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding-block: 2rem;
+    }
+  }
+</style>

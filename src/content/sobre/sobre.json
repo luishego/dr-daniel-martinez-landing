@@ -1,0 +1,21 @@
+{
+  "antetitulo": "Sobre el doctor",
+  "titulo": "Mi trabajo es entender lo que te pasa antes de proponerte un tratamiento",
+  "parrafos": [
+    "Soy médico psiquiatra. Dedico la primera consulta a escuchar tu historia completa y a explicarte, en palabras claras, qué estamos viendo y cuáles son las opciones. Trabajo con tratamiento farmacológico, psicoterapia cognitivo conductual y procedimientos de neuromodulación, según lo que cada persona necesita.",
+    "También enseño. Soy profesor titular del curso de Medicina Psicológica y Comunicación Humana en la Facultad de Medicina de la UNAM, y esa misma idea —que la relación médico-paciente es parte del tratamiento— guía mi consulta."
+  ],
+  "imagen": {
+    "marcador": "[RETRATO EN CONSULTORIO]"
+  },
+  "tituloFormacion": "Formación y cargos",
+  "formacion": [
+    "Médico general y especialista en Psiquiatría por la UNAM y el Centro Médico Nacional «Hospital 20 de Noviembre».",
+    "Posgrado de Alta Especialidad en Psiquiatría de Enlace, Centro Médico Nacional «Hospital 20 de Noviembre».",
+    "Terapeuta cognitivo conductual por la UNAM y CETTAD.",
+    "Profesor titular del curso de Medicina Psicológica y Comunicación Humana, Facultad de Medicina de la UNAM.",
+    "Director de la Clínica de Especialidades en Neuropsiquiatría del ISSSTE."
+  ],
+  "cedulas": ["Cédula profesional [NÚMERO]", "Cédula de especialidad [NÚMERO]"],
+  "notaInterna": "Copy provisional en primera persona tomado del lienzo de diseño; pendiente de aprobación por escrito del Dr. Martínez. Faltan los números de cédula profesional y de especialidad, y la fotografía del retrato en consultorio."
+}

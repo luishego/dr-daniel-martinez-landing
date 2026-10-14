@@ -1,0 +1,250 @@
+/* ==========================================================================
+   Base global · Landing Dr. Daniel Martínez
+   Normalización mínima, ritmo tipográfico y las piezas que se repiten en
+   varias secciones (contenedor, botones, pastillas, marcos de imagen).
+   ========================================================================== */
+
+:root {
+  /* Alto aproximado del header pegajoso; lo usa scroll-padding para que las
+     anclas no queden escondidas debajo de la navegación. */
+  --alto-header: 4.25rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --alto-header: 5.25rem;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--alto-header) + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--fuente-base);
+  font-size: var(--texto-cuerpo);
+  font-weight: var(--peso-lectura);
+  line-height: var(--alto-cuerpo);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: var(--peso-titulo);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: var(--borde-foco) solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Sobre fondos oscuros (footer, bloque destacado) el foco tinta no se ve. */
+.sobre-oscuro :focus-visible {
+  outline-color: var(--color-on-dark);
+}
+
+/* ── Estructura ─────────────────────────────────────────────────────────── */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--contenedor-max);
+  margin-inline: auto;
+  padding-inline: var(--contenedor-pad);
+}
+
+.seccion {
+  padding-block: var(--espacio-seccion);
+}
+
+/* ── Tipografía de apoyo ────────────────────────────────────────────────── */
+
+.antetitulo {
+  font-size: var(--texto-antetitulo);
+  font-weight: var(--peso-titulo);
+  letter-spacing: var(--espaciado-antetitulo);
+  text-transform: uppercase;
+}
+
+/* El secundario solo cumple AA a 24px o más, así que un antetítulo pequeño
+   en secundario sería un error de contraste: se usa el primario. */
+.antetitulo--primario {
+  color: var(--color-primary);
+}
+
+.etiqueta-seccion {
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-titulo);
+  letter-spacing: var(--espaciado-etiqueta);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* ── Botones ────────────────────────────────────────────────────────────── */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: var(--alto-boton);
+  padding-inline: 1.75rem;
+  border: 2px solid transparent;
+  border-radius: var(--radio-pastilla);
+  font-size: var(--texto-boton);
+  font-weight: var(--peso-fuerte);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* El acento nunca lleva texto blanco: --color-accent-ink es obligatorio. */
+.boton--principal {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.boton--principal:hover {
+  background-color: var(--color-accent);
+  box-shadow: inset 0 0 0 2rem rgba(0, 0, 0, 0.08);
+}
+
+.boton--secundario {
+  background-color: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.boton--secundario:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-dark);
+}
+
+.boton--compacto {
+  min-height: var(--alto-control);
+  padding-inline: 1.375rem;
+  font-size: var(--texto-menu);
+}
+
+/* ── Piezas sueltas ────────────────────────────────────────────────────── */
+
+.pastilla {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radio-pastilla);
+  background-color: var(--color-tint);
+  color: var(--color-ink);
+  font-size: 0.875rem;
+  font-weight: var(--peso-fuerte);
+}
+
+/* Marco provisional mientras no llegan las fotografías del cliente. */
+.marco-imagen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--color-primary);
+  border-radius: var(--radio-imagen);
+  background-color: var(--color-tint);
+  text-align: center;
+}
+
+.marco-imagen__titulo {
+  font-size: 0.9375rem;
+  font-weight: var(--peso-titulo);
+  color: var(--color-primary);
+}
+
+.marco-imagen__nota {
+  font-size: var(--texto-micro);
+  line-height: var(--alto-compacto);
+  color: var(--color-ink);
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

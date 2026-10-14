@@ -1,0 +1,24 @@
+# Build
+dist/
+.astro/
+
+# Dependencias
+node_modules/
+
+# Entorno
+.env
+.env.production
+.env.local
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.vscode/*
+!.vscode/extensions.json
+.idea/

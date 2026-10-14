@@ -1,0 +1,141 @@
+---
+/**
+ * Sección Sobre el Doctor (HU-03). Presentación en primera persona,
+ * credenciales y espacio para las cédulas, todo desde
+ * `src/content/sobre/sobre.json`.
+ */
+import { getEntry } from 'astro:content';
+
+const sobre = await getEntry('sobre', 'sobre');
+if (!sobre) {
+  throw new Error('Falta src/content/sobre/sobre.json');
+}
+
+const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedulas } = sobre.data;
+---
+
+<section class="seccion sobre" id="sobre">
+  <div class="contenedor sobre__fila">
+    <div class="sobre__figura">
+      <!-- Marcador provisional hasta que lleguen las fotografías. -->
+      <div class="marco-imagen sobre__marco">
+        <span class="marco-imagen__titulo">{imagen.marcador}</span>
+        {imagen.nota && <span class="marco-imagen__nota">{imagen.nota}</span>}
+      </div>
+    </div>
+
+    <div class="sobre__texto">
+      <p class="antetitulo sobre__antetitulo">{antetitulo}</p>
+      <h2 class="sobre__titulo">{titulo}</h2>
+      {parrafos.map((parrafo) => (
+        <p class="sobre__parrafo">{parrafo}</p>
+      ))}
+
+      <h3 class="etiqueta-seccion sobre__formacion-titulo">{tituloFormacion}</h3>
+      <ul class="sobre__formacion">
+        {formacion.map((dato) => (
+          <li class="sobre__dato">
+            <span class="sobre__vineta" aria-hidden="true" />
+            {dato}
+          </li>
+        ))}
+      </ul>
+
+      <!-- Los números de cédula los entrega el cliente; el marcador entre
+           corchetes se queda a la vista para que no se publique sin ellos. -->
+      <ul class="sobre__cedulas">
+        {cedulas.map((cedula) => (
+          <li class="pastilla">{cedula}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sobre__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--espacio-columnas);
+  }
+
+  .sobre__figura {
+    flex: 1 1 21.25rem;
+    min-width: 0;
+    max-width: 24rem;
+  }
+
+  .sobre__marco {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Mismo criterio que el hero: cuando las columnas se apilan (~940px), el
+     marco se centra en lugar de quedar pegado a la izquierda. */
+  @media (max-width: 58.75rem) {
+    .sobre__figura {
+      margin-inline: auto;
+    }
+  }
+
+  .sobre__texto {
+    flex: 999 1 30rem;
+    min-width: 0;
+  }
+
+  /* El lienzo pinta este antetítulo en secundario, pero a 12px el turquesa
+     (3.7:1) y el azul cielo (3.1:1) no alcanzan AA para texto pequeño, así
+     que va en primario. Es la única desviación de color respecto al diseño. */
+  .sobre__antetitulo {
+    margin-bottom: 0.875rem;
+    color: var(--color-primary);
+  }
+
+  .sobre__titulo {
+    margin-bottom: 1.375rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+    color: var(--color-primary);
+  }
+
+  .sobre__parrafo {
+    margin-bottom: 1.125rem;
+  }
+
+  .sobre__formacion-titulo {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .sobre__formacion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sobre__dato {
+    display: flex;
+    gap: 0.75rem;
+    font-size: var(--texto-lista);
+    line-height: 1.55;
+  }
+
+  /* Viñeta decorativa: el secundario aquí no transporta texto, así que su
+     contraste de 3.7:1 es suficiente para un elemento no textual. */
+  .sobre__vineta {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.4375rem;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+  }
+
+  .sobre__cedulas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

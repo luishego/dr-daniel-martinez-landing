@@ -1,0 +1,14 @@
+<!-- Favicon provisional: iniciales sobre el petróleo de la paleta B.
+     Se sustituye cuando el cliente entregue identidad gráfica. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Dr. Daniel Martínez">
+  <rect width="64" height="64" rx="14" fill="#005F73" />
+  <text
+    x="32"
+    y="43"
+    text-anchor="middle"
+    font-family="system-ui, sans-serif"
+    font-size="30"
+    font-weight="800"
+    fill="#FFFFFF"
+  >DM</text>
+</svg>

@@ -1,0 +1,26 @@
+{
+  "nombre": "Dr. Daniel Martínez",
+  "especialidad": "Psiquiatría",
+  "seo": {
+    "titulo": "Dr. Daniel Martínez · Psiquiatra en Ciudad de México",
+    "descripcion": "Valoración, diagnóstico y tratamiento psiquiátrico con un enfoque humano y basado en evidencia. Consulta en Neurosleep Center, Álvaro Obregón, Ciudad de México."
+  },
+  "navegacion": [
+    { "etiqueta": "Inicio", "ancla": "#inicio", "enEscritorio": false },
+    { "etiqueta": "Sobre el doctor", "ancla": "#sobre" },
+    { "etiqueta": "Tratamientos", "ancla": "#tratamientos" },
+    { "etiqueta": "Ubicación", "ancla": "#ubicacion" },
+    { "etiqueta": "Preguntas", "ancla": "#preguntas" },
+    { "etiqueta": "Contacto", "ancla": "#contacto" }
+  ],
+  "ctaHeader": { "etiqueta": "Agendar cita", "ancla": "#contacto" },
+  "clinica": {
+    "nombre": "Neurosleep Center",
+    "calle": "Iztaccíhuatl 10",
+    "colonia": "Col. Florida",
+    "alcaldia": "Álvaro Obregón",
+    "codigoPostal": "01030",
+    "ciudad": "Ciudad de México"
+  },
+  "notaInterna": "Título y descripción SEO redactados a partir del copy del lienzo de diseño; pendientes de aprobación del doctor. Pendientes del cliente: teléfono, número de WhatsApp, correo de recepción, dominio, cédulas y datos de la segunda clínica."
+}

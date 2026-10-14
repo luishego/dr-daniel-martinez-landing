@@ -1,0 +1,90 @@
+---
+import { Font } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import Header from '../components/Header.astro';
+import PaletteSwitch from '../components/PaletteSwitch.astro';
+import PaletteSwitchHead from '../components/PaletteSwitchHead.astro';
+import { mostrarSwitchPaletas, paletaPorDefecto } from '../config/palettes';
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+
+const sitio = await getEntry('sitio', 'sitio');
+if (!sitio) {
+  throw new Error('Falta src/content/sitio/sitio.json');
+}
+
+const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-MX" data-palette={paletaPorDefecto}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+
+    <!-- Nunito autoalojada por Astro, con font-display: swap.
+         Google la entrega como fuente variable, así que un solo archivo por
+         subconjunto cubre los pesos 400, 700 y 800: se precarga el de `latin`,
+         que es el que pinta el título del hero (el LCP de la página). El de
+         `latin-ext` se queda sin precargar porque el hero no lo necesita. -->
+    <Font cssVariable="--fuente-base" preload={[{ subset: 'latin' }]} />
+
+    {mostrarSwitchPaletas && <PaletteSwitchHead />}
+
+    <!--
+      Pendiente (T-11): canonical, sitemap, Open Graph con imagen y URL
+      absoluta, y JSON-LD Physician / MedicalClinic. Todo depende del dominio,
+      que el cliente aún no confirma.
+    -->
+  </head>
+
+  <body>
+    <a class="salto" href="#contenido">
+      Saltar al contenido
+    </a>
+    <Header />
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+    {mostrarSwitchPaletas && <PaletteSwitch />}
+  </body>
+</html>
+
+<style>
+  .salto {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    z-index: calc(var(--z-header) + 1);
+    transform: translate(-50%, -120%);
+    padding: 0.75rem 1.25rem;
+    border-bottom-left-radius: var(--radio-campo);
+    border-bottom-right-radius: var(--radio-campo);
+    background-color: var(--color-primary);
+    color: var(--color-on-dark);
+    font-size: var(--texto-menu);
+    font-weight: var(--peso-fuerte);
+    text-decoration: none;
+  }
+
+  .salto:focus-visible {
+    transform: translate(-50%, 0);
+  }
+
+  main:focus-visible {
+    outline: none;
+  }
+</style>

@@ -1,0 +1,26 @@
+{
+  "antetitulo": "Psiquiatría · Ciudad de México",
+  "titulo": "Salud mental con ciencia y cercanía",
+  "entrada": "Valoración, diagnóstico y tratamiento con un enfoque humano y basado en evidencia.",
+  "ctaPrincipal": { "etiqueta": "Agenda tu valoración", "ancla": "#contacto" },
+  "ctaSecundario": { "etiqueta": "Conoce los tratamientos", "ancla": "#tratamientos" },
+  "imagen": {
+    "marcador": "[FOTOGRAFÍA DEL DR. MARTÍNEZ]",
+    "nota": "Retrato profesional vertical, fondo neutro"
+  },
+  "franja": [
+    {
+      "titulo": "Especialista en Psiquiatría",
+      "detalle": "UNAM y Centro Médico Nacional «Hospital 20 de Noviembre»"
+    },
+    {
+      "titulo": "Alta Especialidad en Psiquiatría de Enlace",
+      "detalle": "Centro Médico Nacional «Hospital 20 de Noviembre»"
+    },
+    {
+      "titulo": "Director de la Clínica de Neuropsiquiatría",
+      "detalle": "Clínica de Especialidades en Neuropsiquiatría del ISSSTE"
+    }
+  ],
+  "notaInterna": "Copy provisional tomado del lienzo de diseño. Pendiente de aprobación por escrito del Dr. Martínez. Falta la fotografía profesional del retrato vertical."
+}
