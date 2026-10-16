@@ -85,17 +85,35 @@ pesos.
 
 Salida estática, sin adapter mientras no haya SSR.
 
-| Ajuste                 | Valor                                                                                                                                                  |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Build command          | `npm run build`                                                                                                                                        |
-| Build output directory | `dist`                                                                                                                                                 |
-| Root directory         | `06-proyectos/2026-dr-daniel-martinez-psiquiatria/03-desarrollo` (si el repo es el del monorepo de la agencia) o la raíz si este directorio es el repo |
-| Variable de entorno    | `PUBLIC_SHOW_PALETTE_SWITCH=true` en previews, `false` en producción cuando el doctor elija                                                            |
+| Ajuste                 | Valor                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------- |
+| Build command          | `npm run build`                                                                             |
+| Build output directory | `dist`                                                                                      |
+| Root directory         | vacío: este directorio **es** la raíz del repositorio                                       |
+| Framework preset       | Astro                                                                                       |
+| Production branch      | `main`                                                                                      |
+| Node                   | `22` (lo toma de `.nvmrc`)                                                                  |
+| Variable de entorno    | `PUBLIC_SHOW_PALETTE_SWITCH=true` en previews, `false` en producción cuando el doctor elija |
 
 Las previews por rama vienen activadas por defecto en Cloudflare Pages: cada
 rama genera su propia URL para enseñársela al doctor, y producción sale de
 `main`. `public/_headers` ya lleva cabeceras de seguridad y caché perpetua para
 `/_astro/*`.
+
+### Conectar el proyecto por primera vez
+
+Las previews automáticas por rama solo existen si el proyecto de Pages está
+conectado al repositorio de Git; `wrangler pages project create` no hace esa
+conexión, solo crea proyectos de subida directa. Hay que hacerlo una vez desde
+el panel:
+
+1. Cloudflare → **Workers & Pages** → **Create** → pestaña **Pages** →
+   **Connect to Git**.
+2. Autorizar GitHub y elegir este repositorio.
+3. Rellenar con la tabla de arriba y **Save and Deploy**.
+
+A partir de ahí cada push a `main` publica producción y cada rama genera su
+propia URL de preview.
 
 ## Estado
 
