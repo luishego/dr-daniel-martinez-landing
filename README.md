@@ -5,6 +5,7 @@ Astro con salida estática, sin framework de UI, pensada para desplegarse en Clo
 
 Épica de referencia: `Épica Landing page Dr. Daniel Martínez.md`
 Lienzo de diseño: <https://claude.ai/artifact/6dYFyxaPxgdeJoGWog52Et>
+Repositorio: <https://github.com/luishego/dr-daniel-martinez-landing> (privado)
 
 ## Cómo trabajar
 
