@@ -1,7 +1,7 @@
 # Landing page · Dr. Daniel Martínez
 
 Landing de una sola página para el Dr. Daniel Martínez, psiquiatra en Ciudad de México.
-Astro con salida estática, sin framework de UI, pensada para desplegarse en Cloudflare Pages.
+Astro con salida estática, sin framework de UI, pensada para desplegarse como Worker con assets estáticos en Cloudflare.
 
 Épica de referencia: `Épica Landing page Dr. Daniel Martínez.md`
 Lienzo de diseño: <https://claude.ai/artifact/6dYFyxaPxgdeJoGWog52Et>
@@ -70,45 +70,25 @@ pesos.
 
 ## Despliegue en Cloudflare
 
-El proyecto está conectado como Worker con assets estáticos (Workers Builds), no
-como Pages clásico: el build corre `npm run build` y el deploy usa
-`wrangler.jsonc`, que sirve `dist/`. El comando de deploy de producción es
-`npx wrangler deploy` y el de ramas no productivas `npx wrangler preview`, que
-exige el bloque `previews` de ese archivo. El `name` de `wrangler.jsonc` debe
-coincidir con el nombre del Worker en el panel.
+El proyecto es un **Worker con assets estáticos** (Workers Builds), no un proyecto
+de Pages. El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
+`dist/`, incluidos los encabezados de `public/_headers`.
 
-Lo que sigue describe el flujo con Pages clásico y se conserva como referencia.
+| Ajuste                       | Valor                                                 |
+| ---------------------------- | ----------------------------------------------------- |
+| Build command                | `npm run build`                                       |
+| Deploy command (producción)  | `npx wrangler deploy`                                 |
+| Deploy command (otras ramas) | `npx wrangler preview`                                |
+| Root directory               | vacío: este directorio **es** la raíz del repositorio |
+| Production branch            | `main`                                                |
+| Node                         | `22` (lo toma de `.nvmrc`)                            |
 
-Salida estática, sin adapter mientras no haya SSR.
-
-| Ajuste                 | Valor                                                 |
-| ---------------------- | ----------------------------------------------------- |
-| Build command          | `npm run build`                                       |
-| Build output directory | `dist`                                                |
-| Root directory         | vacío: este directorio **es** la raíz del repositorio |
-| Framework preset       | Astro                                                 |
-| Production branch      | `main`                                                |
-| Node                   | `22` (lo toma de `.nvmrc`)                            |
-
-Las previews por rama vienen activadas por defecto en Cloudflare Pages: cada
-rama genera su propia URL para enseñársela al doctor, y producción sale de
-`main`. `public/_headers` ya lleva cabeceras de seguridad y caché perpetua para
-`/_astro/*`.
-
-### Conectar el proyecto por primera vez
-
-Las previews automáticas por rama solo existen si el proyecto de Pages está
-conectado al repositorio de Git; `wrangler pages project create` no hace esa
-conexión, solo crea proyectos de subida directa. Hay que hacerlo una vez desde
-el panel:
-
-1. Cloudflare → **Workers & Pages** → **Create** → pestaña **Pages** →
-   **Connect to Git**.
-2. Autorizar GitHub y elegir este repositorio.
-3. Rellenar con la tabla de arriba y **Save and Deploy**.
-
-A partir de ahí cada push a `main` publica producción y cada rama genera su
-propia URL de preview.
+- `wrangler.jsonc` declara el directorio de assets y el bloque `previews`, que
+  `wrangler preview` exige aunque vaya vacío.
+- El `name` de `wrangler.jsonc` debe coincidir con el nombre del Worker en el
+  panel de Cloudflare.
+- Cada rama que no es producción genera su propia preview para enseñársela al
+  doctor.
 
 ## Estado
 
