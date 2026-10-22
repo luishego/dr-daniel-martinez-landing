@@ -68,7 +68,16 @@ subconjunto `latin`, que es el que pinta el título del hero. Google la entrega
 como fuente variable, así que un solo archivo por subconjunto cubre los tres
 pesos.
 
-## Despliegue en Cloudflare Pages
+## Despliegue en Cloudflare
+
+El proyecto está conectado como Worker con assets estáticos (Workers Builds), no
+como Pages clásico: el build corre `npm run build` y el deploy usa
+`wrangler.jsonc`, que sirve `dist/`. El comando de deploy de producción es
+`npx wrangler deploy` y el de ramas no productivas `npx wrangler preview`, que
+exige el bloque `previews` de ese archivo. El `name` de `wrangler.jsonc` debe
+coincidir con el nombre del Worker en el panel.
+
+Lo que sigue describe el flujo con Pages clásico y se conserva como referencia.
 
 Salida estática, sin adapter mientras no haya SSR.
 
