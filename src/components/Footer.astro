@@ -1,0 +1,148 @@
+---
+/**
+ * Pie de página (T-11): marca, sede principal, medios de contacto, enlaces a
+ * las secciones y al aviso de privacidad. Datos de `sitio.json` y
+ * `contacto.json`; un dato con corchetes se muestra sin volverse enlace.
+ */
+import { getEntry } from 'astro:content';
+
+const [sitio, contacto] = await Promise.all([
+  getEntry('sitio', 'sitio'),
+  getEntry('contacto', 'contacto'),
+]);
+if (!sitio) {
+  throw new Error('Falta src/content/sitio/sitio.json');
+}
+if (!contacto) {
+  throw new Error('Falta src/content/contacto/contacto.json');
+}
+
+const { nombre, especialidad, navegacion, clinica, footer } = sitio.data;
+const { telefono, correo } = contacto.data;
+
+const pendiente = (valor: string) => valor.includes('[');
+const digitos = (valor: string) => valor.replace(/\D/g, '');
+const anio = new Date().getFullYear();
+---
+
+<footer class="pie sobre-oscuro">
+  <div class="contenedor pie__fila">
+    <div class="pie__marca">
+      <p class="pie__nombre">{nombre}</p>
+      <p class="pie__especialidad">{especialidad}</p>
+      <p class="pie__lema">{footer.lema}</p>
+    </div>
+
+    <address class="pie__bloque">
+      <p class="pie__etiqueta">{clinica.nombre}</p>
+      <p>
+        {clinica.calle}, {clinica.colonia}
+      </p>
+      <p>
+        {clinica.alcaldia}, C.P. {clinica.codigoPostal}
+      </p>
+      <p>{clinica.ciudad}</p>
+      <p class="pie__medio">
+        {pendiente(telefono) ? telefono : <a href={`tel:+${digitos(telefono)}`}>{telefono}</a>}
+      </p>
+      <p>{pendiente(correo) ? correo : <a href={`mailto:${correo}`}>{correo}</a>}</p>
+    </address>
+
+    <nav class="pie__bloque" aria-label="Pie de página">
+      <p class="pie__etiqueta">Secciones</p>
+      <ul>
+        {navegacion.map((enlace) => (
+          <li>
+            <a href={enlace.ancla}>{enlace.etiqueta}</a>
+          </li>
+        ))}
+        <li>
+          <a href={footer.privacidad.ancla}>{footer.privacidad.etiqueta}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="contenedor pie__legal">
+    <p>{footer.aviso}</p>
+    <p>
+      © {anio} {nombre}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    background-color: var(--color-primary);
+    color: var(--color-on-dark);
+    padding-block: clamp(2rem, 1.4rem + 2.4vw, 3.5rem) 1.5rem;
+  }
+
+  .pie a {
+    color: var(--color-on-dark);
+  }
+
+  .pie__fila {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .pie__nombre {
+    font-size: 1.375rem;
+    font-weight: var(--peso-titulo);
+    line-height: 1.1;
+  }
+
+  .pie__especialidad {
+    margin-top: 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: var(--peso-fuerte);
+    letter-spacing: var(--espaciado-marca);
+    text-transform: uppercase;
+  }
+
+  .pie__lema {
+    margin-top: 0.875rem;
+    max-width: 28ch;
+    font-size: var(--texto-lista);
+  }
+
+  .pie__bloque {
+    font-size: var(--texto-lista);
+    font-style: normal;
+    line-height: var(--alto-compacto);
+  }
+
+  .pie__etiqueta {
+    margin-bottom: 0.5rem;
+    font-weight: var(--peso-titulo);
+  }
+
+  .pie__medio {
+    margin-top: 0.5rem;
+  }
+
+  .pie__bloque ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .pie__legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.28);
+    font-size: var(--texto-micro);
+    line-height: var(--alto-compacto);
+  }
+
+  @media (min-width: 48rem) {
+    .pie__fila {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

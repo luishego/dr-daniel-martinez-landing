@@ -44,6 +44,11 @@ const sitio = defineCollection({
       }),
     ),
     ctaHeader: enlace,
+    footer: z.object({
+      lema: z.string(),
+      aviso: z.string(),
+      privacidad: enlace,
+    }),
     clinica: z.object({
       nombre: z.string(),
       calle: z.string(),
@@ -207,4 +212,25 @@ const contacto = defineCollection({
   }),
 });
 
-export const collections = { sitio, inicio, sobre, servicios, ubicacion, preguntas, contacto };
+const privacidad = defineCollection({
+  loader: glob({ pattern: 'privacidad.json', base: './src/content/privacidad' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    /** Aviso visible de que el texto es un borrador sin validar. */
+    borrador: z.string(),
+    secciones: z.array(z.object({ titulo: z.string(), texto: z.string() })),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+export const collections = {
+  sitio,
+  inicio,
+  sobre,
+  servicios,
+  ubicacion,
+  preguntas,
+  contacto,
+  privacidad,
+};

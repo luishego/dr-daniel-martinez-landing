@@ -53,15 +53,32 @@ por escrito. Los datos que faltan están marcados entre corchetes —
 publiquen por descuido. El campo `notaInterna` de cada archivo no se renderiza:
 documenta el estado de ese texto.
 
-| Colección   | Archivo                                | Qué alimenta                              |
-| ----------- | -------------------------------------- | ----------------------------------------- |
-| `sitio`     | `src/content/sitio/sitio.json`         | Marca, SEO, navegación, clínica           |
-| `inicio`    | `src/content/inicio/hero.json`         | Hero y franja de credenciales             |
-| `sobre`     | `src/content/sobre/sobre.json`         | Sección Sobre el Doctor                   |
-| `servicios` | `src/content/servicios/servicios.json` | Tratamientos y bloque de EMT              |
-| `ubicacion` | `src/content/ubicacion/ubicacion.json` | Sedes, horarios y mapa                    |
-| `contacto`  | `src/content/contacto/contacto.json`   | WhatsApp, datos de recepción y formulario |
-| `preguntas` | `src/content/preguntas/preguntas.json` | FAQ, aviso de urgencias, JSON-LD          |
+| Colección    | Archivo                                  | Qué alimenta                              |
+| ------------ | ---------------------------------------- | ----------------------------------------- |
+| `sitio`      | `src/content/sitio/sitio.json`           | Marca, SEO, navegación, clínica           |
+| `inicio`     | `src/content/inicio/hero.json`           | Hero y franja de credenciales             |
+| `sobre`      | `src/content/sobre/sobre.json`           | Sección Sobre el Doctor                   |
+| `servicios`  | `src/content/servicios/servicios.json`   | Tratamientos y bloque de EMT              |
+| `ubicacion`  | `src/content/ubicacion/ubicacion.json`   | Sedes, horarios y mapa                    |
+| `contacto`   | `src/content/contacto/contacto.json`     | WhatsApp, datos de recepción y formulario |
+| `privacidad` | `src/content/privacidad/privacidad.json` | Aviso de privacidad (borrador)            |
+| `preguntas`  | `src/content/preguntas/preguntas.json`   | FAQ, aviso de urgencias, JSON-LD          |
+
+## SEO y seguridad
+
+- **Dominio:** se configura con la variable de entorno `SITE_URL` en el build de
+  producción (p. ej. `https://www.dominio.mx`). Con ella el sitio emite
+  `canonical`, `og:url`, `sitemap.xml` y un `robots.txt` que permite indexar.
+  Sin ella, que es el caso de las previews y del desarrollo, el sitio lleva
+  `noindex`, `robots.txt` con `Disallow: /` y un sitemap vacío.
+- **JSON-LD:** `MedicalClinic` y `Physician` (`JsonLdSitio.astro`) más el
+  `FAQPage` de Preguntas. Solo incluyen datos validados: un valor con corchetes
+  no entra al marcado.
+- **CSP:** la emite Astro (`security.csp` en `astro.config.mjs`) en un `<meta>`
+  con hashes de sus scripts y estilos; `frame-ancestors` va en
+  `public/_headers`. Si se agrega un recurso de terceros (analíticas, otro
+  mapa, otra fuente) hay que declararlo en esa lista.
+- **Pendiente:** imagen Open Graph, cuando el cliente entregue la fotografía.
 
 ## Tipografía
 
@@ -103,8 +120,7 @@ de Pages. El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
 
 ## Estado
 
-Hecho: T-01 a T-10 (setup, tokens, tipografía, layout y header, Inicio, Sobre
-el Doctor, Tratamientos, Ubicación, Preguntas y Contacto).
+Hecho: T-01 a T-11 (setup, tokens, tipografía, layout y header, Inicio, Sobre
+el Doctor, Tratamientos, Ubicación, Preguntas, Contacto, footer, aviso de privacidad, SEO y CSP).
 
-Pendiente: T-11 footer/SEO/JSON-LD, T-12 QA. Los enlaces del menú a esas anclas ya existen
-y empiezan a funcionar conforme entra cada sección.
+Pendiente: T-12 QA.

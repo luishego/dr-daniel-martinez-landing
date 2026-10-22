@@ -1,0 +1,28 @@
+{
+  "antetitulo": "Aviso de privacidad",
+  "titulo": "Cómo tratamos tus datos",
+  "borrador": "[TEXTO LEGAL POR VALIDAR] Este aviso es un borrador. Debe revisarlo el responsable y asesoría legal antes de publicarse.",
+  "secciones": [
+    {
+      "titulo": "Quién es el responsable",
+      "texto": "[NOMBRE COMPLETO DEL RESPONSABLE Y DOMICILIO] es responsable del tratamiento de los datos personales que compartas a través de este sitio."
+    },
+    {
+      "titulo": "Qué datos recabamos",
+      "texto": "Los que escribes en el formulario de contacto: nombre, teléfono, correo electrónico (opcional) y el mensaje que decidas enviar. Te pedimos no incluir información clínica detallada; esa se trata en consulta."
+    },
+    {
+      "titulo": "Para qué los usamos",
+      "texto": "Únicamente para contactarte y confirmar el día y la hora de tu cita. No los usamos para publicidad ni los compartimos con terceros ajenos a ese fin, salvo el proveedor que entrega el correo de la solicitud."
+    },
+    {
+      "titulo": "Tus derechos",
+      "texto": "Puedes acceder a tus datos, rectificarlos, cancelarlos u oponerte a su uso (derechos ARCO), y revocar tu consentimiento, escribiendo al correo de contacto de este sitio. [PROCEDIMIENTO Y PLAZOS POR VALIDAR]"
+    },
+    {
+      "titulo": "Cambios a este aviso",
+      "texto": "Si cambia este aviso, publicaremos la versión actualizada en esta página. [FECHA DE ÚLTIMA ACTUALIZACIÓN]"
+    }
+  ],
+  "notaInterna": "Borrador de estructura, no un aviso legal vigente. Falta el nombre y domicilio del responsable, el procedimiento ARCO y la fecha; debe revisarlo asesoría legal. El texto describe solo lo que hace hoy el formulario (nombre, teléfono, correo opcional y mensaje, enviados por correo mediante Resend). Si se añaden analíticas o cookies, hay que actualizarlo."
+}
