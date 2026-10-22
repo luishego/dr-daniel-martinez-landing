@@ -228,7 +228,8 @@ textarea {
 .marco-imagen__titulo {
   font-size: 0.9375rem;
   font-weight: var(--peso-titulo);
-  color: var(--color-primary);
+  /* Petróleo sobre menta da ~4.2:1 y no alcanza AA a 15px: va en tinta. */
+  color: var(--color-ink);
 }
 
 .marco-imagen__nota {

@@ -15,4 +15,11 @@ export default defineConfig(
       globals: { ...globals.browser },
     },
   },
+  {
+    // Los archivos de configuración corren en Node.
+    files: ['*.config.{js,mjs}'],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+  },
 );

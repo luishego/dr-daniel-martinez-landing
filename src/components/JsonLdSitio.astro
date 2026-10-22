@@ -1,0 +1,63 @@
+---
+/**
+ * JSON-LD Physician + MedicalClinic (T-11). Solo lleva datos validados: un
+ * valor con corchetes (teléfono, correo) no entra al marcado, y la URL solo
+ * aparece cuando el sitio tiene dominio (`SITE_URL`).
+ */
+import { getEntry } from 'astro:content';
+
+const [sitio, contacto] = await Promise.all([
+  getEntry('sitio', 'sitio'),
+  getEntry('contacto', 'contacto'),
+]);
+if (!sitio || !contacto) {
+  throw new Error('Faltan sitio.json o contacto.json');
+}
+
+const { nombre, clinica, seo } = sitio.data;
+const pendiente = (valor: string) => valor.includes('[');
+const telefono = pendiente(contacto.data.telefono) ? undefined : contacto.data.telefono;
+const correo = pendiente(contacto.data.correo) ? undefined : contacto.data.correo;
+const url = Astro.site?.href.replace(/\/$/, '');
+
+const direccion = {
+  '@type': 'PostalAddress',
+  streetAddress: `${clinica.calle}, ${clinica.colonia}`,
+  addressLocality: clinica.alcaldia,
+  addressRegion: clinica.ciudad,
+  postalCode: clinica.codigoPostal,
+  addressCountry: 'MX',
+};
+
+const grafo = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'MedicalClinic',
+      '@id': `${url ?? ''}#clinica`,
+      name: clinica.nombre,
+      medicalSpecialty: 'Psychiatric',
+      address: direccion,
+      ...(url && { url }),
+      ...(telefono && { telephone: telefono }),
+      ...(correo && { email: correo }),
+    },
+    {
+      '@type': 'Physician',
+      '@id': `${url ?? ''}#doctor`,
+      name: nombre,
+      description: seo.descripcion,
+      medicalSpecialty: 'Psychiatric',
+      address: direccion,
+      worksFor: { '@id': `${url ?? ''}#clinica` },
+      ...(url && { url }),
+      ...(telefono && { telephone: telefono }),
+    },
+  ],
+};
+
+// `<` escapado para que ningún texto pueda cerrar el <script> en línea.
+const json = JSON.stringify(grafo).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" set:html={json} />

@@ -1,0 +1,423 @@
+---
+/**
+ * Sección Contacto (T-10): WhatsApp, teléfono, correo y formulario. El
+ * formulario envía a `/api/contacto` (worker/index.ts). Todo el texto viene de
+ * `src/content/contacto/contacto.json`.
+ *
+ * Mientras un dato lleve corchetes se muestra tal cual y no se vuelve enlace,
+ * para que no se publique un número falso. El formulario nace oculto y solo
+ * aparece si corre JavaScript; sin él quedan WhatsApp, teléfono y correo.
+ */
+import { getEntry } from 'astro:content';
+
+const contacto = await getEntry('contacto', 'contacto');
+if (!contacto) {
+  throw new Error('Falta src/content/contacto/contacto.json');
+}
+
+const { antetitulo, titulo, entrada, whatsapp, telefono, correo, formulario } = contacto.data;
+const { campos, errores } = formulario;
+
+const pendiente = (valor: string) => valor.includes('[');
+const digitos = (valor: string) => valor.replace(/\D/g, '');
+
+const enlaceWhatsapp = pendiente(whatsapp.numero)
+  ? null
+  : `https://wa.me/${digitos(whatsapp.numero)}?text=${encodeURIComponent(whatsapp.mensaje)}`;
+const enlaceTelefono = pendiente(telefono) ? null : `tel:+${digitos(telefono)}`;
+const enlaceCorreo = pendiente(correo) ? null : `mailto:${correo}`;
+
+const mensajes = JSON.stringify({
+  exito: formulario.exito,
+  errorGeneral: formulario.errorGeneral,
+  errorCampos: formulario.errorCampos,
+  enviar: formulario.enviar,
+  enviando: formulario.enviando,
+  errores,
+}).replace(/</g, '\\u003c');
+---
+
+<section class="seccion contacto" id="contacto">
+  <div class="contenedor contacto__fila">
+    <div class="contacto__texto">
+      <p class="antetitulo antetitulo--primario contacto__antetitulo">{antetitulo}</p>
+      <h2 class="contacto__titulo">{titulo}</h2>
+      <p class="contacto__entrada">{entrada}</p>
+
+      {enlaceWhatsapp ? (
+        <a
+          class="boton boton--principal contacto__whatsapp"
+          href={enlaceWhatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {whatsapp.etiqueta}
+          <span class="visualmente-oculto"> (se abre en otra pestaña)</span>
+        </a>
+      ) : (
+        <p class="contacto__marcador">
+          <strong>{whatsapp.etiqueta}</strong>
+          <span>{whatsapp.numero}</span>
+        </p>
+      )}
+
+      <ul class="contacto__medios">
+        <li>
+          {enlaceTelefono ? <a href={enlaceTelefono}>{telefono}</a> : <span>{telefono}</span>}
+        </li>
+        <li>{enlaceCorreo ? <a href={enlaceCorreo}>{correo}</a> : <span>{correo}</span>}</li>
+      </ul>
+    </div>
+
+    <div class="contacto__tarjeta" id="contacto-formulario" hidden>
+      <h3 class="contacto__subtitulo">{formulario.titulo}</h3>
+      <p class="contacto__aviso">{formulario.aviso}</p>
+
+      <form class="formulario" method="post" action="/api/contacto" novalidate>
+        <div class="campo">
+          <label for="c-nombre">{campos.nombre}</label>
+          <input
+            id="c-nombre"
+            name="nombre"
+            type="text"
+            autocomplete="name"
+            required
+            maxlength="100"
+          />
+          <p class="campo__error" id="e-nombre" hidden></p>
+        </div>
+
+        <div class="campo">
+          <label for="c-telefono">{campos.telefono}</label>
+          <input
+            id="c-telefono"
+            name="telefono"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            required
+            maxlength="30"
+          />
+          <p class="campo__error" id="e-telefono" hidden></p>
+        </div>
+
+        <div class="campo">
+          <label for="c-correo">{campos.correo}</label>
+          <input id="c-correo" name="correo" type="email" autocomplete="email" maxlength="120" />
+          <p class="campo__error" id="e-correo" hidden></p>
+        </div>
+
+        <div class="campo">
+          <label for="c-mensaje">{campos.mensaje}</label>
+          <textarea id="c-mensaje" name="mensaje" rows="4" maxlength="1000"></textarea>
+        </div>
+
+        <!-- Campo trampa para bots: fuera de la vista y del orden de tabulación. -->
+        <div class="formulario__trampa" aria-hidden="true">
+          <label for="c-web">No llenar</label>
+          <input id="c-web" name="web" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="campo campo--consentimiento">
+          <input id="c-consentimiento" name="consentimiento" type="checkbox" required />
+          <label for="c-consentimiento">
+            {formulario.consentimiento}
+            <a href={formulario.avisoPrivacidad.ancla}>{formulario.avisoPrivacidad.etiqueta}</a>.
+          </label>
+          <p class="campo__error" id="e-consentimiento" hidden></p>
+        </div>
+
+        <button class="boton boton--principal formulario__enviar" type="submit">
+          {formulario.enviar}
+        </button>
+
+        <p class="formulario__estado" id="estado-formulario" role="status" tabindex="-1" hidden></p>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline type="application/json" id="textos-formulario" set:html={mensajes} />
+</section>
+
+<script>
+  const tarjeta = document.getElementById('contacto-formulario');
+  const formulario = tarjeta?.querySelector<HTMLFormElement>('form');
+  const estado = document.getElementById('estado-formulario');
+  const textos = JSON.parse(document.getElementById('textos-formulario')?.textContent ?? '{}');
+
+  if (tarjeta && formulario && estado) {
+    tarjeta.hidden = false;
+    const boton = formulario.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    const campos = ['nombre', 'telefono', 'correo', 'consentimiento'] as const;
+
+    const marcar = (campo: string, mensaje: string | null) => {
+      const entrada = formulario.elements.namedItem(campo) as HTMLInputElement | null;
+      const aviso = document.getElementById(`e-${campo}`);
+      if (!entrada || !aviso) return;
+      aviso.hidden = mensaje === null;
+      aviso.textContent = mensaje ?? '';
+      if (mensaje === null) {
+        entrada.removeAttribute('aria-invalid');
+        entrada.removeAttribute('aria-describedby');
+      } else {
+        entrada.setAttribute('aria-invalid', 'true');
+        entrada.setAttribute('aria-describedby', `e-${campo}`);
+      }
+    };
+
+    const informar = (mensaje: string, error: boolean) => {
+      estado.hidden = false;
+      estado.textContent = mensaje;
+      estado.classList.toggle('formulario__estado--error', error);
+    };
+
+    // Misma regla que el Worker: aquí solo ahorra un viaje, el Worker decide.
+    const validar = (datos: FormData): string[] => {
+      const malos: string[] = [];
+      if (String(datos.get('nombre') ?? '').trim().length < 2) malos.push('nombre');
+      if (String(datos.get('telefono') ?? '').replace(/\D/g, '').length < 10) {
+        malos.push('telefono');
+      }
+      const correo = String(datos.get('correo') ?? '').trim();
+      if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) malos.push('correo');
+      if (!datos.get('consentimiento')) malos.push('consentimiento');
+      return malos;
+    };
+
+    const mostrarErrores = (malos: string[]) => {
+      campos.forEach((campo) =>
+        marcar(campo, malos.includes(campo) ? (textos.errores?.[campo] ?? '') : null),
+      );
+      if (malos.length > 0) {
+        informar(textos.errorCampos, true);
+        const primero = formulario.elements.namedItem(malos[0]) as HTMLElement | null;
+        primero?.focus();
+      }
+    };
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const datos = new FormData(formulario);
+      const malos = validar(datos);
+      mostrarErrores(malos);
+      if (malos.length > 0) return;
+
+      estado.hidden = true;
+      if (boton) {
+        boton.disabled = true;
+        boton.textContent = textos.enviando;
+      }
+
+      try {
+        const respuesta = await fetch(formulario.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: datos.get('nombre'),
+            telefono: datos.get('telefono'),
+            correo: datos.get('correo'),
+            mensaje: datos.get('mensaje'),
+            web: datos.get('web'),
+            consentimiento: datos.get('consentimiento') === 'on',
+          }),
+        });
+
+        if (respuesta.ok) {
+          formulario.reset();
+          campos.forEach((campo) => marcar(campo, null));
+          informar(textos.exito, false);
+        } else if (respuesta.status === 422) {
+          const cuerpo = await respuesta.json().catch(() => ({}));
+          mostrarErrores(Object.keys(cuerpo.campos ?? {}));
+        } else {
+          informar(textos.errorGeneral, true);
+        }
+      } catch {
+        informar(textos.errorGeneral, true);
+      } finally {
+        if (boton) {
+          boton.disabled = false;
+          boton.textContent = textos.enviar;
+        }
+        // role="status" avisa el resultado; el foco lo deja a la vista.
+        if (!estado.hidden) estado.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .contacto__fila {
+    display: grid;
+    gap: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    align-items: start;
+  }
+
+  .contacto__antetitulo {
+    margin-bottom: 0.875rem;
+  }
+
+  .contacto__titulo {
+    margin-bottom: 1.125rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+    color: var(--color-primary);
+  }
+
+  .contacto__entrada {
+    margin-bottom: 1.75rem;
+    font-size: var(--texto-entrada);
+    line-height: var(--alto-entrada);
+  }
+
+  .contacto__marcador {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 2px dashed var(--color-primary);
+    border-radius: var(--radio-campo);
+    background-color: var(--color-tint);
+    color: var(--color-ink);
+  }
+
+  .contacto__medios {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-weight: var(--peso-fuerte);
+  }
+
+  .contacto__tarjeta {
+    padding: clamp(1.25rem, 0.8rem + 1.8vw, 2rem);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radio-tarjeta);
+    background-color: var(--color-surface);
+  }
+
+  .contacto__tarjeta[hidden] {
+    display: none;
+  }
+
+  .contacto__subtitulo {
+    margin-bottom: 0.5rem;
+    font-size: var(--texto-h3);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-primary);
+  }
+
+  .contacto__aviso {
+    margin-bottom: 1.25rem;
+    font-size: var(--texto-lista);
+    line-height: var(--alto-compacto);
+  }
+
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .campo label {
+    font-size: var(--texto-lista);
+    font-weight: var(--peso-fuerte);
+  }
+
+  .campo input:not([type='checkbox']),
+  .campo textarea {
+    width: 100%;
+    min-height: var(--alto-control);
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--color-line-fuerte);
+    border-radius: var(--radio-campo);
+    background-color: var(--color-surface);
+  }
+
+  .campo textarea {
+    resize: vertical;
+  }
+
+  .campo [aria-invalid='true'] {
+    border-color: var(--color-alert);
+    border-width: 2px;
+  }
+
+  .campo__error {
+    font-size: var(--texto-micro);
+    font-weight: var(--peso-fuerte);
+    color: var(--color-alert);
+  }
+
+  .campo__error[hidden] {
+    display: none;
+  }
+
+  .campo--consentimiento {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.75rem;
+    align-items: start;
+  }
+
+  .campo--consentimiento input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    accent-color: var(--color-primary);
+  }
+
+  .campo--consentimiento label {
+    font-weight: var(--peso-lectura);
+    font-size: var(--texto-lista);
+  }
+
+  .campo--consentimiento .campo__error {
+    grid-column: 2;
+  }
+
+  .formulario__trampa {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .formulario__enviar[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  .formulario__estado {
+    padding: 0.875rem 1rem;
+    border-radius: var(--radio-campo);
+    background-color: var(--color-tint);
+    font-weight: var(--peso-fuerte);
+    color: var(--color-ink);
+  }
+
+  .formulario__estado[hidden] {
+    display: none;
+  }
+
+  .formulario__estado--error {
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-alert);
+    color: var(--color-alert);
+  }
+
+  @media (min-width: 64rem) {
+    .contacto__fila {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    }
+  }
+</style>

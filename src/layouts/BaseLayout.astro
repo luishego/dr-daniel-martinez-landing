@@ -1,7 +1,9 @@
 ---
 import { Font } from 'astro:assets';
 import { getEntry } from 'astro:content';
+import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import JsonLdSitio from '../components/JsonLdSitio.astro';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
@@ -16,6 +18,10 @@ if (!sitio) {
 }
 
 const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion } = Astro.props;
+
+// Sin dominio configurado (`SITE_URL`) estamos en una preview o en desarrollo:
+// no se indexa y no se declara canonical.
+const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -27,7 +33,12 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
     <meta name="description" content={descripcion} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+    {url ? <link rel="canonical" href={url} /> : <meta name="robots" content="noindex, nofollow" />}
+
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={sitio.data.nombre} />
+    {url && <meta property="og:url" content={url} />}
+    <meta name="twitter:card" content="summary" />
     <meta property="og:locale" content="es_MX" />
     <meta property="og:title" content={titulo} />
     <meta property="og:description" content={descripcion} />
@@ -39,10 +50,11 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
          `latin-ext` se queda sin precargar porque el hero no lo necesita. -->
     <Font cssVariable="--fuente-base" preload={[{ subset: 'latin' }]} />
 
+    <JsonLdSitio />
+
     <!--
-      Pendiente (T-11): canonical, sitemap, Open Graph con imagen y URL
-      absoluta, y JSON-LD Physician / MedicalClinic. Todo depende del dominio,
-      que el cliente aún no confirma.
+      Pendiente: imagen Open Graph (og:image) cuando el cliente entregue la
+      fotografía; pide URL absoluta, así que depende también del dominio.
     -->
   </head>
 
@@ -54,6 +66,7 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
     <main id="contenido" tabindex="-1">
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
 

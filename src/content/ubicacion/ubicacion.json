@@ -1,0 +1,23 @@
+{
+  "antetitulo": "Ubicación",
+  "titulo": "Dónde atiendo",
+  "entrada": "La consulta es presencial. Elige la sede que te quede más cerca y agenda por WhatsApp o desde el formulario.",
+  "principal": {
+    "horario": "[HORARIO DE ATENCIÓN]",
+    "referencia": "[Referencias para llegar y estacionamiento]"
+  },
+  "otras": [
+    {
+      "nombre": "[SEGUNDA CLÍNICA]",
+      "direccion": "[Calle y número, colonia, alcaldía, código postal, ciudad]",
+      "horario": "[HORARIO DE ATENCIÓN]",
+      "referencia": "[Referencias para llegar y estacionamiento]"
+    }
+  ],
+  "textos": {
+    "verMapa": "Ver mapa aquí",
+    "comoLlegar": "Cómo llegar",
+    "cerrarMapa": "Ocultar mapa"
+  },
+  "notaInterna": "La sede principal (Neurosleep Center) toma su dirección de sitio.json. Pendientes del cliente: horarios, referencias para llegar y los datos de la segunda clínica. Mientras la segunda clínica lleve corchetes, la tarjeta no ofrece mapa."
+}

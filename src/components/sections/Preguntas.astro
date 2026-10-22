@@ -1,0 +1,183 @@
+---
+/**
+ * Sección Preguntas frecuentes (T-09): acordeón con <details>, sin JavaScript,
+ * más el JSON-LD FAQPage. Todo el texto viene de
+ * `src/content/preguntas/preguntas.json`.
+ *
+ * El JSON-LD solo incluye las respuestas ya validadas: una con corchetes está
+ * pendiente, se ve en la página para que no se publique por descuido, pero no
+ * se manda a los buscadores.
+ */
+import { getEntry } from 'astro:content';
+
+const preguntas = await getEntry('preguntas', 'preguntas');
+if (!preguntas) {
+  throw new Error('Falta src/content/preguntas/preguntas.json');
+}
+
+const { antetitulo, titulo, entrada, preguntas: lista, avisoUrgencias } = preguntas.data;
+
+const pendiente = (texto: string) => texto.includes('[');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: lista
+    .filter((item) => !pendiente(item.respuesta))
+    .map((item) => ({
+      '@type': 'Question',
+      name: item.pregunta,
+      acceptedAnswer: { '@type': 'Answer', text: item.respuesta },
+    })),
+};
+
+// `<` escapado para que ningún texto pueda cerrar el <script> en línea.
+const jsonLdSeguro = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
+---
+
+<section class="seccion preguntas" id="preguntas">
+  <div class="contenedor preguntas__fila">
+    <div class="preguntas__cabecera">
+      <p class="antetitulo antetitulo--primario preguntas__antetitulo">{antetitulo}</p>
+      <h2 class="preguntas__titulo">{titulo}</h2>
+      <p class="preguntas__entrada">{entrada}</p>
+
+      <aside class="urgencias" aria-labelledby="titulo-urgencias">
+        <h3 class="urgencias__titulo" id="titulo-urgencias">
+          {avisoUrgencias.titulo}
+        </h3>
+        <p class="urgencias__texto">{avisoUrgencias.texto}</p>
+      </aside>
+    </div>
+
+    <div class="preguntas__lista">
+      {lista.map((item) => (
+        <details class="pregunta">
+          <summary class="pregunta__resumen">
+            <span class="pregunta__texto">{item.pregunta}</span>
+            <svg
+              class="pregunta__signo"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="M5 9l7 7 7-7" />
+            </svg>
+          </summary>
+          <p class="pregunta__respuesta">{item.respuesta}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={jsonLdSeguro} />
+</section>
+
+<style>
+  .preguntas__fila {
+    display: grid;
+    gap: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    align-items: start;
+  }
+
+  .preguntas__antetitulo {
+    margin-bottom: 0.875rem;
+  }
+
+  .preguntas__titulo {
+    margin-bottom: 1.125rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+    color: var(--color-primary);
+  }
+
+  .preguntas__entrada {
+    font-size: var(--texto-entrada);
+    line-height: var(--alto-entrada);
+  }
+
+  /* El granate es solo para alertas: aquí es el aviso de urgencias. */
+  .urgencias {
+    margin-top: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    border: 2px solid var(--color-alert);
+    border-radius: var(--radio-tarjeta);
+    background-color: var(--color-surface);
+  }
+
+  .urgencias__titulo {
+    margin-bottom: 0.5rem;
+    font-size: var(--texto-h3);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-alert);
+  }
+
+  .urgencias__texto {
+    font-size: var(--texto-lista);
+    line-height: var(--alto-compacto);
+  }
+
+  .preguntas__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .pregunta {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radio-tarjeta);
+    background-color: var(--color-surface);
+  }
+
+  .pregunta__resumen {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--alto-control);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radio-tarjeta);
+    font-size: var(--texto-cuerpo);
+    font-weight: var(--peso-fuerte);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-primary);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .pregunta__resumen::-webkit-details-marker {
+    display: none;
+  }
+
+  .pregunta__signo {
+    flex: none;
+    transition: transform var(--transicion);
+  }
+
+  .pregunta[open] .pregunta__signo {
+    transform: rotate(180deg);
+  }
+
+  .pregunta__respuesta {
+    padding: 0 1.25rem 1.25rem;
+    font-size: var(--texto-lista);
+    line-height: var(--alto-cuerpo);
+  }
+
+  @media (min-width: 64rem) {
+    .preguntas__fila {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+    }
+
+    .preguntas__cabecera {
+      position: sticky;
+      top: calc(var(--alto-header) + 1.5rem);
+    }
+  }
+</style>

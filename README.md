@@ -53,12 +53,32 @@ por escrito. Los datos que faltan están marcados entre corchetes —
 publiquen por descuido. El campo `notaInterna` de cada archivo no se renderiza:
 documenta el estado de ese texto.
 
-| Colección   | Archivo                                | Qué alimenta                    |
-| ----------- | -------------------------------------- | ------------------------------- |
-| `sitio`     | `src/content/sitio/sitio.json`         | Marca, SEO, navegación, clínica |
-| `inicio`    | `src/content/inicio/hero.json`         | Hero y franja de credenciales   |
-| `sobre`     | `src/content/sobre/sobre.json`         | Sección Sobre el Doctor         |
-| `servicios` | `src/content/servicios/servicios.json` | Tratamientos y bloque de EMT    |
+| Colección    | Archivo                                  | Qué alimenta                              |
+| ------------ | ---------------------------------------- | ----------------------------------------- |
+| `sitio`      | `src/content/sitio/sitio.json`           | Marca, SEO, navegación, clínica           |
+| `inicio`     | `src/content/inicio/hero.json`           | Hero y franja de credenciales             |
+| `sobre`      | `src/content/sobre/sobre.json`           | Sección Sobre el Doctor                   |
+| `servicios`  | `src/content/servicios/servicios.json`   | Tratamientos y bloque de EMT              |
+| `ubicacion`  | `src/content/ubicacion/ubicacion.json`   | Sedes, horarios y mapa                    |
+| `contacto`   | `src/content/contacto/contacto.json`     | WhatsApp, datos de recepción y formulario |
+| `privacidad` | `src/content/privacidad/privacidad.json` | Aviso de privacidad (borrador)            |
+| `preguntas`  | `src/content/preguntas/preguntas.json`   | FAQ, aviso de urgencias, JSON-LD          |
+
+## SEO y seguridad
+
+- **Dominio:** se configura con la variable de entorno `SITE_URL` en el build de
+  producción (p. ej. `https://www.dominio.mx`). Con ella el sitio emite
+  `canonical`, `og:url`, `sitemap.xml` y un `robots.txt` que permite indexar.
+  Sin ella, que es el caso de las previews y del desarrollo, el sitio lleva
+  `noindex`, `robots.txt` con `Disallow: /` y un sitemap vacío.
+- **JSON-LD:** `MedicalClinic` y `Physician` (`JsonLdSitio.astro`) más el
+  `FAQPage` de Preguntas. Solo incluyen datos validados: un valor con corchetes
+  no entra al marcado.
+- **CSP:** la emite Astro (`security.csp` en `astro.config.mjs`) en un `<meta>`
+  con hashes de sus scripts y estilos; `frame-ancestors` va en
+  `public/_headers`. Si se agrega un recurso de terceros (analíticas, otro
+  mapa, otra fuente) hay que declararlo en esa lista.
+- **Pendiente:** imagen Open Graph, cuando el cliente entregue la fotografía.
 
 ## Tipografía
 
@@ -87,14 +107,33 @@ de Pages. El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
   `wrangler preview` exige aunque vaya vacío.
 - El `name` de `wrangler.jsonc` debe coincidir con el nombre del Worker en el
   panel de Cloudflare.
+- `worker/index.ts` atiende `POST /api/contacto` (el formulario de Contacto); lo
+  demás lo sirve Cloudflare directo desde `dist/`. Valida los campos, descarta
+  los envíos con el campo trampa lleno, solo acepta el mismo origen y manda el
+  correo por la API de Resend.
+- Para que el formulario envíe hay que crear tres secretos en el panel del
+  Worker (Settings → Variables and Secrets): `RESEND_API_KEY`, `CONTACT_TO`
+  (correo de recepción) y `CONTACT_FROM` (remitente de un dominio verificado en
+  Resend). Sin ellos responde 503 y el formulario sugiere WhatsApp.
 - Cada rama que no es producción genera su propia preview para enseñársela al
   doctor.
 
 ## Estado
 
-Hecho: T-01 a T-07 (setup, tokens, tipografía, layout y header, Inicio, Sobre
-el Doctor y Tratamientos).
+Hecho: T-01 a T-12 (setup, tokens, tipografía, layout y header, Inicio, Sobre
+el Doctor, Tratamientos, Ubicación, Preguntas, Contacto, footer, aviso de privacidad, SEO, CSP y QA).
 
-Pendiente: T-08 Ubicación, T-09 FAQ, T-10 Contacto,
-T-11 footer/SEO/JSON-LD, T-12 QA. Los enlaces del menú a esas anclas ya existen
-y empiezan a funcionar conforme entra cada sección.
+Pendiente del cliente antes de publicar: fotografías, números de cédula, teléfono,
+WhatsApp y correo de recepción, datos de la segunda clínica, horarios, dominio
+(`SITE_URL`), validación del copy clínico y del aviso de privacidad, y los
+secretos del formulario (`RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM`).
+Todo lo que falta está entre corchetes en `src/content`.
+
+### QA (T-12)
+
+Revisado sobre el build a 390, 768 y 1440px: sin desbordamiento horizontal,
+axe-core (WCAG 2.1 A/AA) sin violaciones, orden de tabulación lógico con foco
+visible en todos los controles, enlace «Saltar al contenido», acordeón de
+preguntas con teclado, menú móvil que abre y cierra, anclas que no quedan bajo el
+header y sin violaciones de CSP. No se midió Lighthouse ni se probó el envío real
+del formulario (necesita los secretos de Resend), ni el render con Nunito.

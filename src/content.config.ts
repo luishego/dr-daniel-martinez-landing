@@ -44,6 +44,11 @@ const sitio = defineCollection({
       }),
     ),
     ctaHeader: enlace,
+    footer: z.object({
+      lema: z.string(),
+      aviso: z.string(),
+      privacidad: enlace,
+    }),
     clinica: z.object({
       nombre: z.string(),
       calle: z.string(),
@@ -116,4 +121,116 @@ const servicios = defineCollection({
   }),
 });
 
-export const collections = { sitio, inicio, sobre, servicios };
+const ubicacion = defineCollection({
+  loader: glob({ pattern: 'ubicacion.json', base: './src/content/ubicacion' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    /** Datos extra de la sede principal; su dirección vive en `sitio.json`. */
+    principal: z.object({
+      horario: z.string(),
+      referencia: z.string().optional(),
+    }),
+    /** Otras sedes; mientras la dirección lleve corchetes no se ofrece mapa. */
+    otras: z.array(
+      z.object({
+        nombre: z.string(),
+        direccion: z.string(),
+        horario: z.string(),
+        referencia: z.string().optional(),
+      }),
+    ),
+    textos: z.object({
+      verMapa: z.string(),
+      comoLlegar: z.string(),
+      cerrarMapa: z.string(),
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+const preguntas = defineCollection({
+  loader: glob({ pattern: 'preguntas.json', base: './src/content/preguntas' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    /** Una respuesta con corchetes está pendiente y no entra al JSON-LD. */
+    preguntas: z.array(
+      z.object({
+        pregunta: z.string(),
+        respuesta: z.string(),
+      }),
+    ),
+    avisoUrgencias: z.object({
+      titulo: z.string(),
+      texto: z.string(),
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+const contacto = defineCollection({
+  loader: glob({ pattern: 'contacto.json', base: './src/content/contacto' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    whatsapp: z.object({
+      etiqueta: z.string(),
+      /** Con corchetes mientras falte el dato: el botón no será un enlace. */
+      numero: z.string(),
+      mensaje: z.string(),
+    }),
+    telefono: z.string(),
+    correo: z.string(),
+    formulario: z.object({
+      titulo: z.string(),
+      aviso: z.string(),
+      campos: z.object({
+        nombre: z.string(),
+        telefono: z.string(),
+        correo: z.string(),
+        mensaje: z.string(),
+      }),
+      consentimiento: z.string(),
+      avisoPrivacidad: enlace,
+      enviar: z.string(),
+      enviando: z.string(),
+      exito: z.string(),
+      errorGeneral: z.string(),
+      errorCampos: z.string(),
+      errores: z.object({
+        nombre: z.string(),
+        telefono: z.string(),
+        correo: z.string(),
+        consentimiento: z.string(),
+      }),
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+const privacidad = defineCollection({
+  loader: glob({ pattern: 'privacidad.json', base: './src/content/privacidad' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    /** Aviso visible de que el texto es un borrador sin validar. */
+    borrador: z.string(),
+    secciones: z.array(z.object({ titulo: z.string(), texto: z.string() })),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+export const collections = {
+  sitio,
+  inicio,
+  sobre,
+  servicios,
+  ubicacion,
+  preguntas,
+  contacto,
+  privacidad,
+};

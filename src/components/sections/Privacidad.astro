@@ -1,0 +1,75 @@
+---
+/**
+ * Aviso de privacidad (T-11), al final de la página, enlazado desde el
+ * formulario y el footer. Texto desde `src/content/privacidad/privacidad.json`.
+ * Es un borrador hasta que lo valide asesoría legal: el aviso de borrador queda
+ * visible para que no se publique por descuido.
+ */
+import { getEntry } from 'astro:content';
+
+const privacidad = await getEntry('privacidad', 'privacidad');
+if (!privacidad) {
+  throw new Error('Falta src/content/privacidad/privacidad.json');
+}
+
+const { antetitulo, titulo, borrador, secciones } = privacidad.data;
+---
+
+<section class="seccion privacidad" id="privacidad">
+  <div class="contenedor privacidad__cuerpo">
+    <p class="antetitulo antetitulo--primario privacidad__antetitulo">{antetitulo}</p>
+    <h2 class="privacidad__titulo">{titulo}</h2>
+    <p class="privacidad__borrador">{borrador}</p>
+
+    {secciones.map((seccion) => (
+      <div class="privacidad__bloque">
+        <h3 class="privacidad__subtitulo">{seccion.titulo}</h3>
+        <p class="privacidad__texto">{seccion.texto}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .privacidad__cuerpo {
+    max-width: 50rem;
+  }
+
+  .privacidad__antetitulo {
+    margin-bottom: 0.875rem;
+  }
+
+  .privacidad__titulo {
+    margin-bottom: 1.125rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+    color: var(--color-primary);
+  }
+
+  .privacidad__borrador {
+    margin-bottom: 1.75rem;
+    padding: 0.875rem 1rem;
+    border: 2px dashed var(--color-primary);
+    border-radius: var(--radio-campo);
+    background-color: var(--color-tint);
+    font-size: var(--texto-lista);
+    font-weight: var(--peso-fuerte);
+  }
+
+  .privacidad__bloque + .privacidad__bloque {
+    margin-top: 1.25rem;
+  }
+
+  .privacidad__subtitulo {
+    margin-bottom: 0.375rem;
+    font-size: var(--texto-h3);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-primary);
+  }
+
+  .privacidad__texto {
+    font-size: var(--texto-lista);
+    line-height: var(--alto-cuerpo);
+  }
+</style>
