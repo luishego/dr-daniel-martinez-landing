@@ -8,8 +8,8 @@
   },
   "otras": [
     {
-      "nombre": "[SEGUNDA CLÍNICA]",
-      "direccion": "[Calle y número, colonia, alcaldía, código postal, ciudad]",
+      "nombre": "Neurosleep Center",
+      "direccion": "Iztaccíhuatl 10, Col. Florida, Álvaro Obregón, C.P. 01030, Ciudad de México",
       "horario": "[HORARIO DE ATENCIÓN]",
       "referencia": "[Referencias para llegar y estacionamiento]"
     }
@@ -19,5 +19,5 @@
     "comoLlegar": "Cómo llegar",
     "cerrarMapa": "Ocultar mapa"
   },
-  "notaInterna": "La sede principal (Neurosleep Center) toma su dirección de sitio.json. Pendientes del cliente: horarios, referencias para llegar y los datos de la segunda clínica. Mientras la segunda clínica lleve corchetes, la tarjeta no ofrece mapa."
+  "notaInterna": "La sede principal (Gabriel Mancera 1433) toma su dirección de sitio.json; Neurosleep Center es la secundaria y vive aquí. Pendientes del cliente: nombre de la clínica principal y horarios y referencias de ambas sedes. Mientras una dirección lleve corchetes, su tarjeta no ofrece mapa. En web los mapas se muestran siempre; en móvil se abren con un botón."
 }

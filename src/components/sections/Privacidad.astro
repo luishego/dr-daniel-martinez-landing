@@ -1,9 +1,12 @@
 ---
 /**
- * Aviso de privacidad (T-11), al final de la página, enlazado desde el
- * formulario y el footer. Texto desde `src/content/privacidad/privacidad.json`.
- * Es un borrador hasta que lo valide asesoría legal: el aviso de borrador queda
- * visible para que no se publique por descuido.
+ * Aviso de privacidad (T-11) en un modal nativo (<dialog>). Se abre con
+ * cualquier enlace a `#privacidad`: el del footer y el del formulario. Texto
+ * desde `src/content/privacidad/privacidad.json`. Es un borrador hasta que lo
+ * valide asesoría legal: el aviso de borrador queda visible para que no se
+ * publique por descuido.
+ *
+ * Sin JavaScript el modal no se puede abrir; la página no pierde nada más.
  */
 import { getEntry } from 'astro:content';
 
@@ -15,40 +18,121 @@ if (!privacidad) {
 const { antetitulo, titulo, borrador, secciones } = privacidad.data;
 ---
 
-<section class="seccion privacidad" id="privacidad">
-  <div class="contenedor privacidad__cuerpo">
-    <p class="antetitulo antetitulo--primario privacidad__antetitulo">{antetitulo}</p>
-    <h2 class="privacidad__titulo">{titulo}</h2>
-    <p class="privacidad__borrador">{borrador}</p>
-
-    {secciones.map((seccion) => (
-      <div class="privacidad__bloque">
-        <h3 class="privacidad__subtitulo">{seccion.titulo}</h3>
-        <p class="privacidad__texto">{seccion.texto}</p>
-      </div>
-    ))}
+<dialog class="privacidad" id="privacidad" aria-labelledby="titulo-privacidad">
+  <div class="privacidad__cabecera">
+    <div>
+      <p class="antetitulo antetitulo--primario privacidad__antetitulo">{antetitulo}</p>
+      <h2 class="privacidad__titulo" id="titulo-privacidad">
+        {titulo}
+      </h2>
+    </div>
+    <button class="privacidad__cerrar" type="button" data-cerrar-privacidad>
+      <span class="visualmente-oculto">Cerrar el aviso de privacidad</span>
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M6 6l12 12"></path>
+        <path d="M18 6L6 18"></path>
+      </svg>
+    </button>
   </div>
-</section>
+
+  <p class="privacidad__borrador">{borrador}</p>
+
+  {secciones.map((seccion) => (
+    <div class="privacidad__bloque">
+      <h3 class="privacidad__subtitulo">{seccion.titulo}</h3>
+      <p class="privacidad__texto">{seccion.texto}</p>
+    </div>
+  ))}
+</dialog>
+
+<script>
+  const dialogo = document.getElementById('privacidad');
+
+  if (dialogo instanceof HTMLDialogElement) {
+    const abrir = () => {
+      if (!dialogo.open) dialogo.showModal();
+    };
+
+    // Los enlaces a #privacidad (footer y formulario) abren el modal en lugar
+    // de saltar a una sección.
+    document.addEventListener('click', (evento) => {
+      if (!(evento.target instanceof Element)) return;
+      if (evento.target.closest('a[href="#privacidad"]')) {
+        evento.preventDefault();
+        abrir();
+      } else if (evento.target.closest('[data-cerrar-privacidad]')) {
+        dialogo.close();
+      } else if (evento.target === dialogo) {
+        // Clic en el fondo oscuro: el propio <dialog> es el objetivo.
+        dialogo.close();
+      }
+    });
+
+    // Quien llega con el enlace directo (…/#privacidad) ve el aviso abierto.
+    if (window.location.hash === '#privacidad') abrir();
+  }
+</script>
 
 <style>
-  .privacidad__cuerpo {
-    max-width: 50rem;
+  .privacidad {
+    width: min(42rem, calc(100vw - 2rem));
+    max-height: min(85vh, 48rem);
+    padding: clamp(1.25rem, 0.8rem + 1.8vw, 2rem);
+    overflow-y: auto;
+    border: 0;
+    border-radius: var(--radio-imagen);
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  .privacidad::backdrop {
+    background-color: rgba(0, 18, 25, 0.62);
+  }
+
+  .privacidad__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
 
   .privacidad__antetitulo {
-    margin-bottom: 0.875rem;
+    margin-bottom: 0.5rem;
   }
 
   .privacidad__titulo {
-    margin-bottom: 1.125rem;
     font-size: var(--texto-h2);
     line-height: var(--alto-h2);
     letter-spacing: var(--espaciado-h2);
     color: var(--color-primary);
   }
 
+  .privacidad__cerrar {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--alto-control);
+    height: var(--alto-control);
+    border: 1px solid var(--color-line-fuerte);
+    border-radius: var(--radio-campo);
+    background-color: transparent;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+
   .privacidad__borrador {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
     padding: 0.875rem 1rem;
     border: 2px dashed var(--color-primary);
     border-radius: var(--radio-campo);
@@ -71,5 +155,10 @@ const { antetitulo, titulo, borrador, secciones } = privacidad.data;
   .privacidad__texto {
     font-size: var(--texto-lista);
     line-height: var(--alto-cuerpo);
+  }
+
+  /* Con el modal abierto la página de atrás no debe desplazarse. */
+  :global(body:has(dialog[open])) {
+    overflow: hidden;
   }
 </style>

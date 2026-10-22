@@ -4,6 +4,7 @@ Landing de una sola página para el Dr. Daniel Martínez, psiquiatra en Ciudad d
 Astro con salida estática, sin framework de UI, pensada para desplegarse como Worker con assets estáticos en Cloudflare.
 
 Épica de referencia: `Épica Landing page Dr. Daniel Martínez.md`
+
 ## Cómo trabajar
 
 ```bash
@@ -30,6 +31,7 @@ la única fuente de los colores: define los tokens semánticos (`--color-primary
 `--color-ink`…) que consume toda la UI.
 
 ### Reglas de contraste
+
 1. El acento (ocre `#EE9B00`) siempre lleva texto tinta o
    azul profundo: `--color-accent-ink`. Con blanco baja a 2.5:1 y reprueba AA.
 2. El secundario (turquesa `#0A9396`) solo para íconos,
@@ -49,7 +51,7 @@ Todo el texto vive en `src/content` (content collections con esquema zod), el ca
 | `servicios`  | `src/content/servicios/servicios.json`   | Tratamientos y bloque de EMT              |
 | `ubicacion`  | `src/content/ubicacion/ubicacion.json`   | Sedes, horarios y mapa                    |
 | `contacto`   | `src/content/contacto/contacto.json`     | WhatsApp, datos de recepción y formulario |
-| `privacidad` | `src/content/privacidad/privacidad.json` | Aviso de privacidad (borrador)            |
+| `privacidad` | `src/content/privacidad/privacidad.json` | Aviso de privacidad (modal, borrador)     |
 | `preguntas`  | `src/content/preguntas/preguntas.json`   | FAQ, aviso de urgencias, JSON-LD          |
 
 ## SEO y seguridad
@@ -78,7 +80,7 @@ pesos.
 
 ## Despliegue en Cloudflare
 
-El proyecto es un **Worker con assets estáticos** (Workers Builds). 
+El proyecto es un **Worker con assets estáticos** (Workers Builds).
 El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
 `dist/`, incluidos los encabezados de `public/_headers`.
 
@@ -104,8 +106,8 @@ El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
   (correo de recepción) y `CONTACT_FROM` (remitente de un dominio verificado en
   Resend). Sin ellos responde 503 y el formulario sugiere WhatsApp.
 
-
 ### QA
+
 Revisado sobre el build a 390, 768 y 1440px: sin desbordamiento horizontal,
 axe-core (WCAG 2.1 A/AA) sin violaciones, orden de tabulación lógico con foco
 visible en todos los controles, enlace «Saltar al contenido», acordeón de
