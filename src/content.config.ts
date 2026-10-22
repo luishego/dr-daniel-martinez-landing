@@ -166,4 +166,45 @@ const preguntas = defineCollection({
   }),
 });
 
-export const collections = { sitio, inicio, sobre, servicios, ubicacion, preguntas };
+const contacto = defineCollection({
+  loader: glob({ pattern: 'contacto.json', base: './src/content/contacto' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    whatsapp: z.object({
+      etiqueta: z.string(),
+      /** Con corchetes mientras falte el dato: el botón no será un enlace. */
+      numero: z.string(),
+      mensaje: z.string(),
+    }),
+    telefono: z.string(),
+    correo: z.string(),
+    formulario: z.object({
+      titulo: z.string(),
+      aviso: z.string(),
+      campos: z.object({
+        nombre: z.string(),
+        telefono: z.string(),
+        correo: z.string(),
+        mensaje: z.string(),
+      }),
+      consentimiento: z.string(),
+      avisoPrivacidad: enlace,
+      enviar: z.string(),
+      enviando: z.string(),
+      exito: z.string(),
+      errorGeneral: z.string(),
+      errorCampos: z.string(),
+      errores: z.object({
+        nombre: z.string(),
+        telefono: z.string(),
+        correo: z.string(),
+        consentimiento: z.string(),
+      }),
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+export const collections = { sitio, inicio, sobre, servicios, ubicacion, preguntas, contacto };

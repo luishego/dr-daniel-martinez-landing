@@ -53,14 +53,15 @@ por escrito. Los datos que faltan están marcados entre corchetes —
 publiquen por descuido. El campo `notaInterna` de cada archivo no se renderiza:
 documenta el estado de ese texto.
 
-| Colección   | Archivo                                | Qué alimenta                     |
-| ----------- | -------------------------------------- | -------------------------------- |
-| `sitio`     | `src/content/sitio/sitio.json`         | Marca, SEO, navegación, clínica  |
-| `inicio`    | `src/content/inicio/hero.json`         | Hero y franja de credenciales    |
-| `sobre`     | `src/content/sobre/sobre.json`         | Sección Sobre el Doctor          |
-| `servicios` | `src/content/servicios/servicios.json` | Tratamientos y bloque de EMT     |
-| `ubicacion` | `src/content/ubicacion/ubicacion.json` | Sedes, horarios y mapa           |
-| `preguntas` | `src/content/preguntas/preguntas.json` | FAQ, aviso de urgencias, JSON-LD |
+| Colección   | Archivo                                | Qué alimenta                              |
+| ----------- | -------------------------------------- | ----------------------------------------- |
+| `sitio`     | `src/content/sitio/sitio.json`         | Marca, SEO, navegación, clínica           |
+| `inicio`    | `src/content/inicio/hero.json`         | Hero y franja de credenciales             |
+| `sobre`     | `src/content/sobre/sobre.json`         | Sección Sobre el Doctor                   |
+| `servicios` | `src/content/servicios/servicios.json` | Tratamientos y bloque de EMT              |
+| `ubicacion` | `src/content/ubicacion/ubicacion.json` | Sedes, horarios y mapa                    |
+| `contacto`  | `src/content/contacto/contacto.json`   | WhatsApp, datos de recepción y formulario |
+| `preguntas` | `src/content/preguntas/preguntas.json` | FAQ, aviso de urgencias, JSON-LD          |
 
 ## Tipografía
 
@@ -89,14 +90,21 @@ de Pages. El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
   `wrangler preview` exige aunque vaya vacío.
 - El `name` de `wrangler.jsonc` debe coincidir con el nombre del Worker en el
   panel de Cloudflare.
+- `worker/index.ts` atiende `POST /api/contacto` (el formulario de Contacto); lo
+  demás lo sirve Cloudflare directo desde `dist/`. Valida los campos, descarta
+  los envíos con el campo trampa lleno, solo acepta el mismo origen y manda el
+  correo por la API de Resend.
+- Para que el formulario envíe hay que crear tres secretos en el panel del
+  Worker (Settings → Variables and Secrets): `RESEND_API_KEY`, `CONTACT_TO`
+  (correo de recepción) y `CONTACT_FROM` (remitente de un dominio verificado en
+  Resend). Sin ellos responde 503 y el formulario sugiere WhatsApp.
 - Cada rama que no es producción genera su propia preview para enseñársela al
   doctor.
 
 ## Estado
 
-Hecho: T-01 a T-09 (setup, tokens, tipografía, layout y header, Inicio, Sobre
-el Doctor, Tratamientos, Ubicación y Preguntas).
+Hecho: T-01 a T-10 (setup, tokens, tipografía, layout y header, Inicio, Sobre
+el Doctor, Tratamientos, Ubicación, Preguntas y Contacto).
 
-Pendiente: T-10 Contacto,
-T-11 footer/SEO/JSON-LD, T-12 QA. Los enlaces del menú a esas anclas ya existen
+Pendiente: T-11 footer/SEO/JSON-LD, T-12 QA. Los enlaces del menú a esas anclas ya existen
 y empiezan a funcionar conforme entra cada sección.

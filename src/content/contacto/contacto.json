@@ -1,0 +1,36 @@
+{
+  "antetitulo": "Contacto",
+  "titulo": "Agenda tu valoración",
+  "entrada": "Escríbenos por WhatsApp o déjanos tus datos y te contactamos para confirmar el día y la hora.",
+  "whatsapp": {
+    "etiqueta": "Escribir por WhatsApp",
+    "numero": "[NÚMERO DE WHATSAPP]",
+    "mensaje": "Hola, me gustaría agendar una valoración con el Dr. Martínez."
+  },
+  "telefono": "[TELÉFONO DE RECEPCIÓN]",
+  "correo": "[CORREO DE RECEPCIÓN]",
+  "formulario": {
+    "titulo": "O déjanos tus datos",
+    "aviso": "Por favor no escribas información clínica detallada: eso lo vemos en la consulta.",
+    "campos": {
+      "nombre": "Nombre",
+      "telefono": "Teléfono",
+      "correo": "Correo (opcional)",
+      "mensaje": "¿En qué podemos ayudarte? (opcional)"
+    },
+    "consentimiento": "Acepto que usen mis datos para contactarme, según el",
+    "avisoPrivacidad": { "etiqueta": "aviso de privacidad", "ancla": "#privacidad" },
+    "enviar": "Enviar mis datos",
+    "enviando": "Enviando…",
+    "exito": "Gracias. Recibimos tus datos y te contactaremos para confirmar tu cita.",
+    "errorGeneral": "No pudimos enviar tus datos. Inténtalo de nuevo o escríbenos por WhatsApp.",
+    "errorCampos": "Revisa los campos marcados.",
+    "errores": {
+      "nombre": "Escribe tu nombre.",
+      "telefono": "Escribe un teléfono de 10 dígitos.",
+      "correo": "Escribe un correo válido o déjalo vacío.",
+      "consentimiento": "Necesitamos tu aceptación para contactarte."
+    }
+  },
+  "notaInterna": "Pendientes del cliente: número de WhatsApp, teléfono y correo de recepción. Mientras el número lleve corchetes el botón de WhatsApp no es un enlace. El formulario envía a /api/contacto (worker/index.ts), que necesita los secretos RESEND_API_KEY, CONTACT_TO y CONTACT_FROM en Cloudflare; sin ellos responde 503 y la página sugiere WhatsApp. Aviso de privacidad (#privacidad) llega con T-11."
+}
