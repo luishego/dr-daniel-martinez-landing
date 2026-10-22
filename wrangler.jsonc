@@ -5,9 +5,9 @@
   "compatibility_date": "2026-10-22",
   // Sitio estático: Cloudflare sirve `dist/` tal cual, incluido `_headers`.
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
   },
   // Lo exige `wrangler preview`, el comando de deploy de las ramas que no son
   // producción. El bloque puede ir vacío.
-  "previews": {}
+  "previews": {},
 }
