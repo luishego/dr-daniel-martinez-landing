@@ -97,14 +97,25 @@ El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
   `wrangler preview` exige aunque vaya vacío.
 - El `name` de `wrangler.jsonc` debe coincidir con el nombre del Worker en el
   panel de Cloudflare.
-- `worker/index.ts` atiende `POST /api/contacto` (el formulario de Contacto); lo
-  demás lo sirve Cloudflare directo desde `dist/`. Valida los campos, descarta
-  los envíos con el campo trampa lleno, solo acepta el mismo origen y manda el
-  correo por la API de Resend.
-- Para que el formulario envíe hay que crear tres secretos en el panel del
-  Worker (Settings → Variables and Secrets): `RESEND_API_KEY`, `CONTACT_TO`
-  (correo de recepción) y `CONTACT_FROM` (remitente de un dominio verificado en
-  Resend). Sin ellos responde 503 y el formulario sugiere WhatsApp.
+- No hay código de servidor: Cloudflare sirve solo `dist/`.
+
+### Formulario de contacto
+
+El formulario no envía a ningún servidor. Valida nombre y consentimiento, arma un
+mensaje con el nombre y el motivo, y abre WhatsApp (`wa.me`) en el dispositivo de
+quien escribe; los datos no pasan por este sitio. Necesita el número en
+`src/content/contacto/contacto.json`; mientras lleve corchetes el formulario avisa
+que no está disponible. La CSP lleva `connect-src 'none'` porque la página no
+hace peticiones de red propias.
+
+**Envío por correo, en pausa.** Había una versión con un Worker
+(`worker/index.ts`) que mandaba el correo por Resend, a la espera de que el
+Dr. Martínez autorice el envío de correos desde su sitio y de tener dominio. El
+código quedó en el historial, en el commit `4234245`
+(`git show 4234245:worker/index.ts`). Para reactivarlo hay que devolver `main` y
+`run_worker_first: ["/api/*"]` a `wrangler.jsonc`, volver a poner `connect-src
+'self'` en la CSP, actualizar el aviso de privacidad (el correo pasaría por
+Resend) y crear los secretos `RESEND_API_KEY`, `CONTACT_TO` y `CONTACT_FROM`.
 
 ### QA
 

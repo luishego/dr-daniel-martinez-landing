@@ -9,11 +9,11 @@
     },
     {
       "titulo": "Qué datos recabamos",
-      "texto": "Los que escribes en el formulario de contacto: nombre, teléfono, correo electrónico (opcional) y el mensaje que decidas enviar. Te pedimos no incluir información clínica detallada; esa se trata en consulta."
+      "texto": "Los que escribes en el formulario de contacto: tu nombre y el mensaje que decidas enviar. Te pedimos no incluir información clínica detallada; esa se trata en consulta. Este sitio no guarda esos datos: el formulario solo arma un mensaje que se abre en WhatsApp en tu dispositivo."
     },
     {
       "titulo": "Para qué los usamos",
-      "texto": "Únicamente para contactarte y confirmar el día y la hora de tu cita. No los usamos para publicidad ni los compartimos con terceros ajenos a ese fin, salvo el proveedor que entrega el correo de la solicitud."
+      "texto": "Únicamente para responderte y confirmar el día y la hora de tu cita. No los usamos para publicidad. Al enviar el mensaje por WhatsApp, esa plataforma lo trata conforme a sus propios términos y aviso de privacidad. [VALIDAR REDACCIÓN CON ASESORÍA LEGAL]"
     },
     {
       "titulo": "Tus derechos",
@@ -24,5 +24,5 @@
       "texto": "Si cambia este aviso, publicaremos la versión actualizada en esta página. [FECHA DE ÚLTIMA ACTUALIZACIÓN]"
     }
   ],
-  "notaInterna": "Borrador de estructura, no un aviso legal vigente. Falta el nombre y domicilio del responsable, el procedimiento ARCO y la fecha; debe revisarlo asesoría legal. El texto describe solo lo que hace hoy el formulario (nombre, teléfono, correo opcional y mensaje, enviados por correo mediante Resend). Si se añaden analíticas o cookies, hay que actualizarlo."
+  "notaInterna": "Borrador de estructura, no un aviso legal vigente. Falta el nombre y domicilio del responsable, el procedimiento ARCO y la fecha; debe revisarlo asesoría legal. El texto describe lo que hace hoy el formulario: arma un mensaje con nombre y motivo y abre WhatsApp en el dispositivo de quien escribe; el sitio no recibe ni guarda nada. Si se reactiva el envío por correo (Resend) o se añaden analíticas o cookies, hay que actualizarlo."
 }
