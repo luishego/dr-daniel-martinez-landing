@@ -2,9 +2,6 @@
 import { Font } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import Header from '../components/Header.astro';
-import PaletteSwitch from '../components/PaletteSwitch.astro';
-import PaletteSwitchHead from '../components/PaletteSwitchHead.astro';
-import { mostrarSwitchPaletas, paletaPorDefecto } from '../config/palettes';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
@@ -22,7 +19,7 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
 ---
 
 <!doctype html>
-<html lang="es-MX" data-palette={paletaPorDefecto}>
+<html lang="es-MX">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -42,8 +39,6 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
          `latin-ext` se queda sin precargar porque el hero no lo necesita. -->
     <Font cssVariable="--fuente-base" preload={[{ subset: 'latin' }]} />
 
-    {mostrarSwitchPaletas && <PaletteSwitchHead />}
-
     <!--
       Pendiente (T-11): canonical, sitemap, Open Graph con imagen y URL
       absoluta, y JSON-LD Physician / MedicalClinic. Todo depende del dominio,
@@ -59,7 +54,6 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
     <main id="contenido" tabindex="-1">
       <slot />
     </main>
-    {mostrarSwitchPaletas && <PaletteSwitch />}
   </body>
 </html>
 

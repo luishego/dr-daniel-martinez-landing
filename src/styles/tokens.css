@@ -2,90 +2,36 @@
    Tokens de diseño · Landing Dr. Daniel Martínez
    --------------------------------------------------------------------------
    Toda la UI consume SOLO tokens semánticos (--color-primary, --color-ink…).
-   Cada paleta se limita a redefinir esos tokens bajo html[data-palette="…"],
-   así que cambiar de paleta nunca obliga a tocar un componente.
+   La paleta es «Clínica cálida» (opción B de la propuesta de identidad), la
+   elegida por el Dr. Martínez.
 
    Reglas de contraste que esta hoja da por sentadas (verificadas en el
    lienzo de diseño, WCAG 2.1 AA):
 
-   1. El acento (ocre #EE9B00 / naranja #FB8500) SIEMPRE lleva texto tinta o
+   1. El acento (ocre #EE9B00) SIEMPRE lleva texto tinta o
       azul profundo —nunca blanco—. Para eso existe --color-accent-ink; usar
       --color-on-dark sobre el acento baja a 2.5:1 y reprueba AA.
-   2. El secundario (turquesa #0A9396 / azul cielo #219EBC) solo se usa en
-      íconos, viñetas, filetes y texto de 24px o más (3.7:1 y 3.1:1 sobre
-      blanco). Para texto de lectura va --color-ink o --color-primary.
+   2. El secundario (turquesa #0A9396) solo se usa en íconos, viñetas,
+      filetes y texto de 24px o más (3.7:1 sobre blanco). Para texto de lectura va --color-ink o --color-primary.
    3. El granate (--color-alert) queda reservado a errores del formulario y
       al aviso de urgencias. No es un color de marca.
    ========================================================================== */
 
 :root {
-  /* ── Paleta B · «Clínica cálida» (recomendada al cliente) ───────────── */
-  --b-bg: #f6f1e4; /* arena claro · fondo general (derivado) */
-  --b-surface: #ffffff; /* tarjetas, header */
-  --b-tint: #94d2bd; /* menta · etiquetas y marcos de imagen */
-  --b-band: #e9d8a6; /* arena · secciones destacadas */
-  --b-primary: #005f73; /* petróleo · títulos, menú, footer, enlaces */
-  --b-secondary: #0a9396; /* turquesa · íconos y títulos grandes */
-  --b-accent: #ee9b00; /* ocre · botones de agenda */
-  --b-accent-ink: #001219; /* texto obligatorio sobre el acento */
-  --b-ink: #001219; /* tinta · texto de lectura */
-  --b-on-dark: #ffffff;
-  --b-alert: #9b2226; /* granate · solo errores y urgencias */
-  --b-line: rgba(0, 18, 25, 0.16);
-  --b-line-fuerte: rgba(0, 18, 25, 0.32);
-
-  /* ── Paleta A · «Confianza serena» ──────────────────────────────────── */
-  --a-bg: #f4f8fa; /* fondo claro (derivado) */
-  --a-surface: #ffffff;
-  --a-tint: #8ecae6; /* azul claro */
-  --a-band: #8ecae6; /* la paleta A no trae un segundo auxiliar */
-  --a-primary: #023047; /* azul profundo */
-  --a-secondary: #219ebc; /* azul cielo */
-  --a-accent: #fb8500; /* naranja */
-  --a-accent-ink: #023047; /* texto obligatorio sobre el acento */
-  --a-ink: #023047;
-  --a-on-dark: #ffffff;
-  --a-alert: #9b2226;
-  --a-line: rgba(2, 48, 71, 0.16);
-  --a-line-fuerte: rgba(2, 48, 71, 0.32);
-}
-
-/* ── Tokens semánticos ─────────────────────────────────────────────────
-   La paleta B es la de arranque: si el script de <head> no corre o el valor
-   de data-palette no se reconoce, la página se ve completa en paleta B. */
-:root,
-html[data-palette='b'] {
-  --color-bg: var(--b-bg);
-  --color-surface: var(--b-surface);
-  --color-tint: var(--b-tint);
-  --color-band: var(--b-band);
-  --color-primary: var(--b-primary);
-  --color-secondary: var(--b-secondary);
-  --color-accent: var(--b-accent);
-  --color-accent-ink: var(--b-accent-ink);
-  --color-ink: var(--b-ink);
-  --color-on-dark: var(--b-on-dark);
-  --color-alert: var(--b-alert);
-  --color-line: var(--b-line);
-  --color-line-fuerte: var(--b-line-fuerte);
-  --color-focus: var(--b-ink);
-}
-
-html[data-palette='a'] {
-  --color-bg: var(--a-bg);
-  --color-surface: var(--a-surface);
-  --color-tint: var(--a-tint);
-  --color-band: var(--a-band);
-  --color-primary: var(--a-primary);
-  --color-secondary: var(--a-secondary);
-  --color-accent: var(--a-accent);
-  --color-accent-ink: var(--a-accent-ink);
-  --color-ink: var(--a-ink);
-  --color-on-dark: var(--a-on-dark);
-  --color-alert: var(--a-alert);
-  --color-line: var(--a-line);
-  --color-line-fuerte: var(--a-line-fuerte);
-  --color-focus: var(--a-ink);
+  --color-bg: #f6f1e4; /* arena claro · fondo general (derivado de la arena) */
+  --color-surface: #ffffff; /* tarjetas, header */
+  --color-tint: #94d2bd; /* menta · etiquetas y marcos de imagen */
+  --color-band: #e9d8a6; /* arena · secciones destacadas */
+  --color-primary: #005f73; /* petróleo · títulos, menú, footer, enlaces */
+  --color-secondary: #0a9396; /* turquesa · íconos y títulos grandes */
+  --color-accent: #ee9b00; /* ocre · botones de agenda */
+  --color-accent-ink: #001219; /* texto obligatorio sobre el acento */
+  --color-ink: #001219; /* tinta · texto de lectura */
+  --color-on-dark: #ffffff;
+  --color-alert: #9b2226; /* granate · solo errores y urgencias */
+  --color-line: rgba(0, 18, 25, 0.16);
+  --color-line-fuerte: rgba(0, 18, 25, 0.32);
+  --color-focus: #001219;
 }
 
 /* ── Tipografía ────────────────────────────────────────────────────────
@@ -145,6 +91,5 @@ html[data-palette='a'] {
 
   --borde-foco: 3px;
   --transicion: 160ms ease;
-  --z-switch: 60;
   --z-header: 50;
 }

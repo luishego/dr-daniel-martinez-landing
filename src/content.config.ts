@@ -90,4 +90,30 @@ const sobre = defineCollection({
   }),
 });
 
-export const collections = { sitio, inicio, sobre };
+const servicios = defineCollection({
+  loader: glob({ pattern: 'servicios.json', base: './src/content/servicios' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    tratamientos: z.array(
+      z.object({
+        /** Nombre del ícono de línea que dibuja `Servicios.astro`. */
+        icono: z.enum(['foco', 'calendario', 'pastilla', 'dialogo']),
+        titulo: z.string(),
+        descripcion: z.string(),
+      }),
+    ),
+    /** Bloque de Estimulación Magnética Transcraneal, el diferenciador. */
+    destacado: z.object({
+      etiqueta: z.string(),
+      titulo: z.string(),
+      parrafos: z.array(z.string()),
+      puntos: z.array(z.string()),
+      cta: enlace,
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+export const collections = { sitio, inicio, sobre, servicios };

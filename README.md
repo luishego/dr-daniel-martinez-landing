@@ -26,35 +26,20 @@ npm run dev
 
 Node fijado en `.nvmrc` (22). Astro 7 exige 22.12 o superior.
 
-## El sistema de paletas
+## Paleta
 
-El cliente todavía no elige entre las dos paletas propuestas, así que la página
-las trae las dos y se pueden alternar en vivo:
-
-- `src/styles/tokens.css` es la única fuente de los colores. Define las escalas
-  crudas de cada paleta (`--b-*`, `--a-*`) y mapea los tokens semánticos
-  (`--color-primary`, `--color-ink`…) bajo `html[data-palette="…"]`.
-- `src/config/palettes.ts` describe las paletas (id, nombre, orden, cuáles están
-  habilitadas) y apunta a sus variables CSS. No repite hexadecimales.
-- `PaletteSwitchHead.astro` aplica la paleta dentro de `<head>`, antes del primer
-  render, en este orden: `?palette=` → `localStorage` → paleta por defecto.
-- `PaletteSwitch.astro` es el control fijo en la esquina inferior derecha.
-
-Cosas que se pueden hacer sin tocar un componente:
-
-- **Compartir una paleta concreta:** `…/?palette=a` o `…/?palette=b`.
-- **Dejar una sola opción:** recortar `idsHabilitados` en `palettes.ts`.
-- **Quitar el switch del build final:** `PUBLIC_SHOW_PALETTE_SWITCH=false`.
-  Con eso tampoco se renderiza el script de `<head>`, así que la paleta la fija
-  el servidor y un valor viejo en `localStorage` no puede alterar la página.
+El Dr. Martínez eligió la opción B, «Clínica cálida». `src/styles/tokens.css` es
+la única fuente de los colores: define los tokens semánticos (`--color-primary`,
+`--color-ink`…) que consume toda la UI. La paleta A y el switch para alternarla
+se retiraron.
 
 ### Reglas de contraste que no se deben romper
 
 Están comentadas en `tokens.css` y verificadas en el lienzo:
 
-1. El acento (ocre `#EE9B00` / naranja `#FB8500`) siempre lleva texto tinta o
+1. El acento (ocre `#EE9B00`) siempre lleva texto tinta o
    azul profundo: `--color-accent-ink`. Con blanco baja a 2.5:1 y reprueba AA.
-2. El secundario (turquesa `#0A9396` / azul cielo `#219EBC`) solo para íconos,
+2. El secundario (turquesa `#0A9396`) solo para íconos,
    viñetas y texto de 24px o más.
 3. El granate `--color-alert` solo para errores del formulario y el aviso de
    urgencias. No es un color de marca.
@@ -68,11 +53,12 @@ por escrito. Los datos que faltan están marcados entre corchetes —
 publiquen por descuido. El campo `notaInterna` de cada archivo no se renderiza:
 documenta el estado de ese texto.
 
-| Colección | Archivo                        | Qué alimenta                    |
-| --------- | ------------------------------ | ------------------------------- |
-| `sitio`   | `src/content/sitio/sitio.json` | Marca, SEO, navegación, clínica |
-| `inicio`  | `src/content/inicio/hero.json` | Hero y franja de credenciales   |
-| `sobre`   | `src/content/sobre/sobre.json` | Sección Sobre el Doctor         |
+| Colección   | Archivo                                | Qué alimenta                    |
+| ----------- | -------------------------------------- | ------------------------------- |
+| `sitio`     | `src/content/sitio/sitio.json`         | Marca, SEO, navegación, clínica |
+| `inicio`    | `src/content/inicio/hero.json`         | Hero y franja de credenciales   |
+| `sobre`     | `src/content/sobre/sobre.json`         | Sección Sobre el Doctor         |
+| `servicios` | `src/content/servicios/servicios.json` | Tratamientos y bloque de EMT    |
 
 ## Tipografía
 
@@ -86,15 +72,14 @@ pesos.
 
 Salida estática, sin adapter mientras no haya SSR.
 
-| Ajuste                 | Valor                                                                                       |
-| ---------------------- | ------------------------------------------------------------------------------------------- |
-| Build command          | `npm run build`                                                                             |
-| Build output directory | `dist`                                                                                      |
-| Root directory         | vacío: este directorio **es** la raíz del repositorio                                       |
-| Framework preset       | Astro                                                                                       |
-| Production branch      | `main`                                                                                      |
-| Node                   | `22` (lo toma de `.nvmrc`)                                                                  |
-| Variable de entorno    | `PUBLIC_SHOW_PALETTE_SWITCH=true` en previews, `false` en producción cuando el doctor elija |
+| Ajuste                 | Valor                                                 |
+| ---------------------- | ----------------------------------------------------- |
+| Build command          | `npm run build`                                       |
+| Build output directory | `dist`                                                |
+| Root directory         | vacío: este directorio **es** la raíz del repositorio |
+| Framework preset       | Astro                                                 |
+| Production branch      | `main`                                                |
+| Node                   | `22` (lo toma de `.nvmrc`)                            |
 
 Las previews por rama vienen activadas por defecto en Cloudflare Pages: cada
 rama genera su propia URL para enseñársela al doctor, y producción sale de
@@ -118,9 +103,9 @@ propia URL de preview.
 
 ## Estado
 
-Hecho: T-01 a T-06 (setup, tokens y paletas, tipografía, switch, layout y
-header, Inicio y Sobre el Doctor).
+Hecho: T-01 a T-07 (setup, tokens, tipografía, layout y header, Inicio, Sobre
+el Doctor y Tratamientos).
 
-Pendiente: T-07 Servicios, T-08 Ubicación, T-09 FAQ, T-10 Contacto,
+Pendiente: T-08 Ubicación, T-09 FAQ, T-10 Contacto,
 T-11 footer/SEO/JSON-LD, T-12 QA. Los enlaces del menú a esas anclas ya existen
 y empiezan a funcionar conforme entra cada sección.
