@@ -49,7 +49,7 @@ Todo el texto vive en `src/content` (content collections con esquema zod), el ca
 | `servicios`  | `src/content/servicios/servicios.json`   | Tratamientos y bloque de EMT              |
 | `ubicacion`  | `src/content/ubicacion/ubicacion.json`   | Sedes, horarios y mapa                    |
 | `contacto`   | `src/content/contacto/contacto.json`     | WhatsApp, datos de recepción y formulario |
-| `privacidad` | `src/content/privacidad/privacidad.json` | Aviso de privacidad (borrador)            |
+| `privacidad` | `src/content/privacidad/privacidad.json` | Aviso de privacidad (modal, borrador)     |
 | `preguntas`  | `src/content/preguntas/preguntas.json`   | FAQ, aviso de urgencias, JSON-LD          |
 
 ## SEO y seguridad

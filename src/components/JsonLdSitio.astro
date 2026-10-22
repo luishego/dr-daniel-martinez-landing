@@ -35,7 +35,7 @@ const grafo = {
     {
       '@type': 'MedicalClinic',
       '@id': `${url ?? ''}#clinica`,
-      name: clinica.nombre,
+      name: pendiente(clinica.nombre) ? nombre : clinica.nombre,
       medicalSpecialty: 'Psychiatric',
       address: direccion,
       ...(url && { url }),

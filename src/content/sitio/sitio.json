@@ -3,7 +3,7 @@
   "especialidad": "Psiquiatría",
   "seo": {
     "titulo": "Dr. Daniel Martínez · Psiquiatra en Ciudad de México",
-    "descripcion": "Valoración, diagnóstico y tratamiento psiquiátrico con un enfoque humano y basado en evidencia. Consulta en Neurosleep Center, Álvaro Obregón, Ciudad de México."
+    "descripcion": "Valoración, diagnóstico y tratamiento psiquiátrico con un enfoque humano y basado en evidencia. Consulta en la colonia Del Valle, Benito Juárez, y en Neurosleep Center, Álvaro Obregón, Ciudad de México."
   },
   "navegacion": [
     {
@@ -37,14 +37,14 @@
     "ancla": "#contacto"
   },
   "clinica": {
-    "nombre": "Neurosleep Center",
-    "calle": "Iztaccíhuatl 10",
-    "colonia": "Col. Florida",
-    "alcaldia": "Álvaro Obregón",
-    "codigoPostal": "01030",
+    "nombre": "[NOMBRE DE LA CLÍNICA]",
+    "calle": "Gabriel Mancera 1433",
+    "colonia": "Col. Del Valle Centro",
+    "alcaldia": "Benito Juárez",
+    "codigoPostal": "03100",
     "ciudad": "Ciudad de México"
   },
-  "notaInterna": "Título y descripción SEO redactados a partir del copy del lienzo de diseño; pendientes de aprobación del doctor. Pendientes del cliente: teléfono, número de WhatsApp, correo de recepción, dominio, cédulas y datos de la segunda clínica.",
+  "notaInterna": "Título y descripción SEO redactados a partir del copy del lienzo de diseño; pendientes de aprobación del doctor. La sede principal es Gabriel Mancera 1433 (Del Valle) y Neurosleep Center es la secundaria, que vive en ubicacion.json. Pendientes del cliente: nombre de la clínica principal, teléfono, número de WhatsApp, correo de recepción, dominio y cédulas.",
   "footer": {
     "lema": "Salud mental con ciencia y cercanía.",
     "aviso": "La información de este sitio es solo orientativa y no sustituye una consulta médica. En una emergencia, acude a urgencias.",

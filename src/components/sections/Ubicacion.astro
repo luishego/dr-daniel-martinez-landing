@@ -1,9 +1,9 @@
 ---
 /**
- * Sección Ubicación (T-08): una tarjeta por sede con dirección, horario y un
- * mapa diferido. El mapa no se pide hasta que la persona lo solicita, para no
- * cargar el iframe de terceros en el primer render. Sin JavaScript queda el
- * enlace «Cómo llegar».
+ * Sección Ubicación (T-08): una tarjeta por sede con dirección, horario y mapa.
+ * En pantallas anchas los mapas se muestran siempre; en móvil se piden con un
+ * botón, para no cargar iframes de terceros que nadie pidió. Ninguno se crea en
+ * el primer render. Sin JavaScript queda el enlace «Cómo llegar».
  *
  * La sede principal toma su dirección de `sitio.json`; el resto del texto
  * viene de `src/content/ubicacion/ubicacion.json`.
@@ -44,7 +44,9 @@ const sedes: Sede[] = [
 // Un dato pendiente va entre corchetes: sin dirección real no hay mapa.
 const pendiente = (texto: string) => texto.includes('[');
 
-const consulta = (sede: Sede) => encodeURIComponent(`${sede.nombre}, ${sede.direccion}`);
+// Un nombre pendiente (entre corchetes) no se manda al buscador de mapas.
+const consulta = (sede: Sede) =>
+  encodeURIComponent(pendiente(sede.nombre) ? sede.direccion : `${sede.nombre}, ${sede.direccion}`);
 const enlaceMapa = (sede: Sede) =>
   `https://www.google.com/maps/search/?api=1&query=${consulta(sede)}`;
 const incrustado = (sede: Sede) => `https://www.google.com/maps?q=${consulta(sede)}&output=embed`;
@@ -104,16 +106,16 @@ const incrustado = (sede: Sede) => `https://www.google.com/maps?q=${consulta(sed
 
 <script>
   // El botón nace oculto: sin JavaScript solo existe el enlace «Cómo llegar».
-  // El iframe se crea al primer clic y después solo se muestra u oculta.
+  // El iframe se crea al mostrarse por primera vez y después solo se oculta o
+  // se muestra. Desde 48rem (dos columnas) los mapas van siempre a la vista.
+  const ancho = window.matchMedia('(min-width: 48rem)');
+
   document.querySelectorAll<HTMLButtonElement>('[data-mapa]').forEach((boton) => {
     const contenedor = document.getElementById(boton.getAttribute('aria-controls') ?? '');
     if (!contenedor) return;
-    boton.hidden = false;
 
-    boton.addEventListener('click', () => {
-      const abrir = boton.getAttribute('aria-expanded') !== 'true';
-
-      if (abrir && !contenedor.firstElementChild) {
+    const mostrar = (visible: boolean) => {
+      if (visible && !contenedor.firstElementChild) {
         const marco = document.createElement('iframe');
         marco.src = boton.dataset.mapa ?? '';
         marco.title = boton.dataset.titulo ?? 'Mapa';
@@ -122,11 +124,23 @@ const incrustado = (sede: Sede) => `https://www.google.com/maps?q=${consulta(sed
         marco.setAttribute('allowfullscreen', '');
         contenedor.append(marco);
       }
+      contenedor.hidden = !visible;
+      boton.setAttribute('aria-expanded', String(visible));
+      boton.textContent = (visible ? boton.dataset.cerrar : boton.dataset.ver) ?? '';
+    };
 
-      contenedor.hidden = !abrir;
-      boton.setAttribute('aria-expanded', String(abrir));
-      boton.textContent = (abrir ? boton.dataset.cerrar : boton.dataset.ver) ?? '';
+    const ajustar = () => {
+      // En web el botón sobra: el mapa ya está a la vista.
+      boton.hidden = ancho.matches;
+      mostrar(ancho.matches);
+    };
+
+    boton.addEventListener('click', () => {
+      mostrar(boton.getAttribute('aria-expanded') !== 'true');
     });
+
+    ancho.addEventListener('change', ajustar);
+    ajustar();
   });
 </script>
 
