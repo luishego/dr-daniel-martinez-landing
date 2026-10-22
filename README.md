@@ -120,7 +120,20 @@ de Pages. El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
 
 ## Estado
 
-Hecho: T-01 a T-11 (setup, tokens, tipografía, layout y header, Inicio, Sobre
-el Doctor, Tratamientos, Ubicación, Preguntas, Contacto, footer, aviso de privacidad, SEO y CSP).
+Hecho: T-01 a T-12 (setup, tokens, tipografía, layout y header, Inicio, Sobre
+el Doctor, Tratamientos, Ubicación, Preguntas, Contacto, footer, aviso de privacidad, SEO, CSP y QA).
 
-Pendiente: T-12 QA.
+Pendiente del cliente antes de publicar: fotografías, números de cédula, teléfono,
+WhatsApp y correo de recepción, datos de la segunda clínica, horarios, dominio
+(`SITE_URL`), validación del copy clínico y del aviso de privacidad, y los
+secretos del formulario (`RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM`).
+Todo lo que falta está entre corchetes en `src/content`.
+
+### QA (T-12)
+
+Revisado sobre el build a 390, 768 y 1440px: sin desbordamiento horizontal,
+axe-core (WCAG 2.1 A/AA) sin violaciones, orden de tabulación lógico con foco
+visible en todos los controles, enlace «Saltar al contenido», acordeón de
+preguntas con teclado, menú móvil que abre y cierra, anclas que no quedan bajo el
+header y sin violaciones de CSP. No se midió Lighthouse ni se probó el envío real
+del formulario (necesita los secretos de Resend), ni el render con Nunito.
