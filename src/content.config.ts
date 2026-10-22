@@ -145,4 +145,25 @@ const ubicacion = defineCollection({
   }),
 });
 
-export const collections = { sitio, inicio, sobre, servicios, ubicacion };
+const preguntas = defineCollection({
+  loader: glob({ pattern: 'preguntas.json', base: './src/content/preguntas' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    /** Una respuesta con corchetes está pendiente y no entra al JSON-LD. */
+    preguntas: z.array(
+      z.object({
+        pregunta: z.string(),
+        respuesta: z.string(),
+      }),
+    ),
+    avisoUrgencias: z.object({
+      titulo: z.string(),
+      texto: z.string(),
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+export const collections = { sitio, inicio, sobre, servicios, ubicacion, preguntas };

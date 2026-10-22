@@ -1,0 +1,44 @@
+{
+  "antetitulo": "Preguntas frecuentes",
+  "titulo": "Lo que suelen preguntar antes de la primera consulta",
+  "entrada": "Si tu duda no está aquí, escríbenos y te respondemos.",
+  "preguntas": [
+    {
+      "pregunta": "¿Cómo es la primera consulta?",
+      "respuesta": "Dedicamos la primera consulta a escuchar tu historia completa. Al final te explico, en palabras claras, qué estamos viendo y cuáles son las opciones de tratamiento, para decidir juntos el camino."
+    },
+    {
+      "pregunta": "¿Ir al psiquiatra significa que estoy loco?",
+      "respuesta": "No. El psiquiatra es un médico especialista que valora y trata condiciones como la depresión, la ansiedad, el TDAH o los problemas de sueño. Buscar ayuda profesional es una decisión de cuidado, no una señal de debilidad."
+    },
+    {
+      "pregunta": "¿Cuándo conviene buscar ayuda profesional?",
+      "respuesta": "Cuando el malestar dura semanas, afecta tu sueño, tu trabajo, tus relaciones o tu día a día, o cuando sientes que ya no puedes manejarlo solo. No hace falta esperar a que sea grave."
+    },
+    {
+      "pregunta": "¿Qué tratamientos ofrece?",
+      "respuesta": "Trabajo con tratamiento farmacológico, psicoterapia cognitivo conductual y procedimientos de neuromodulación, según lo que cada persona necesita. El plan se define después de la valoración."
+    },
+    {
+      "pregunta": "¿Qué es la Estimulación Magnética Transcraneal?",
+      "respuesta": "[TEXTO POR VALIDAR] Es un procedimiento no invasivo que usa pulsos magnéticos para modular la actividad de regiones cerebrales. Se indica después de una valoración psiquiátrica, como parte de un plan de tratamiento."
+    },
+    {
+      "pregunta": "¿Cuánto cuesta la consulta y qué formas de pago aceptan?",
+      "respuesta": "[COSTO Y FORMAS DE PAGO POR CONFIRMAR]"
+    },
+    {
+      "pregunta": "¿Ofrecen consulta en línea?",
+      "respuesta": "[POR CONFIRMAR CON EL DR. MARTÍNEZ]"
+    },
+    {
+      "pregunta": "¿Mi información es confidencial?",
+      "respuesta": "[TEXTO POR VALIDAR: confidencialidad y aviso de privacidad]"
+    }
+  ],
+  "avisoUrgencias": {
+    "titulo": "Si estás en una emergencia",
+    "texto": "[TEXTO Y TELÉFONOS DE URGENCIA POR VALIDAR] Si tú o alguien más está en peligro inmediato, llama al número de emergencias de tu localidad o acude a urgencias."
+  },
+  "notaInterna": "Copy provisional. Las respuestas con corchetes están por validar con el Dr. Martínez y NO se publican en el JSON-LD FAQPage (solo se marcan las respuestas sin corchetes, para que el marcado coincida con lo visible y no salga un marcador a Google). Cuando se aprueben, quitar los corchetes basta para que entren al JSON-LD. El aviso de urgencias usa el granate de alertas."
+}
