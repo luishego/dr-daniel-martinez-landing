@@ -1,0 +1,219 @@
+---
+/**
+ * Sección Tratamientos (T-07): tarjetas de tratamientos y el bloque destacado
+ * de Estimulación Magnética Transcraneal. Todo el texto viene de
+ * `src/content/servicios/servicios.json`.
+ */
+import { getEntry } from 'astro:content';
+
+const servicios = await getEntry('servicios', 'servicios');
+if (!servicios) {
+  throw new Error('Falta src/content/servicios/servicios.json');
+}
+
+const { antetitulo, titulo, entrada, tratamientos, destacado } = servicios.data;
+
+// Íconos de línea (viewBox 24, trazo currentColor) en el estilo del lienzo.
+const iconos = {
+  foco: [
+    'M9 18h6',
+    'M10 21h4',
+    'M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z',
+  ],
+  calendario: ['M4 6h16v14H4z', 'M4 10h16', 'M8 3v4', 'M16 3v4', 'M8 16l2.5-2.5 2 2L16 12'],
+  pastilla: ['M10.5 20.5a4.95 4.95 0 0 1-7-7l10-10a4.95 4.95 0 0 1 7 7z', 'M8.5 8.5l7 7'],
+  dialogo: ['M4 5h16v11H9l-5 4z', 'M8 9.5h8', 'M8 12.5h5'],
+} as const;
+---
+
+<section class="seccion servicios" id="tratamientos">
+  <div class="contenedor">
+    <div class="servicios__cabecera">
+      <p class="antetitulo antetitulo--primario servicios__antetitulo">{antetitulo}</p>
+      <h2 class="servicios__titulo">{titulo}</h2>
+      <p class="servicios__entrada">{entrada}</p>
+    </div>
+
+    <ul class="servicios__rejilla">
+      {tratamientos.map((tratamiento) => (
+        <li class="tarjeta">
+          <svg
+            class="tarjeta__icono"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            {iconos[tratamiento.icono].map((d) => (
+              <path d={d} />
+            ))}
+          </svg>
+          <h3 class="tarjeta__titulo">{tratamiento.titulo}</h3>
+          <p class="tarjeta__texto">{tratamiento.descripcion}</p>
+        </li>
+      ))}
+    </ul>
+
+    <article class="destacado sobre-oscuro" aria-labelledby="titulo-destacado">
+      <div class="destacado__texto">
+        <p class="destacado__etiqueta">{destacado.etiqueta}</p>
+        <h3 class="destacado__titulo" id="titulo-destacado">
+          {destacado.titulo}
+        </h3>
+        {destacado.parrafos.map((parrafo) => (
+          <p class="destacado__parrafo">{parrafo}</p>
+        ))}
+        <a class="boton boton--principal destacado__cta" href={destacado.cta.ancla}>
+          {destacado.cta.etiqueta}
+        </a>
+      </div>
+      <ul class="destacado__puntos">
+        {destacado.puntos.map((punto) => (
+          <li class="destacado__punto">
+            <span class="destacado__vineta" aria-hidden="true"></span>
+            {punto}
+          </li>
+        ))}
+      </ul>
+    </article>
+  </div>
+</section>
+
+<style>
+  .servicios__cabecera {
+    max-width: 44rem;
+    margin-bottom: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  }
+
+  .servicios__antetitulo {
+    margin-bottom: 0.875rem;
+  }
+
+  .servicios__titulo {
+    margin-bottom: 1.125rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+    color: var(--color-primary);
+  }
+
+  .servicios__entrada {
+    font-size: var(--texto-entrada);
+    line-height: var(--alto-entrada);
+  }
+
+  .servicios__rejilla {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .tarjeta {
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radio-tarjeta);
+    background-color: var(--color-surface);
+  }
+
+  /* Ícono decorativo: el secundario no transporta texto, así que sus 3.7:1
+     bastan para un elemento no textual. */
+  .tarjeta__icono {
+    margin-bottom: 1rem;
+    color: var(--color-secondary);
+  }
+
+  .tarjeta__titulo {
+    margin-bottom: 0.5rem;
+    font-size: var(--texto-h3);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-primary);
+  }
+
+  .tarjeta__texto {
+    font-size: var(--texto-lista);
+    line-height: var(--alto-compacto);
+  }
+
+  .destacado {
+    display: grid;
+    gap: 1.75rem;
+    margin-top: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    padding: clamp(1.5rem, 0.9rem + 2.6vw, 3rem);
+    border-radius: var(--radio-imagen-grande);
+    background-color: var(--color-primary);
+    color: var(--color-on-dark);
+  }
+
+  .destacado__etiqueta {
+    margin-bottom: 0.75rem;
+    font-size: var(--texto-antetitulo);
+    font-weight: var(--peso-titulo);
+    letter-spacing: var(--espaciado-antetitulo);
+    text-transform: uppercase;
+    /* El ocre sobre petróleo da ~3.4:1: no alcanza AA a 12px. La arena sí. */
+    color: var(--color-band);
+  }
+
+  .destacado__titulo {
+    margin-bottom: 1rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+  }
+
+  .destacado__parrafo {
+    margin-bottom: 0.875rem;
+    max-width: 38rem;
+  }
+
+  .destacado__cta {
+    margin-top: 1rem;
+  }
+
+  .destacado__puntos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    align-self: center;
+  }
+
+  .destacado__punto {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radio-campo);
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: var(--texto-lista);
+    line-height: var(--alto-compacto);
+  }
+
+  .destacado__vineta {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.4375rem;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+  }
+
+  @media (min-width: 40rem) {
+    .servicios__rejilla {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .servicios__rejilla {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .destacado {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 3rem;
+    }
+  }
+</style>

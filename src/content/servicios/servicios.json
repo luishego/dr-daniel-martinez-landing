@@ -1,0 +1,42 @@
+{
+  "antetitulo": "Tratamientos",
+  "titulo": "Un plan pensado para ti, no un tratamiento genérico",
+  "entrada": "Cada valoración termina con un diagnóstico explicado en palabras claras y con las opciones que tienes, para decidir juntos el camino.",
+  "tratamientos": [
+    {
+      "icono": "foco",
+      "titulo": "Depresión y ansiedad",
+      "descripcion": "Valoración y tratamiento de los trastornos del estado de ánimo y de la ansiedad, con seguimiento cercano en cada etapa."
+    },
+    {
+      "icono": "calendario",
+      "titulo": "TDAH y sueño",
+      "descripcion": "Evaluación de la atención y de los trastornos del sueño, con un plan que toma en cuenta tu rutina."
+    },
+    {
+      "icono": "pastilla",
+      "titulo": "Tratamiento farmacológico",
+      "descripcion": "Medicación indicada con criterio clínico, explicada con claridad y ajustada a cómo respondes."
+    },
+    {
+      "icono": "dialogo",
+      "titulo": "Psicoterapia cognitivo conductual",
+      "descripcion": "Herramientas prácticas para cambiar patrones de pensamiento y conducta que sostienen el malestar."
+    }
+  ],
+  "destacado": {
+    "etiqueta": "Neuromodulación",
+    "titulo": "Estimulación Magnética Transcraneal",
+    "parrafos": [
+      "[TEXTO POR VALIDAR] Procedimiento no invasivo que emplea pulsos magnéticos para modular la actividad de regiones cerebrales relacionadas con el estado de ánimo.",
+      "[TEXTO POR VALIDAR] Se indica tras una valoración psiquiátrica, como parte de un plan de tratamiento y no como sustituto de la consulta."
+    ],
+    "puntos": [
+      "[Indicaciones aprobadas por el Dr. Martínez]",
+      "[Duración y número de sesiones]",
+      "[Quiénes no son candidatos]"
+    ],
+    "cta": { "etiqueta": "Pregunta si eres candidato", "ancla": "#contacto" }
+  },
+  "notaInterna": "Copy provisional. Los dos primeros tratamientos salen del lienzo de diseño; farmacológico, psicoterapia cognitivo conductual y neuromodulación salen de la sección Sobre el doctor. Todo el texto clínico, y sobre todo el bloque de Estimulación Magnética Transcraneal, debe aprobarlo por escrito el Dr. Martínez antes de publicarse. No se afirma eficacia ni cifras hasta que él las valide."
+}
