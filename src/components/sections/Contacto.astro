@@ -1,8 +1,9 @@
 ---
 /**
- * Sección Contacto (T-10): WhatsApp, teléfono, correo y formulario. El
- * formulario envía a `/api/contacto` (worker/index.ts). Todo el texto viene de
- * `src/content/contacto/contacto.json`.
+ * Sección Contacto (T-10): WhatsApp, teléfono, correo y un formulario que
+ * arma el mensaje y abre WhatsApp. No hay servidor de por medio: los datos van
+ * del dispositivo de quien escribe a WhatsApp, y nada pasa por este sitio. Todo
+ * el texto viene de `src/content/contacto/contacto.json`.
  *
  * Mientras un dato lleve corchetes se muestra tal cual y no se vuelve enlace,
  * para que no se publique un número falso. El formulario nace oculto y solo
@@ -21,18 +22,21 @@ const { campos, errores } = formulario;
 const pendiente = (valor: string) => valor.includes('[');
 const digitos = (valor: string) => valor.replace(/\D/g, '');
 
-const enlaceWhatsapp = pendiente(whatsapp.numero)
-  ? null
-  : `https://wa.me/${digitos(whatsapp.numero)}?text=${encodeURIComponent(whatsapp.mensaje)}`;
+const numeroWhatsapp = pendiente(whatsapp.numero) ? '' : digitos(whatsapp.numero);
+const enlaceWhatsapp = numeroWhatsapp
+  ? `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(whatsapp.mensaje)}`
+  : null;
 const enlaceTelefono = pendiente(telefono) ? null : `tel:+${digitos(telefono)}`;
 const enlaceCorreo = pendiente(correo) ? null : `mailto:${correo}`;
 
-const mensajes = JSON.stringify({
+const textos = JSON.stringify({
+  numero: numeroWhatsapp,
+  plantilla: formulario.plantilla,
+  plantillaMensaje: formulario.plantillaMensaje,
   exito: formulario.exito,
-  errorGeneral: formulario.errorGeneral,
+  enlaceRespaldo: formulario.enlaceRespaldo,
+  sinWhatsapp: formulario.sinWhatsapp,
   errorCampos: formulario.errorCampos,
-  enviar: formulario.enviar,
-  enviando: formulario.enviando,
   errores,
 }).replace(/</g, '\\u003c');
 ---
@@ -73,7 +77,7 @@ const mensajes = JSON.stringify({
       <h3 class="contacto__subtitulo">{formulario.titulo}</h3>
       <p class="contacto__aviso">{formulario.aviso}</p>
 
-      <form class="formulario" method="post" action="/api/contacto" novalidate>
+      <form class="formulario" novalidate>
         <div class="campo">
           <label for="c-nombre">{campos.nombre}</label>
           <input
@@ -88,34 +92,8 @@ const mensajes = JSON.stringify({
         </div>
 
         <div class="campo">
-          <label for="c-telefono">{campos.telefono}</label>
-          <input
-            id="c-telefono"
-            name="telefono"
-            type="tel"
-            inputmode="tel"
-            autocomplete="tel"
-            required
-            maxlength="30"
-          />
-          <p class="campo__error" id="e-telefono" hidden></p>
-        </div>
-
-        <div class="campo">
-          <label for="c-correo">{campos.correo}</label>
-          <input id="c-correo" name="correo" type="email" autocomplete="email" maxlength="120" />
-          <p class="campo__error" id="e-correo" hidden></p>
-        </div>
-
-        <div class="campo">
           <label for="c-mensaje">{campos.mensaje}</label>
-          <textarea id="c-mensaje" name="mensaje" rows="4" maxlength="1000"></textarea>
-        </div>
-
-        <!-- Campo trampa para bots: fuera de la vista y del orden de tabulación. -->
-        <div class="formulario__trampa" aria-hidden="true">
-          <label for="c-web">No llenar</label>
-          <input id="c-web" name="web" type="text" tabindex="-1" autocomplete="off" />
+          <textarea id="c-mensaje" name="mensaje" rows="4" maxlength="500"></textarea>
         </div>
 
         <div class="campo campo--consentimiento">
@@ -136,7 +114,7 @@ const mensajes = JSON.stringify({
     </div>
   </div>
 
-  <script is:inline type="application/json" id="textos-formulario" set:html={mensajes} />
+  <script is:inline type="application/json" id="textos-formulario" set:html={textos} />
 </section>
 
 <script>
@@ -147,9 +125,8 @@ const mensajes = JSON.stringify({
 
   if (tarjeta && formulario && estado) {
     tarjeta.hidden = false;
-    const boton = formulario.querySelector<HTMLButtonElement>('button[type="submit"]');
 
-    const campos = ['nombre', 'telefono', 'correo', 'consentimiento'] as const;
+    const campos = ['nombre', 'consentimiento'] as const;
 
     const marcar = (campo: string, mensaje: string | null) => {
       const entrada = formulario.elements.namedItem(campo) as HTMLInputElement | null;
@@ -166,83 +143,56 @@ const mensajes = JSON.stringify({
       }
     };
 
-    const informar = (mensaje: string, error: boolean) => {
+    const informar = (mensaje: string, error: boolean, enlace?: string) => {
       estado.hidden = false;
-      estado.textContent = mensaje;
-      estado.classList.toggle('formulario__estado--error', error);
-    };
-
-    // Misma regla que el Worker: aquí solo ahorra un viaje, el Worker decide.
-    const validar = (datos: FormData): string[] => {
-      const malos: string[] = [];
-      if (String(datos.get('nombre') ?? '').trim().length < 2) malos.push('nombre');
-      if (String(datos.get('telefono') ?? '').replace(/\D/g, '').length < 10) {
-        malos.push('telefono');
+      estado.textContent = `${mensaje} `;
+      if (enlace) {
+        const a = document.createElement('a');
+        a.href = enlace;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = textos.enlaceRespaldo;
+        estado.append(a);
       }
-      const correo = String(datos.get('correo') ?? '').trim();
-      if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) malos.push('correo');
-      if (!datos.get('consentimiento')) malos.push('consentimiento');
-      return malos;
+      estado.classList.toggle('formulario__estado--error', error);
+      estado.focus();
     };
 
-    const mostrarErrores = (malos: string[]) => {
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      const datos = new FormData(formulario);
+      const nombre = String(datos.get('nombre') ?? '').trim();
+      const mensaje = String(datos.get('mensaje') ?? '').trim();
+
+      const malos: string[] = [];
+      if (nombre.length < 2) malos.push('nombre');
+      if (!datos.get('consentimiento')) malos.push('consentimiento');
       campos.forEach((campo) =>
         marcar(campo, malos.includes(campo) ? (textos.errores?.[campo] ?? '') : null),
       );
       if (malos.length > 0) {
         informar(textos.errorCampos, true);
-        const primero = formulario.elements.namedItem(malos[0]) as HTMLElement | null;
-        primero?.focus();
-      }
-    };
-
-    formulario.addEventListener('submit', async (evento) => {
-      evento.preventDefault();
-      const datos = new FormData(formulario);
-      const malos = validar(datos);
-      mostrarErrores(malos);
-      if (malos.length > 0) return;
-
-      estado.hidden = true;
-      if (boton) {
-        boton.disabled = true;
-        boton.textContent = textos.enviando;
+        (formulario.elements.namedItem(malos[0]) as HTMLElement | null)?.focus();
+        return;
       }
 
-      try {
-        const respuesta = await fetch(formulario.action, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            nombre: datos.get('nombre'),
-            telefono: datos.get('telefono'),
-            correo: datos.get('correo'),
-            mensaje: datos.get('mensaje'),
-            web: datos.get('web'),
-            consentimiento: datos.get('consentimiento') === 'on',
-          }),
-        });
-
-        if (respuesta.ok) {
-          formulario.reset();
-          campos.forEach((campo) => marcar(campo, null));
-          informar(textos.exito, false);
-        } else if (respuesta.status === 422) {
-          const cuerpo = await respuesta.json().catch(() => ({}));
-          mostrarErrores(Object.keys(cuerpo.campos ?? {}));
-        } else {
-          informar(textos.errorGeneral, true);
-        }
-      } catch {
-        informar(textos.errorGeneral, true);
-      } finally {
-        if (boton) {
-          boton.disabled = false;
-          boton.textContent = textos.enviar;
-        }
-        // role="status" avisa el resultado; el foco lo deja a la vista.
-        if (!estado.hidden) estado.focus();
+      if (!textos.numero) {
+        informar(textos.sinWhatsapp, true);
+        return;
       }
+
+      // El mensaje se arma aquí y viaja directo a WhatsApp: no pasa por ningún
+      // servidor de este sitio. `replace` con función evita que un `$&` en lo
+      // escrito se interprete.
+      let texto = textos.plantilla.replace('{nombre}', () => nombre);
+      if (mensaje) {
+        texto += `\n${textos.plantillaMensaje.replace('{mensaje}', () => mensaje)}`;
+      }
+      const url = `https://wa.me/${textos.numero}?text=${encodeURIComponent(texto)}`;
+
+      // Se abre dentro del gesto del usuario para que no lo bloquee el navegador.
+      window.open(url, '_blank', 'noopener,noreferrer');
+      informar(textos.exito, false, url);
     });
   }
 </script>
@@ -382,14 +332,6 @@ const mensajes = JSON.stringify({
 
   .campo--consentimiento .campo__error {
     grid-column: 2;
-  }
-
-  .formulario__trampa {
-    position: absolute;
-    left: -10000px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
   }
 
   .formulario__enviar[disabled] {

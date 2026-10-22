@@ -23,8 +23,9 @@ export default defineConfig({
         "default-src 'self'",
         "img-src 'self' data:",
         "font-src 'self'",
-        // El formulario de contacto envía a /api/contacto, en el mismo origen.
-        "connect-src 'self'",
+        // El formulario abre WhatsApp desde el navegador: la página no hace
+        // ninguna petición de red propia.
+        "connect-src 'none'",
         "form-action 'self'",
         // Mapa diferido de la sección Ubicación.
         'frame-src https://www.google.com',

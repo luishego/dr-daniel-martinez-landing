@@ -2,18 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   // Debe coincidir con el nombre del Worker en Cloudflare (Workers & Pages).
   "name": "dr-daniel-martinez-landing",
-  "main": "worker/index.ts",
   "compatibility_date": "2026-10-22",
   // Sitio estático: Cloudflare sirve `dist/` tal cual, incluido `_headers`.
-  // Solo `/api/*` pasa por el Worker (formulario de contacto).
+  // No hay código de servidor: el formulario de contacto abre WhatsApp desde
+  // el navegador.
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS",
-    "run_worker_first": ["/api/*"],
   },
-  // Sin registro de invocaciones: nada de lo que envía el formulario se guarda
-  // en los logs de Cloudflare. El Worker tampoco hace `console.log` de datos.
-  "observability": { "enabled": false },
   // Lo exige `wrangler preview`, el comando de deploy de las ramas que no son
   // producción. El bloque puede ir vacío.
   "previews": {},
