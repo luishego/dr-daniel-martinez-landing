@@ -116,4 +116,33 @@ const servicios = defineCollection({
   }),
 });
 
-export const collections = { sitio, inicio, sobre, servicios };
+const ubicacion = defineCollection({
+  loader: glob({ pattern: 'ubicacion.json', base: './src/content/ubicacion' }),
+  schema: z.object({
+    antetitulo: z.string(),
+    titulo: z.string(),
+    entrada: z.string(),
+    /** Datos extra de la sede principal; su dirección vive en `sitio.json`. */
+    principal: z.object({
+      horario: z.string(),
+      referencia: z.string().optional(),
+    }),
+    /** Otras sedes; mientras la dirección lleve corchetes no se ofrece mapa. */
+    otras: z.array(
+      z.object({
+        nombre: z.string(),
+        direccion: z.string(),
+        horario: z.string(),
+        referencia: z.string().optional(),
+      }),
+    ),
+    textos: z.object({
+      verMapa: z.string(),
+      comoLlegar: z.string(),
+      cerrarMapa: z.string(),
+    }),
+    notaInterna: z.string().optional(),
+  }),
+});
+
+export const collections = { sitio, inicio, sobre, servicios, ubicacion };

@@ -1,0 +1,221 @@
+---
+/**
+ * Sección Ubicación (T-08): una tarjeta por sede con dirección, horario y un
+ * mapa diferido. El mapa no se pide hasta que la persona lo solicita, para no
+ * cargar el iframe de terceros en el primer render. Sin JavaScript queda el
+ * enlace «Cómo llegar».
+ *
+ * La sede principal toma su dirección de `sitio.json`; el resto del texto
+ * viene de `src/content/ubicacion/ubicacion.json`.
+ */
+import { getEntry } from 'astro:content';
+
+const [sitio, ubicacion] = await Promise.all([
+  getEntry('sitio', 'sitio'),
+  getEntry('ubicacion', 'ubicacion'),
+]);
+if (!sitio) {
+  throw new Error('Falta src/content/sitio/sitio.json');
+}
+if (!ubicacion) {
+  throw new Error('Falta src/content/ubicacion/ubicacion.json');
+}
+
+const { clinica } = sitio.data;
+const { antetitulo, titulo, entrada, principal, otras, textos } = ubicacion.data;
+
+interface Sede {
+  nombre: string;
+  direccion: string;
+  horario: string;
+  referencia?: string;
+}
+
+const sedes: Sede[] = [
+  {
+    nombre: clinica.nombre,
+    direccion: `${clinica.calle}, ${clinica.colonia}, ${clinica.alcaldia}, C.P. ${clinica.codigoPostal}, ${clinica.ciudad}`,
+    horario: principal.horario,
+    referencia: principal.referencia,
+  },
+  ...otras,
+];
+
+// Un dato pendiente va entre corchetes: sin dirección real no hay mapa.
+const pendiente = (texto: string) => texto.includes('[');
+
+const consulta = (sede: Sede) => encodeURIComponent(`${sede.nombre}, ${sede.direccion}`);
+const enlaceMapa = (sede: Sede) =>
+  `https://www.google.com/maps/search/?api=1&query=${consulta(sede)}`;
+const incrustado = (sede: Sede) => `https://www.google.com/maps?q=${consulta(sede)}&output=embed`;
+---
+
+<section class="seccion ubicacion" id="ubicacion">
+  <div class="contenedor">
+    <div class="ubicacion__cabecera">
+      <p class="antetitulo antetitulo--primario ubicacion__antetitulo">{antetitulo}</p>
+      <h2 class="ubicacion__titulo">{titulo}</h2>
+      <p class="ubicacion__entrada">{entrada}</p>
+    </div>
+
+    <ul class="ubicacion__sedes">
+      {sedes.map((sede, indice) => {
+        const conMapa = !pendiente(sede.direccion);
+        return (
+          <li class="sede" data-sede>
+            <h3 class="sede__nombre">{sede.nombre}</h3>
+            <address class="sede__direccion">{sede.direccion}</address>
+            <p class="sede__dato">{sede.horario}</p>
+            {sede.referencia && <p class="sede__dato">{sede.referencia}</p>}
+
+            {conMapa && (
+              <div class="sede__acciones">
+                <a
+                  class="boton boton--secundario boton--compacto"
+                  href={enlaceMapa(sede)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {textos.comoLlegar}
+                  <span class="visualmente-oculto"> a {sede.nombre} (se abre en otra pestaña)</span>
+                </a>
+                <button
+                  class="boton boton--principal boton--compacto sede__alternar"
+                  type="button"
+                  hidden
+                  aria-expanded="false"
+                  aria-controls={`mapa-${indice}`}
+                  data-mapa={incrustado(sede)}
+                  data-titulo={`Mapa de ${sede.nombre}`}
+                  data-ver={textos.verMapa}
+                  data-cerrar={textos.cerrarMapa}
+                >
+                  {textos.verMapa}
+                </button>
+              </div>
+            )}
+            {conMapa && <div class="sede__mapa" id={`mapa-${indice}`} hidden />}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<script>
+  // El botón nace oculto: sin JavaScript solo existe el enlace «Cómo llegar».
+  // El iframe se crea al primer clic y después solo se muestra u oculta.
+  document.querySelectorAll<HTMLButtonElement>('[data-mapa]').forEach((boton) => {
+    const contenedor = document.getElementById(boton.getAttribute('aria-controls') ?? '');
+    if (!contenedor) return;
+    boton.hidden = false;
+
+    boton.addEventListener('click', () => {
+      const abrir = boton.getAttribute('aria-expanded') !== 'true';
+
+      if (abrir && !contenedor.firstElementChild) {
+        const marco = document.createElement('iframe');
+        marco.src = boton.dataset.mapa ?? '';
+        marco.title = boton.dataset.titulo ?? 'Mapa';
+        marco.loading = 'lazy';
+        marco.referrerPolicy = 'no-referrer-when-downgrade';
+        marco.setAttribute('allowfullscreen', '');
+        contenedor.append(marco);
+      }
+
+      contenedor.hidden = !abrir;
+      boton.setAttribute('aria-expanded', String(abrir));
+      boton.textContent = (abrir ? boton.dataset.cerrar : boton.dataset.ver) ?? '';
+    });
+  });
+</script>
+
+<style>
+  .ubicacion {
+    background-color: var(--color-band);
+  }
+
+  .ubicacion__cabecera {
+    max-width: 44rem;
+    margin-bottom: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  }
+
+  .ubicacion__antetitulo {
+    margin-bottom: 0.875rem;
+  }
+
+  .ubicacion__titulo {
+    margin-bottom: 1.125rem;
+    font-size: var(--texto-h2);
+    line-height: var(--alto-h2);
+    letter-spacing: var(--espaciado-h2);
+    color: var(--color-primary);
+  }
+
+  .ubicacion__entrada {
+    font-size: var(--texto-entrada);
+    line-height: var(--alto-entrada);
+  }
+
+  .ubicacion__sedes {
+    display: grid;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .sede {
+    padding: 1.5rem;
+    border-radius: var(--radio-tarjeta);
+    background-color: var(--color-surface);
+  }
+
+  .sede__nombre {
+    margin-bottom: 0.5rem;
+    font-size: var(--texto-h3);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-primary);
+  }
+
+  .sede__direccion {
+    margin-bottom: 0.75rem;
+    font-style: normal;
+  }
+
+  .sede__dato {
+    margin-bottom: 0.5rem;
+    font-size: var(--texto-lista);
+    line-height: var(--alto-compacto);
+  }
+
+  .sede__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .sede__alternar[hidden],
+  .sede__mapa[hidden] {
+    display: none;
+  }
+
+  .sede__mapa {
+    margin-top: 1.25rem;
+    overflow: hidden;
+    border-radius: var(--radio-campo);
+    aspect-ratio: 4 / 3;
+    background-color: var(--color-tint);
+  }
+
+  .sede__mapa :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .ubicacion__sedes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

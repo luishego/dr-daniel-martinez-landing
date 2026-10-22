@@ -59,6 +59,7 @@ documenta el estado de ese texto.
 | `inicio`    | `src/content/inicio/hero.json`         | Hero y franja de credenciales   |
 | `sobre`     | `src/content/sobre/sobre.json`         | Sección Sobre el Doctor         |
 | `servicios` | `src/content/servicios/servicios.json` | Tratamientos y bloque de EMT    |
+| `ubicacion` | `src/content/ubicacion/ubicacion.json` | Sedes, horarios y mapa          |
 
 ## Tipografía
 
@@ -92,9 +93,9 @@ de Pages. El build corre `npm run build` y `wrangler.jsonc` indica que se sirve
 
 ## Estado
 
-Hecho: T-01 a T-07 (setup, tokens, tipografía, layout y header, Inicio, Sobre
-el Doctor y Tratamientos).
+Hecho: T-01 a T-08 (setup, tokens, tipografía, layout y header, Inicio, Sobre
+el Doctor, Tratamientos y Ubicación).
 
-Pendiente: T-08 Ubicación, T-09 FAQ, T-10 Contacto,
+Pendiente: T-09 FAQ, T-10 Contacto,
 T-11 footer/SEO/JSON-LD, T-12 QA. Los enlaces del menú a esas anclas ya existen
 y empiezan a funcionar conforme entra cada sección.

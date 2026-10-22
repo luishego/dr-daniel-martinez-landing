@@ -12,6 +12,7 @@
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Pendiente (T-11/T-12): Content-Security-Policy. Los dos scripts en línea del
-# switch de paletas necesitan hashes, y el mapa de la sección Ubicación (T-08)
-# añadirá un frame-src, así que se define cuando esas piezas estén cerradas.
+# Pendiente (T-11/T-12): Content-Security-Policy. El mapa de la sección Ubicación
+# (T-08) carga un iframe de Google Maps, así que la política necesitará
+# `frame-src https://www.google.com`; se define cuando el resto de las piezas
+# (formulario de contacto, JSON-LD) estén cerradas.
