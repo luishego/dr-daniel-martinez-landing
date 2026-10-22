@@ -17,8 +17,15 @@ interface Env {
 
 const MAX_BYTES = 10_000;
 
+// Las respuestas son deliberadamente opacas: dicen si salió bien o qué campo
+// corregir, nunca por qué falló el servidor ni cómo está configurado. Los
+// encabezados de `public/_headers` no aplican a las respuestas del Worker, así
+// que los necesarios van aquí.
 const json = (cuerpo: unknown, status = 200): Response =>
-  Response.json(cuerpo, { status, headers: { 'Cache-Control': 'no-store' } });
+  Response.json(cuerpo, {
+    status,
+    headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' },
+  });
 
 const texto = (valor: unknown, max: number): string =>
   typeof valor === 'string' ? valor.trim().slice(0, max) : '';
@@ -28,13 +35,35 @@ const lineaUnica = (valor: string): string => valor.replace(/\p{Cc}+/gu, ' ').tr
 
 async function contacto(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
-    return json({ error: 'metodo' }, 405);
+    return Response.json(
+      { error: 'metodo' },
+      {
+        status: 405,
+        headers: {
+          Allow: 'POST',
+          'Cache-Control': 'no-store',
+          'X-Content-Type-Options': 'nosniff',
+        },
+      },
+    );
   }
 
-  // Solo se acepta el formulario del propio sitio.
+  // Solo se acepta el formulario del propio sitio: un navegador siempre manda
+  // `Origin` en un POST, así que su ausencia o un valor ajeno se rechaza.
   const origen = request.headers.get('Origin');
-  if (origen && new URL(origen).host !== new URL(request.url).host) {
+  let mismoOrigen = false;
+  try {
+    mismoOrigen = origen !== null && new URL(origen).host === new URL(request.url).host;
+  } catch {
+    /* Origin no analizable: se rechaza abajo. */
+  }
+  if (!mismoOrigen) {
     return json({ error: 'origen' }, 403);
+  }
+
+  // Un <form> de otro sitio no puede enviar JSON sin pasar por CORS.
+  if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) {
+    return json({ error: 'formato' }, 415);
   }
 
   const crudo = await request.text();
@@ -69,8 +98,10 @@ async function contacto(request: Request, env: Env): Promise<Response> {
     return json({ error: 'campos', campos: errores }, 422);
   }
 
+  // Mismo mensaje si falta configuración o si el proveedor de correo falla:
+  // quien llama no debe poder distinguir cómo está montado el servicio.
   if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM) {
-    return json({ error: 'no_configurado' }, 503);
+    return json({ error: 'no_disponible' }, 503);
   }
 
   const cuerpo = [
@@ -97,7 +128,7 @@ async function contacto(request: Request, env: Env): Promise<Response> {
   });
 
   if (!envio.ok) {
-    return json({ error: 'envio' }, 502);
+    return json({ error: 'no_disponible' }, 503);
   }
   return json({ ok: true });
 }
