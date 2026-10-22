@@ -11,6 +11,9 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"],
   },
+  // Sin registro de invocaciones: nada de lo que envía el formulario se guarda
+  // en los logs de Cloudflare. El Worker tampoco hace `console.log` de datos.
+  "observability": { "enabled": false },
   // Lo exige `wrangler preview`, el comando de deploy de las ramas que no son
   // producción. El bloque puede ir vacío.
   "previews": {},
