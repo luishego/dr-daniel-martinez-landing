@@ -10,6 +10,7 @@
  * aparece si corre JavaScript; sin él quedan WhatsApp, teléfono y correo.
  */
 import { getEntry } from 'astro:content';
+import { internacional } from '../../lib/telefono';
 
 const contacto = await getEntry('contacto', 'contacto');
 if (!contacto) {
@@ -20,13 +21,12 @@ const { antetitulo, titulo, entrada, whatsapp, telefono, correo, formulario } = 
 const { campos, errores } = formulario;
 
 const pendiente = (valor: string) => valor.includes('[');
-const digitos = (valor: string) => valor.replace(/\D/g, '');
 
-const numeroWhatsapp = pendiente(whatsapp.numero) ? '' : digitos(whatsapp.numero);
+const numeroWhatsapp = pendiente(whatsapp.numero) ? '' : internacional(whatsapp.numero);
 const enlaceWhatsapp = numeroWhatsapp
   ? `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(whatsapp.mensaje)}`
   : null;
-const enlaceTelefono = pendiente(telefono) ? null : `tel:+${digitos(telefono)}`;
+const enlaceTelefono = pendiente(telefono) ? null : `tel:+${internacional(telefono)}`;
 const enlaceCorreo = pendiente(correo) ? null : `mailto:${correo}`;
 
 const textos = JSON.stringify({

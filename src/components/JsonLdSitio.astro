@@ -5,6 +5,7 @@
  * aparece cuando el sitio tiene dominio (`SITE_URL`).
  */
 import { getEntry } from 'astro:content';
+import { internacional } from '../lib/telefono';
 
 const [sitio, contacto] = await Promise.all([
   getEntry('sitio', 'sitio'),
@@ -16,7 +17,9 @@ if (!sitio || !contacto) {
 
 const { nombre, clinica, seo } = sitio.data;
 const pendiente = (valor: string) => valor.includes('[');
-const telefono = pendiente(contacto.data.telefono) ? undefined : contacto.data.telefono;
+const telefono = pendiente(contacto.data.telefono)
+  ? undefined
+  : `+${internacional(contacto.data.telefono)}`;
 const correo = pendiente(contacto.data.correo) ? undefined : contacto.data.correo;
 const url = Astro.site?.href.replace(/\/$/, '');
 
