@@ -1,9 +1,10 @@
 ---
-import { Font } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import JsonLdSitio from '../components/JsonLdSitio.astro';
+import retrato from '../assets/dr-martinez-retrato.jpg';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
@@ -22,6 +23,13 @@ const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion
 // Sin dominio configurado (`SITE_URL`) estamos en una preview o en desarrollo:
 // no se indexa y no se declara canonical.
 const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+
+// Imagen para compartir el enlace. Open Graph pide URL absoluta, así que solo
+// se emite cuando hay dominio.
+const imagenOg = Astro.site
+  ? await getImage({ src: retrato, width: 853, format: 'jpg' })
+  : undefined;
+const urlImagenOg = imagenOg && Astro.site ? new URL(imagenOg.src, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -38,6 +46,12 @@ const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefine
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={sitio.data.nombre} />
     {url && <meta property="og:url" content={url} />}
+    {urlImagenOg && (
+      <>
+        <meta property="og:image" content={urlImagenOg} />
+        <meta property="og:image:alt" content={sitio.data.nombre} />
+      </>
+    )}
     <meta name="twitter:card" content="summary" />
     <meta property="og:locale" content="es_MX" />
     <meta property="og:title" content={titulo} />
@@ -51,11 +65,6 @@ const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefine
     <Font cssVariable="--fuente-base" preload={[{ subset: 'latin' }]} />
 
     <JsonLdSitio />
-
-    <!--
-      Pendiente: imagen Open Graph (og:image) cuando el cliente entregue la
-      fotografía; pide URL absoluta, así que depende también del dominio.
-    -->
   </head>
 
   <body>

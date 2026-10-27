@@ -2,11 +2,16 @@
   "antetitulo": "Psiquiatría · Ciudad de México",
   "titulo": "Salud mental con ciencia y cercanía",
   "entrada": "Valoración, diagnóstico y tratamiento con un enfoque humano y basado en evidencia.",
-  "ctaPrincipal": { "etiqueta": "Agenda tu valoración", "ancla": "#contacto" },
-  "ctaSecundario": { "etiqueta": "Conoce los tratamientos", "ancla": "#tratamientos" },
+  "ctaPrincipal": {
+    "etiqueta": "Agenda tu valoración",
+    "ancla": "#contacto"
+  },
+  "ctaSecundario": {
+    "etiqueta": "Conoce los tratamientos",
+    "ancla": "#tratamientos"
+  },
   "imagen": {
-    "marcador": "[FOTOGRAFÍA DEL DR. MARTÍNEZ]",
-    "nota": "Retrato profesional vertical, fondo neutro"
+    "alt": "Retrato del Dr. Daniel Martínez, psiquiatra, con bata blanca y camisa de rayas, sonriendo frente a un fondo gris."
   },
   "franja": [
     {
@@ -22,5 +27,5 @@
       "detalle": "Clínica de Especialidades en Neuropsiquiatría del ISSSTE"
     }
   ],
-  "notaInterna": "Copy provisional tomado del lienzo de diseño. Pendiente de aprobación por escrito del Dr. Martínez. Falta la fotografía profesional del retrato vertical."
+  "notaInterna": "Copy provisional tomado del lienzo de diseño. Pendiente de aprobación por escrito del Dr. Martínez. La fotografía del hero (src/assets/dr-martinez-retrato.jpg) ya la entregó el cliente; el retrato en consultorio de la sección Sobre el doctor sigue pendiente."
 }

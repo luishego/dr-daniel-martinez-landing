@@ -69,7 +69,8 @@ const inicio = defineCollection({
     entrada: z.string(),
     ctaPrincipal: enlace,
     ctaSecundario: enlace,
-    imagen: marcadorImagen,
+    /** La foto vive en `src/assets`; aquí solo su texto alternativo. */
+    imagen: z.object({ alt: z.string() }),
     /** Franja de credenciales inmediatamente debajo del hero. */
     franja: z.array(
       z.object({
