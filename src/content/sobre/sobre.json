@@ -2,20 +2,19 @@
   "antetitulo": "Sobre el doctor",
   "titulo": "Mi trabajo es entender lo que te pasa antes de proponerte un tratamiento",
   "parrafos": [
-    "Soy médico psiquiatra. Dedico la primera consulta a escuchar tu historia completa y a explicarte, en palabras claras, qué estamos viendo y cuáles son las opciones. Trabajo con tratamiento farmacológico, psicoterapia cognitivo conductual y procedimientos de neuromodulación, según lo que cada persona necesita.",
-    "También enseño. Soy profesor titular del curso de Medicina Psicológica y Comunicación Humana en la Facultad de Medicina de la UNAM, y esa misma idea —que la relación médico-paciente es parte del tratamiento— guía mi consulta."
+    "Soy médico cirujano por la Facultad de Medicina de la UNAM y especialista en Psiquiatría por el Centro Médico Nacional Hospital 20 de Noviembre, donde también realicé la alta especialidad en Psiquiatría de Enlace. Me formé además como terapeuta cognitivo conductual en la UNAM, y tengo conocimientos y experiencia en administración de sistemas de salud.",
+    "La docencia me parece apasionante: soy docente de la Facultad de Medicina de la UNAM y de la Universidad Tominaga Nakamoto. Coordino el área de psiquiatría en Fundación APTA, que trata de manera multidisciplinaria los trastornos de la conducta alimentaria, y estoy a cargo del servicio de neuromodulación."
   ],
   "imagen": {
     "marcador": "[RETRATO EN CONSULTORIO]"
   },
   "tituloFormacion": "Formación y cargos",
   "formacion": [
-    "Médico general y especialista en Psiquiatría por la UNAM y el Centro Médico Nacional «Hospital 20 de Noviembre».",
-    "Posgrado de Alta Especialidad en Psiquiatría de Enlace, Centro Médico Nacional «Hospital 20 de Noviembre».",
+    "Médico general y especialista en Psiquiatría por la UNAM y el Centro Médico Nacional, Hospital 20 de Noviembre.",
+    "Posgrado de Alta Especialidad en Psiquiatría de Enlace, Centro Médico Nacional, Hospital 20 de Noviembre.",
     "Terapeuta cognitivo conductual por la UNAM y CETTAD.",
-    "Profesor titular del curso de Medicina Psicológica y Comunicación Humana, Facultad de Medicina de la UNAM.",
-    "Director de la Clínica de Especialidades en Neuropsiquiatría del ISSSTE."
+    "Profesor titular del curso de Medicina Psicológica y Comunicación Humana, Facultad de Medicina de la UNAM."
   ],
-  "cedulas": ["Cédula profesional [NÚMERO]", "Cédula de especialidad [NÚMERO]"],
-  "notaInterna": "Copy provisional en primera persona tomado del lienzo de diseño; pendiente de aprobación por escrito del Dr. Martínez. Faltan los números de cédula profesional y de especialidad, y la fotografía del retrato en consultorio."
+  "cedulas": ["Cédula profesional 09914767", "Cédula de especialidad 12467285"],
+  "notaInterna": "Copy tomado de los textos que entregó el Dr. Martínez (formación, cédulas y presentación en primera persona), redactado para la web. La lista de formación y las cédulas son literales de su material. Falta el retrato en consultorio. Ojo: la franja del hero aún cita «Director de la Clínica de Neuropsiquiatría del ISSSTE», que no aparece en el material nuevo: confirmar con el doctor si se conserva."
 }

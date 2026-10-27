@@ -21,7 +21,11 @@
     },
     {
       "pregunta": "¿Qué es la Estimulación Magnética Transcraneal?",
-      "respuesta": "[TEXTO POR VALIDAR] Es un procedimiento no invasivo que usa pulsos magnéticos para modular la actividad de regiones cerebrales. Se indica después de una valoración psiquiátrica, como parte de un plan de tratamiento."
+      "respuesta": "Es un tratamiento no invasivo: no requiere cirugía ni anestesia. Utiliza campos magnéticos suaves que se aplican sobre la cabeza para modificar la actividad de ciertas áreas del cerebro. La persona está despierta y cada sesión dura aproximadamente 20 a 40 minutos. Hoy la ofrezco para el insomnio persistente."
+    },
+    {
+      "pregunta": "¿La Estimulación Magnética Transcraneal es segura?",
+      "respuesta": "Se considera un tratamiento seguro cuando lo aplican profesionales capacitados. Puede causar una sensación leve en el cuero cabelludo y dolor de cabeza leve y temporal. No es adecuada para todas las personas: por ejemplo, para quienes tienen dispositivos electrónicos implantados, como marcapasos. No reemplaza otros tratamientos: forma parte de un enfoque integral."
     },
     {
       "pregunta": "¿Cuánto cuesta la consulta y qué formas de pago aceptan?",
@@ -40,5 +44,5 @@
     "titulo": "Si estás en una emergencia",
     "texto": "[TEXTO Y TELÉFONOS DE URGENCIA POR VALIDAR] Si tú o alguien más está en peligro inmediato, llama al número de emergencias de tu localidad o acude a urgencias."
   },
-  "notaInterna": "Copy provisional. Las respuestas con corchetes están por validar con el Dr. Martínez y NO se publican en el JSON-LD FAQPage (solo se marcan las respuestas sin corchetes, para que el marcado coincida con lo visible y no salga un marcador a Google). Cuando se aprueben, quitar los corchetes basta para que entren al JSON-LD. El aviso de urgencias usa el granate de alertas."
+  "notaInterna": "Las cuatro primeras respuestas son las que contestó el Dr. Martínez; las dos de EMT salen de su documento «EMT e Insomnio». Siguen por validar las de costo y formas de pago, consulta en línea y confidencialidad: llevan corchetes, se ven en la página pero NO se publican en el JSON-LD FAQPage. Cuando se aprueben, quitar los corchetes basta para que entren al JSON-LD. El aviso de urgencias usa el granate de alertas."
 }
