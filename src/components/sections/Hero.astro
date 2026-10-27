@@ -166,7 +166,9 @@ const { antetitulo, titulo, entrada, ctaPrincipal, ctaSecundario, imagen, franja
 
   @media (min-width: 48rem) {
     .franja__lista {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      /* Una columna por credencial, a partes iguales (hoy son dos). */
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
       padding-block: 2rem;
     }
   }
