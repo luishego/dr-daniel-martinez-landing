@@ -2,7 +2,7 @@
 /**
  * JSON-LD Physician + MedicalClinic (T-11). Solo lleva datos validados: un
  * valor con corchetes (teléfono, correo) no entra al marcado, y la URL solo
- * aparece cuando el sitio tiene dominio (`SITE_URL`).
+ * aparece cuando el sitio tiene dominio (producción, ver astro.config.mjs).
  */
 import { getEntry } from 'astro:content';
 import { internacional } from '../lib/telefono';
