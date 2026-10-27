@@ -18,6 +18,5 @@
     "verMapa": "Ver mapa aquí",
     "comoLlegar": "Cómo llegar",
     "cerrarMapa": "Ocultar mapa"
-  },
-  "notaInterna": "La sede principal (Gabriel Mancera 1433) toma su dirección de sitio.json; Neurosleep Center es la secundaria y vive aquí. Pendientes del cliente: nombre de la clínica principal y horarios y referencias de ambas sedes. Mientras una dirección lleve corchetes, su tarjeta no ofrece mapa. En web los mapas se muestran siempre; en móvil se abren con un botón."
+  }
 }

@@ -29,7 +29,7 @@
     "titulo": "Estimulación Magnética Transcraneal (EMT)",
     "subtitulo": "Una alternativa moderna para mejorar el sueño",
     "parrafos": [
-      "El insomnio no es solo «dormir mal una noche»: es un problema persistente que puede afectar la energía, la concentración, el estado de ánimo y la salud física. Muchas veces el cerebro se mantiene «activo» cuando debería relajarse, y los medicamentos o la terapia psicológica no siempre funcionan en todos los casos.",
+      "El insomnio no es solo dormir mal una noche. Es un problema persistente que puede afectar la energía, la concentración, el estado de ánimo y la salud física. Muchas veces el cerebro se mantiene activo cuando debería relajarse, y los medicamentos o la terapia psicológica no siempre funcionan en todos los casos.",
       "La EMT es un tratamiento no invasivo: no requiere cirugía ni anestesia. Aplica campos magnéticos suaves sobre la cabeza para modificar la actividad de ciertas áreas del cerebro. Ayuda a regular la hiperactivación y a favorecer la relajación, es decir, ayuda al cerebro a encontrar su equilibrio natural."
     ],
     "detalles": [
@@ -55,6 +55,5 @@
       "etiqueta": "Pregunta si eres candidato",
       "ancla": "#contacto"
     }
-  },
-  "notaInterna": "Los dos primeros tratamientos salen del lienzo de diseño; farmacológico, psicoterapia cognitivo conductual y neuromodulación salen de la sección Sobre el doctor. El bloque de Estimulación Magnética Transcraneal está redactado a partir del documento «EMT e Insomnio» que entregó el Dr. Martínez; no se añadió ninguna afirmación de eficacia, cifras ni otras indicaciones (p. ej. depresión) que no estén en ese documento."
+  }
 }

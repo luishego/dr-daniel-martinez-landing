@@ -2,8 +2,10 @@
   "antetitulo": "Sobre el doctor",
   "titulo": "Mi trabajo es entender lo que te pasa antes de proponerte un tratamiento",
   "parrafos": [
+    "¡Hola! Soy el Doctor Daniel Martinez, te comparto algo de mi formación profesional.",
     "Soy médico cirujano por la Facultad de Medicina de la UNAM y especialista en Psiquiatría por el Centro Médico Nacional Hospital 20 de Noviembre, donde también realicé la alta especialidad en Psiquiatría de Enlace. Me formé además como terapeuta cognitivo conductual en la UNAM, y tengo conocimientos y experiencia en administración de sistemas de salud.",
-    "La docencia me parece apasionante: soy docente de la Facultad de Medicina de la UNAM y de la Universidad Tominaga Nakamoto. Coordino el área de psiquiatría en Fundación APTA, que trata de manera multidisciplinaria los trastornos de la conducta alimentaria, y estoy a cargo del servicio de neuromodulación."
+    "La docencia me parece apasionante: soy docente de la Facultad de Medicina de la UNAM y de la Universidad Tominaga Nakamoto. Coordino el área de psiquiatría en Fundación APTA, que trata de manera multidisciplinaria los trastornos de la conducta alimentaria.",
+    " Asi mismo me encargo del servicio de neuromodulación en la clínica NeuroSleep Center."
   ],
   "imagen": {
     "marcador": "[RETRATO EN CONSULTORIO]"

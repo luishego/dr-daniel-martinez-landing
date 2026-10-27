@@ -37,14 +37,13 @@
     "ancla": "#contacto"
   },
   "clinica": {
-    "nombre": "[NOMBRE DE LA CLÍNICA]",
+    "nombre": "Consultorio principal",
     "calle": "Gabriel Mancera 1433",
     "colonia": "Col. Del Valle Centro",
     "alcaldia": "Benito Juárez",
     "codigoPostal": "03100",
     "ciudad": "Ciudad de México"
   },
-  "notaInterna": "Título y descripción SEO redactados a partir del copy del lienzo de diseño; pendientes de aprobación del doctor. La sede principal es Gabriel Mancera 1433 (Del Valle) y Neurosleep Center es la secundaria, que vive en ubicacion.json. Pendientes del cliente: nombre de la clínica principal, teléfono, número de WhatsApp, correo de recepción, dominio y cédulas.",
   "footer": {
     "lema": "Salud mental con ciencia y cercanía.",
     "aviso": "La información de este sitio es solo orientativa y no sustituye una consulta médica. En una emergencia, acude a urgencias.",
