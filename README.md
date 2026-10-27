@@ -68,7 +68,8 @@ Todo el texto vive en `src/content` (content collections con esquema zod), el ca
   con hashes de sus scripts y estilos; `frame-ancestors` va en
   `public/_headers`. Si se agrega un recurso de terceros (analíticas, otro
   mapa, otra fuente) hay que declararlo en esa lista.
-- **Pendiente:** imagen Open Graph, cuando el cliente entregue la fotografía.
+- **Imagen Open Graph:** usa el retrato del hero y solo se emite cuando hay
+  `SITE_URL`, porque pide URL absoluta.
 
 ## Tipografía
 

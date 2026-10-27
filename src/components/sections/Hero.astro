@@ -3,7 +3,9 @@
  * Sección Inicio (HU-02) y la franja de credenciales que va justo debajo.
  * Todo el texto viene de `src/content/inicio/hero.json`.
  */
+import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
+import retrato from '../../assets/dr-martinez-retrato.jpg';
 
 const inicio = await getEntry('inicio', 'hero');
 if (!inicio) {
@@ -30,12 +32,20 @@ const { antetitulo, titulo, entrada, ctaPrincipal, ctaSecundario, imagen, franja
     </div>
 
     <div class="hero__figura">
-      <!-- Marcador provisional: se sustituye por <Image> cuando el cliente
-           entregue el retrato profesional. -->
-      <div class="marco-imagen hero__marco">
-        <span class="marco-imagen__titulo">{imagen.marcador}</span>
-        {imagen.nota && <span class="marco-imagen__nota">{imagen.nota}</span>}
-      </div>
+      <!-- Es el elemento más grande de la primera pantalla (LCP): se carga de
+           inmediato y con prioridad alta. -->
+      <Image
+        class="hero__foto"
+        src={retrato}
+        alt={imagen.alt}
+        widths={[360, 480, 640, 853]}
+        sizes="(min-width: 60rem) 27rem, min(100vw - 2rem, 27.5rem)"
+        format="webp"
+        quality={80}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
     </div>
   </div>
 </section>
@@ -108,17 +118,24 @@ const { antetitulo, titulo, entrada, ctaPrincipal, ctaSecundario, imagen, franja
   .hero__figura {
     flex: 1 1 23.75rem;
     min-width: 0;
-    /* Cuando las columnas se apilan, el marco no debe crecer sin medida. */
+    /* Cuando las columnas se apilan, la foto no debe crecer sin medida. */
     max-width: 27.5rem;
   }
 
-  .hero__marco {
+  /* Retrato vertical recortado a 4:5; object-position alto para no cortar la
+     cabeza. */
+  .hero__foto {
+    width: 100%;
+    height: auto;
     aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 0;
     border-radius: var(--radio-imagen-grande);
+    background-color: var(--color-tint);
   }
 
   /* Las dos columnas dejan de caber por debajo de ~960px (28.75rem + 23.75rem
-     + 3.5rem de hueco, dentro del contenedor). A partir de ahí el marco se
+     + 3.5rem de hueco, dentro del contenedor). A partir de ahí la foto se
      centra; en teléfono ya ocupa el ancho disponible y el centrado no se nota. */
   @media (max-width: 59.9375rem) {
     .hero__figura {
@@ -149,7 +166,9 @@ const { antetitulo, titulo, entrada, ctaPrincipal, ctaSecundario, imagen, franja
 
   @media (min-width: 48rem) {
     .franja__lista {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      /* Una columna por credencial, a partes iguales (hoy son dos). */
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
       padding-block: 2rem;
     }
   }

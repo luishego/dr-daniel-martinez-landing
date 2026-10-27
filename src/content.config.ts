@@ -69,7 +69,8 @@ const inicio = defineCollection({
     entrada: z.string(),
     ctaPrincipal: enlace,
     ctaSecundario: enlace,
-    imagen: marcadorImagen,
+    /** La foto vive en `src/assets`; aquí solo su texto alternativo. */
+    imagen: z.object({ alt: z.string() }),
     /** Franja de credenciales inmediatamente debajo del hero. */
     franja: z.array(
       z.object({
@@ -113,8 +114,12 @@ const servicios = defineCollection({
     destacado: z.object({
       etiqueta: z.string(),
       titulo: z.string(),
+      subtitulo: z.string(),
       parrafos: z.array(z.string()),
-      puntos: z.array(z.string()),
+      /** Tarjetas de apoyo: cómo es la sesión, beneficios, seguridad… */
+      detalles: z.array(z.object({ titulo: z.string(), texto: z.string() })),
+      /** Aviso final: la EMT complementa, no reemplaza. */
+      nota: z.string(),
       cta: enlace,
     }),
     notaInterna: z.string().optional(),

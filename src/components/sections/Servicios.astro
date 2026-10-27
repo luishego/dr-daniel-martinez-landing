@@ -65,6 +65,7 @@ const iconos = {
         <h3 class="destacado__titulo" id="titulo-destacado">
           {destacado.titulo}
         </h3>
+        <p class="destacado__subtitulo">{destacado.subtitulo}</p>
         {destacado.parrafos.map((parrafo) => (
           <p class="destacado__parrafo">{parrafo}</p>
         ))}
@@ -72,14 +73,18 @@ const iconos = {
           {destacado.cta.etiqueta}
         </a>
       </div>
-      <ul class="destacado__puntos">
-        {destacado.puntos.map((punto) => (
-          <li class="destacado__punto">
-            <span class="destacado__vineta" aria-hidden="true"></span>
-            {punto}
-          </li>
-        ))}
-      </ul>
+
+      <div class="destacado__lateral">
+        <ul class="destacado__detalles">
+          {destacado.detalles.map((detalle) => (
+            <li class="destacado__detalle">
+              <h4 class="destacado__detalle-titulo">{detalle.titulo}</h4>
+              <p>{detalle.texto}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="destacado__nota">{destacado.nota}</p>
+      </div>
     </article>
   </div>
 </section>
@@ -174,16 +179,28 @@ const iconos = {
     margin-top: 1rem;
   }
 
-  .destacado__puntos {
+  .destacado__subtitulo {
+    margin-bottom: 1.25rem;
+    font-size: var(--texto-entrada);
+    font-weight: var(--peso-fuerte);
+    line-height: var(--alto-titulo-corto);
+    color: var(--color-band);
+  }
+
+  .destacado__lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-self: start;
+  }
+
+  .destacado__detalles {
     display: flex;
     flex-direction: column;
     gap: 0.875rem;
-    align-self: center;
   }
 
-  .destacado__punto {
-    display: flex;
-    gap: 0.75rem;
+  .destacado__detalle {
     padding: 1rem 1.25rem;
     border-radius: var(--radio-campo);
     background-color: rgba(255, 255, 255, 0.1);
@@ -191,13 +208,19 @@ const iconos = {
     line-height: var(--alto-compacto);
   }
 
-  .destacado__vineta {
-    flex: none;
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-top: 0.4375rem;
-    border-radius: 50%;
-    background-color: var(--color-accent);
+  .destacado__detalle-titulo {
+    margin-bottom: 0.25rem;
+    font-size: var(--texto-lista);
+    font-weight: var(--peso-titulo);
+  }
+
+  /* Aviso de que la EMT complementa y no reemplaza: se lee aparte, con filete. */
+  .destacado__nota {
+    padding-left: 1rem;
+    border-left: 3px solid var(--color-accent);
+    font-size: var(--texto-lista);
+    font-weight: var(--peso-fuerte);
+    line-height: var(--alto-compacto);
   }
 
   @media (min-width: 40rem) {
@@ -212,7 +235,7 @@ const iconos = {
     }
 
     .destacado {
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
       gap: 3rem;
     }
   }
