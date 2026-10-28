@@ -1,7 +1,7 @@
 {
   "antetitulo": "Ubicación",
   "titulo": "Dónde atiendo",
-  "entrada": "La consulta es presencial. Elige la sede que te quede más cerca y agenda por WhatsApp o desde el formulario.",
+  "entrada": "La consulta es presencial; si no vives cerca de la Ciudad de México, también puedo atenderte por telemedicina. Elige la sede que te quede más cerca y agenda por WhatsApp o desde el formulario.",
   "principal": {
     "horario": "[HORARIO DE ATENCIÓN]",
     "referencia": "[Referencias para llegar y estacionamiento]"
