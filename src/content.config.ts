@@ -171,6 +171,8 @@ const preguntas = defineCollection({
     avisoUrgencias: z.object({
       titulo: z.string(),
       texto: z.string(),
+      telefono: z.string(),
+      horario: z.string(),
     }),
     notaInterna: z.string().optional(),
   }),
