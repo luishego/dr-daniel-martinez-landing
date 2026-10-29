@@ -17,14 +17,6 @@ const enlace = z.object({
   ancla: z.string(),
 });
 
-const marcadorImagen = z.object({
-  /** Marcador entre corchetes mientras no llega la fotografía del cliente. */
-  marcador: z.string(),
-  nota: z.string().optional(),
-  /** Texto alternativo a usar cuando se sustituya por la foto real. */
-  alt: z.string().optional(),
-});
-
 const sitio = defineCollection({
   loader: glob({ pattern: 'sitio.json', base: './src/content/sitio' }),
   schema: z.object({
@@ -88,7 +80,8 @@ const sobre = defineCollection({
     antetitulo: z.string(),
     titulo: z.string(),
     parrafos: z.array(z.string()),
-    imagen: marcadorImagen,
+    /** La foto vive en `src/assets`; aquí solo su texto alternativo. */
+    imagen: z.object({ alt: z.string() }),
     tituloFormacion: z.string(),
     formacion: z.array(z.string()),
     cedulas: z.array(z.string()),

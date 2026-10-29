@@ -4,7 +4,9 @@
  * credenciales y espacio para las cédulas, todo desde
  * `src/content/sobre/sobre.json`.
  */
+import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
+import consultorio from '../../assets/dr-martinez-consultorio.jpeg';
 
 const sobre = await getEntry('sobre', 'sobre');
 if (!sobre) {
@@ -17,11 +19,18 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
 <section class="seccion sobre" id="sobre">
   <div class="contenedor sobre__fila">
     <div class="sobre__figura">
-      <!-- Marcador provisional hasta que lleguen las fotografías. -->
-      <div class="marco-imagen sobre__marco">
-        <span class="marco-imagen__titulo">{imagen.marcador}</span>
-        {imagen.nota && <span class="marco-imagen__nota">{imagen.nota}</span>}
-      </div>
+      <!-- Foto provisional del consultorio; se sustituye por la definitiva. -->
+      <Image
+        class="sobre__foto"
+        src={consultorio}
+        alt={imagen.alt}
+        widths={[360, 480, 640, 853]}
+        sizes="(min-width: 60rem) 24rem, min(100vw - 2rem, 24rem)"
+        format="webp"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+      />
     </div>
 
     <div class="sobre__texto">
@@ -66,8 +75,16 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
     max-width: 24rem;
   }
 
-  .sobre__marco {
-    aspect-ratio: 1 / 1;
+  /* Retrato vertical recortado a 4:5, igual que el del hero; el encuadre alto
+     deja la cara a la vista. */
+  .sobre__foto {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 15%;
+    border-radius: var(--radio-imagen-grande);
+    background-color: var(--color-tint);
   }
 
   /* Mismo criterio que el hero: cuando las columnas se apilan (~940px), el

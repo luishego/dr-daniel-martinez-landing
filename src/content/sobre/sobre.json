@@ -8,7 +8,7 @@
     "Asimismo, me encargo del servicio de neuromodulación en la clínica Neurosleep Center."
   ],
   "imagen": {
-    "marcador": "[RETRATO EN CONSULTORIO]"
+    "alt": "El Dr. Daniel Martínez, sentado en su consultorio con bata blanca, sonriendo."
   },
   "tituloFormacion": "Formación y cargos",
   "formacion": [
@@ -17,5 +17,6 @@
     "Terapeuta cognitivo conductual por la UNAM y CETTAD.",
     "Profesor titular del curso de Medicina Psicológica y Comunicación Humana, Facultad de Medicina de la UNAM."
   ],
-  "cedulas": ["Cédula profesional 09914767", "Cédula de especialidad 12467285"]
+  "cedulas": ["Cédula profesional 09914767", "Cédula de especialidad 12467285"],
+  "notaInterna": "La foto del consultorio (src/assets/dr-martinez-consultorio.jpeg) es provisional: debe sustituirse por una fotografía real cuando el doctor la entregue."
 }
