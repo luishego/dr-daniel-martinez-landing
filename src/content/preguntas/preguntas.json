@@ -29,20 +29,20 @@
     },
     {
       "pregunta": "¿Cuánto cuesta la consulta y qué formas de pago aceptan?",
-      "respuesta": "[COSTO Y FORMAS DE PAGO POR CONFIRMAR]"
+      "respuesta": "La consulta de valoración cuesta $1,400 pesos la primera sesión y $1,100 pesos el seguimiento. Aceptamos todas las formas de pago."
     },
     {
       "pregunta": "¿Ofrecen consulta en línea?",
-      "respuesta": "[POR CONFIRMAR CON EL DR. MARTÍNEZ]"
+      "respuesta": "Si no vives cerca de la Ciudad de México, puedo ofrecerte valoraciones por telemedicina. Con las plataformas tecnológicas actuales podemos tener consultas en tiempo real."
     },
     {
       "pregunta": "¿Mi información es confidencial?",
-      "respuesta": "[TEXTO POR VALIDAR: confidencialidad y aviso de privacidad]"
+      "respuesta": "La confidencialidad es vital para que sientas confianza en nuestro proceso. Todos tus datos se manejan con extrema precaución, con base en la ley de datos personales."
     }
   ],
   "avisoUrgencias": {
     "titulo": "Si estás en una emergencia",
     "texto": "[TEXTO Y TELÉFONOS DE URGENCIA POR VALIDAR] Si tú o alguien más está en peligro inmediato, llama al número de emergencias de tu localidad o acude a urgencias."
   },
-  "notaInterna": "Las cuatro primeras respuestas son las que contestó el Dr. Martínez; las dos de EMT salen de su documento «EMT e Insomnio». Siguen por validar las de costo y formas de pago, consulta en línea y confidencialidad: llevan corchetes, se ven en la página pero NO se publican en el JSON-LD FAQPage. Cuando se aprueben, quitar los corchetes basta para que entren al JSON-LD. El aviso de urgencias usa el granate de alertas."
+  "notaInterna": "Las respuestas son las que contestó el Dr. Martínez (las cuatro primeras, costo y formas de pago, consulta en línea y confidencialidad) o salen de su documento «EMT e Insomnio» (las dos de EMT). Redactadas con ortografía corregida, sin cambiar el contenido. Ninguna lleva corchetes, así que todas entran al JSON-LD FAQPage; si se vuelve a dejar una respuesta pendiente, ponerle corchetes basta para que no entre. El aviso de urgencias sigue por validar y usa el granate de alertas."
 }

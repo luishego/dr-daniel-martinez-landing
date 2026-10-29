@@ -16,17 +16,19 @@
       "nombre": "Nombre",
       "mensaje": "¿En qué podemos ayudarte? (opcional)"
     },
-    "consentimiento": "Acepto que usen mis datos para contactarme, según el ",
-    "avisoPrivacidad": { "etiqueta": "aviso de privacidad", "ancla": "#privacidad" },
-    "enviar": "Enviar mis datos",
-    "enviando": "Enviando…",
-    "exito": "Gracias. Recibimos tus datos y te contactaremos para confirmar tu cita.",
-    "errorGeneral": "No pudimos enviar tus datos. Inténtalo de nuevo o escríbenos por WhatsApp.",
+    "consentimiento": "Acepto que mis datos se envíen por WhatsApp para que me contacten, según el",
+    "avisoPrivacidad": {
+      "etiqueta": "aviso de privacidad",
+      "ancla": "#privacidad"
+    },
+    "enviar": "Continuar en WhatsApp",
+    "exito": "Listo. Se abrió WhatsApp con tu mensaje. Si no se abrió, usa este enlace:",
     "errorCampos": "Revisa los campos marcados.",
     "errores": {
       "nombre": "Escribe tu nombre.",
       "consentimiento": "Necesitamos tu aceptación para continuar."
-    },"enlaceRespaldo": "Abrir WhatsApp",
+    },
+    "enlaceRespaldo": "Abrir WhatsApp",
     "sinWhatsapp": "El envío por WhatsApp aún no está disponible. Intenta más tarde.",
     "plantilla": "Hola, soy {nombre}. Me gustaría agendar una valoración con el Dr. Martínez.",
     "plantillaMensaje": "Motivo: {mensaje}"

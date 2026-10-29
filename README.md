@@ -56,11 +56,13 @@ Todo el texto vive en `src/content` (content collections con esquema zod), el ca
 
 ## SEO y seguridad
 
-- **Dominio:** se configura con la variable de entorno `SITE_URL` en el build de
-  producción (p. ej. `https://www.dominio.mx`). Con ella el sitio emite
-  `canonical`, `og:url`, `sitemap.xml` y un `robots.txt` que permite indexar.
-  Sin ella, que es el caso de las previews y del desarrollo, el sitio lleva
-  `noindex`, `robots.txt` con `Disallow: /` y un sitemap vacío.
+- **Dominio:** `https://www.drdanielpsiquiatra.com`, definido en
+  `astro.config.mjs`; la variable de entorno `SITE_URL` lo sustituye si hace
+  falta. Con dominio el sitio emite `canonical`, `og:url`, `sitemap.xml` y un
+  `robots.txt` que permite indexar. Las previews por rama de Cloudflare
+  (`WORKERS_CI_BRANCH` distinta de `main`) y quien construye sin esa variable
+  desde otra rama no lo usan: llevan `noindex`, `robots.txt` con `Disallow: /` y
+  un sitemap vacío. Un build local sin esa variable sí usa el dominio.
 - **JSON-LD:** `MedicalClinic` y `Physician` (`JsonLdSitio.astro`) más el
   `FAQPage` de Preguntas. Solo incluyen datos validados: un valor con corchetes
   no entra al marcado.
@@ -69,7 +71,7 @@ Todo el texto vive en `src/content` (content collections con esquema zod), el ca
   `public/_headers`. Si se agrega un recurso de terceros (analíticas, otro
   mapa, otra fuente) hay que declararlo en esa lista.
 - **Imagen Open Graph:** usa el retrato del hero y solo se emite cuando hay
-  `SITE_URL`, porque pide URL absoluta.
+  dominio, porque pide URL absoluta.
 
 ## Tipografía
 

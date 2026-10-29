@@ -1,10 +1,14 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 
-// El dominio llega por variable de entorno (`SITE_URL`, p. ej.
-// https://www.dominio.mx) en el build de producción. Sin ella el sitio se trata
-// como preview: sin canonical, sin sitemap y con `noindex`.
-const site = process.env.SITE_URL || undefined;
+// Dominio de producción. `SITE_URL` lo sustituye si hace falta (p. ej. otro
+// dominio de prueba). Las previews por rama de Cloudflare (Workers Builds
+// define `WORKERS_CI_BRANCH` con la rama que se construye) no usan dominio:
+// quedan sin canonical, sin sitemap y con `noindex`, para que no se indexen.
+const DOMINIO = 'https://www.drdanielpsiquiatra.com';
+const rama = process.env.WORKERS_CI_BRANCH;
+const esPreview = rama !== undefined && rama !== 'main';
+const site = esPreview ? undefined : process.env.SITE_URL || DOMINIO;
 
 export default defineConfig({
   site,

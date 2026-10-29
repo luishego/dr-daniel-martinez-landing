@@ -5,6 +5,7 @@
  * `contacto.json`; un dato con corchetes se muestra sin volverse enlace.
  */
 import { getEntry } from 'astro:content';
+import { internacional } from '../lib/telefono';
 
 const [sitio, contacto] = await Promise.all([
   getEntry('sitio', 'sitio'),
@@ -21,7 +22,6 @@ const { nombre, especialidad, navegacion, clinica, footer } = sitio.data;
 const { telefono, correo } = contacto.data;
 
 const pendiente = (valor: string) => valor.includes('[');
-const digitos = (valor: string) => valor.replace(/\D/g, '');
 const anio = new Date().getFullYear();
 ---
 
@@ -43,7 +43,11 @@ const anio = new Date().getFullYear();
       </p>
       <p>{clinica.ciudad}</p>
       <p class="pie__medio">
-        {pendiente(telefono) ? telefono : <a href={`tel:+${digitos(telefono)}`}>{telefono}</a>}
+        {pendiente(telefono) ? (
+          telefono
+        ) : (
+          <a href={`tel:+${internacional(telefono)}`}>{telefono}</a>
+        )}
       </p>
       <p>{pendiente(correo) ? correo : <a href={`mailto:${correo}`}>{correo}</a>}</p>
     </address>

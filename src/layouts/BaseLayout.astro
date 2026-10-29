@@ -20,8 +20,8 @@ if (!sitio) {
 
 const { titulo = sitio.data.seo.titulo, descripcion = sitio.data.seo.descripcion } = Astro.props;
 
-// Sin dominio configurado (`SITE_URL`) estamos en una preview o en desarrollo:
-// no se indexa y no se declara canonical.
+// Sin dominio (previews por rama, ver astro.config.mjs) no se indexa y no se
+// declara canonical.
 const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 
 // Imagen para compartir el enlace. Open Graph pide URL absoluta, así que solo
