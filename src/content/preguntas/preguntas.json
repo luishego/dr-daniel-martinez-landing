@@ -42,7 +42,8 @@
   ],
   "avisoUrgencias": {
     "titulo": "Si estás en una emergencia",
-    "texto": "[TEXTO Y TELÉFONOS DE URGENCIA POR VALIDAR] Si tú o alguien más está en peligro inmediato, llama al número de emergencias de tu localidad o acude a urgencias."
-  },
-  "notaInterna": "Las respuestas son las que contestó el Dr. Martínez (las cuatro primeras, costo y formas de pago, consulta en línea y confidencialidad) o salen de su documento «EMT e Insomnio» (las dos de EMT). Redactadas con ortografía corregida, sin cambiar el contenido. Ninguna lleva corchetes, así que todas entran al JSON-LD FAQPage; si se vuelve a dejar una respuesta pendiente, ponerle corchetes basta para que no entre. El aviso de urgencias sigue por validar y usa el granate de alertas."
+    "texto": "Si tú o alguien más está en peligro inmediato, llama a los servicios de emergencia de tu localidad o acude a urgencias. Si necesitas apoyo emocional, orientación sobre adicciones o atención psicológica gratuita y confidencial, puedes comunicarte con la Línea de la Vida de la Secretaría de Salud (CONASAMA):",
+    "telefono": "Teléfono: 800 911 2000",
+    "horario": "Horario: Disponible las 24 horas, los 365 días del año."
+  }
 }

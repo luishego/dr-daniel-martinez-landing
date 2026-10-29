@@ -47,6 +47,10 @@ const jsonLdSeguro = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
           {avisoUrgencias.titulo}
         </h3>
         <p class="urgencias__texto">{avisoUrgencias.texto}</p>
+        <ul>
+          <li class="urgencias__texto">{avisoUrgencias.telefono}</li>
+          <li class="urgencias__texto">{avisoUrgencias.horario}</li>
+        </ul>
       </aside>
     </div>
 

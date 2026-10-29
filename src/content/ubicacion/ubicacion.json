@@ -3,15 +3,15 @@
   "titulo": "Dónde atiendo",
   "entrada": "La consulta es presencial; si no vives cerca de la Ciudad de México, también puedo atenderte por telemedicina. Elige la sede que te quede más cerca y agenda por WhatsApp o desde el formulario.",
   "principal": {
-    "horario": "[HORARIO DE ATENCIÓN]",
-    "referencia": "[Referencias para llegar y estacionamiento]"
+    "horario": "Lunes a Miércoles de 15:00 a 19:00 hrs. Domingos de 12:00 a 16:00 hrs.",
+    "referencia": "Frente a la ULA del valle, a 3 cuadras del metro Zapata."
   },
   "otras": [
     {
       "nombre": "Neurosleep Center",
       "direccion": "Iztaccíhuatl 10, Col. Florida, Álvaro Obregón, C.P. 01030, Ciudad de México",
-      "horario": "[HORARIO DE ATENCIÓN]",
-      "referencia": "[Referencias para llegar y estacionamiento]"
+      "horario": "Lunes a Jueves de 9:00 a 12:00 hrs.",
+      "referencia": "A una cuadra del Metrobus Jose María Velasco"
     }
   ],
   "textos": {
