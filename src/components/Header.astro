@@ -8,6 +8,7 @@
  * lista las seis.
  */
 import { getEntry } from 'astro:content';
+import Logo from './Logo.astro';
 
 const sitio = await getEntry('sitio', 'sitio');
 if (!sitio) {
@@ -21,8 +22,11 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
 <header class="header">
   <div class="contenedor header__fila">
     <a class="marca" href="#inicio">
-      <span class="marca__nombre">{nombre}</span>
-      <span class="marca__especialidad">{especialidad}</span>
+      <Logo class="marca__logo" variante="simbolo" />
+      <span class="marca__texto">
+        <span class="marca__nombre">{nombre}</span>
+        <span class="marca__especialidad">{especialidad}</span>
+      </span>
     </a>
 
     <nav class="nav" aria-label="Secciones del sitio">
@@ -173,8 +177,19 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   }
 
   .marca {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     color: var(--color-ink);
     text-decoration: none;
+  }
+
+  /* El símbolo del logo (cabeza con la Ψ) acompaña al nombre, que sigue como
+     texto: el logotipo completo no se lee a la altura del header. */
+  :global(.marca__logo) {
+    flex: none;
+    width: auto;
+    height: 2.5rem;
   }
 
   .marca__nombre {
@@ -278,6 +293,10 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   @media (min-width: 48rem) {
     .header__fila {
       padding-block: 1.125rem;
+    }
+
+    :global(.marca__logo) {
+      height: 3rem;
     }
 
     .marca__nombre {

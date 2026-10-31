@@ -1,0 +1,13 @@
+---
+/**
+ * Define el trazo del logo una sola vez. Va al inicio del <body>; el resto de
+ * la página lo reutiliza con `Logo.astro`.
+ */
+import { trazoLogo } from '../lib/logo';
+---
+
+<svg class="visualmente-oculto" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="logo-trazo" d={trazoLogo}></path>
+  </defs>
+</svg>

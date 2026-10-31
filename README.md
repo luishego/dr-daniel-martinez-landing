@@ -73,6 +73,22 @@ Todo el texto vive en `src/content` (content collections con esquema zod), el ca
 - **Imagen Open Graph:** usa el retrato del hero y solo se emite cuando hay
   dominio, porque pide URL absoluta.
 
+## Logo
+
+El logo que eligió el doctor está en `src/assets/logo.svg` (vectorial) y
+`src/assets/logo.png`. Es un solo trazo negro; la página no usa los archivos
+directamente, sino su geometría, definida una vez en `LogoDefs.astro` y
+reutilizada con `Logo.astro`, así el color lo decide el texto que lo rodea:
+
+- **Header:** el símbolo (cabeza con la Ψ), en tinta, junto al nombre en texto; el
+  logotipo completo no se lee a esa altura.
+- **Footer:** el logotipo completo en blanco sobre el petróleo (versión en negativo).
+- **Favicon, `favicon-192.png` y `apple-touch-icon.png`:** el símbolo en blanco
+  sobre petróleo, generados a partir de `logo.png`.
+
+Los recortes del lienzo (símbolo y completo) están en `src/lib/logo.ts`. Si el
+logo cambia, hay que revisar esas medidas y regenerar los iconos de `public/`.
+
 ## Tipografía
 
 Nunito (400/700/800) autoalojada por la API `fonts` de Astro: nada se pide a

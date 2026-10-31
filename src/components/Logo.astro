@@ -1,0 +1,31 @@
+---
+/**
+ * Logo del doctor. `completo` es el logotipo con el nombre; `simbolo` es solo la
+ * cabeza con la Ψ, para espacios donde el nombre ya va como texto. El color es
+ * el del texto que lo rodea (`currentColor`).
+ *
+ * Con `etiqueta` el logo se expone a lectores de pantalla; sin ella es
+ * decorativo.
+ */
+import { recortesLogo } from '../lib/logo';
+
+interface Props {
+  variante: keyof typeof recortesLogo;
+  etiqueta?: string;
+  class?: string;
+}
+
+const { variante, etiqueta, class: clase } = Astro.props;
+---
+
+<svg
+  class={clase}
+  viewBox={recortesLogo[variante]}
+  fill="currentColor"
+  role={etiqueta ? 'img' : undefined}
+  aria-label={etiqueta}
+  aria-hidden={etiqueta ? undefined : 'true'}
+  focusable="false"
+>
+  <use href="#logo-trazo"></use>
+</svg>
