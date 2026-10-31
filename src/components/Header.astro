@@ -104,6 +104,17 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
 </header>
 
 <script>
+  // Al desplazarse hacia abajo el header se vuelve translúcido (ver CSS). El
+  // atributo solo cambia al cruzar el umbral, no en cada evento de scroll.
+  const header = document.querySelector<HTMLElement>('.header');
+  if (header) {
+    const actualizar = () => {
+      header.toggleAttribute('data-desplazado', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', actualizar, { passive: true });
+    actualizar();
+  }
+
   const boton = document.getElementById('abrir-menu');
   const menu = document.getElementById('menu-movil');
   const rotulo = boton?.querySelector<HTMLElement>('.hamburguesa__texto');
@@ -166,6 +177,48 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     /* Petróleo, como el footer: el logo y el texto van en blanco. */
     background-color: var(--color-primary);
     color: var(--color-on-dark);
+    transition:
+      background-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  /* Con la página desplazada el petróleo se vuelve translúcido y desenfoca lo que
+     pasa por debajo. El 88% es el piso que mantiene el texto blanco en AA (≥5:1)
+     aun sobre fondo blanco; el rótulo de la especialidad pasa de arena a blanco
+     porque la arena ya no alcanza 4.5:1 sobre ese fondo. */
+  .header[data-desplazado] {
+    background-color: rgb(0 95 115 / 0.88);
+    background-color: color-mix(in srgb, var(--color-primary) 88%, transparent);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.14),
+      0 8px 24px rgb(0 18 25 / 0.14);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  .header[data-desplazado] .marca__especialidad {
+    color: var(--color-on-dark);
+  }
+
+  /* El panel del menú móvil deja ver el mismo fondo translúcido del header. */
+  .header[data-desplazado] .menu {
+    background-color: transparent;
+  }
+
+  /* Sin soporte de desenfoque o con transparencia reducida en el sistema, el
+     header se queda opaco: la translucidez sin desenfoque estorba la lectura. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .header[data-desplazado] {
+      background-color: var(--color-primary);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .header[data-desplazado] {
+      background-color: var(--color-primary);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 
   .header__fila {
