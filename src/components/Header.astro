@@ -19,7 +19,7 @@ const { nombre, especialidad, navegacion, ctaHeader } = sitio.data;
 const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
 ---
 
-<header class="header">
+<header class="header sobre-oscuro">
   <div class="contenedor header__fila">
     <a class="marca" href="#inicio">
       <Logo class="marca__logo" variante="simbolo" />
@@ -163,8 +163,9 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-line);
+    /* Petróleo, como el footer: el logo y el texto van en blanco. */
+    background-color: var(--color-primary);
+    color: var(--color-on-dark);
   }
 
   .header__fila {
@@ -180,7 +181,7 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: var(--color-ink);
+    color: var(--color-on-dark);
     text-decoration: none;
   }
 
@@ -207,7 +208,8 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     font-weight: var(--peso-fuerte);
     letter-spacing: var(--espaciado-marca);
     text-transform: uppercase;
-    color: var(--color-primary);
+    /* La arena sobre el petróleo da ~5.2:1: pasa AA a 10–11px. */
+    color: var(--color-band);
   }
 
   .nav,
@@ -222,14 +224,13 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   }
 
   .nav__enlace {
-    color: var(--color-ink);
+    color: var(--color-on-dark);
     font-size: var(--texto-menu);
     font-weight: var(--peso-fuerte);
     text-decoration: none;
   }
 
   .nav__enlace:hover {
-    color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 0.25rem;
   }
@@ -241,10 +242,10 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     justify-content: center;
     width: var(--alto-control);
     height: var(--alto-control);
-    border: 1px solid var(--color-line);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: var(--radio-campo);
     background-color: transparent;
-    color: var(--color-primary);
+    color: var(--color-on-dark);
     cursor: pointer;
   }
 
@@ -254,8 +255,8 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   }
 
   .menu {
-    border-top: 1px solid var(--color-line);
-    background-color: var(--color-surface);
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+    background-color: var(--color-primary);
   }
 
   .menu[hidden] {
@@ -278,7 +279,7 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     display: flex;
     align-items: center;
     min-height: var(--alto-control);
-    color: var(--color-ink);
+    color: var(--color-on-dark);
     font-size: 1.0625rem;
     font-weight: var(--peso-fuerte);
     text-decoration: none;
