@@ -4,6 +4,7 @@ import { getEntry } from 'astro:content';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import JsonLdSitio from '../components/JsonLdSitio.astro';
+import LogoDefs from '../components/LogoDefs.astro';
 import retrato from '../assets/dr-martinez-retrato.jpg';
 import '../styles/tokens.css';
 import '../styles/global.css';
@@ -39,7 +40,9 @@ const urlImagenOg = imagenOg && Astro.site ? new URL(imagenOg.src, Astro.site).h
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titulo}</title>
     <meta name="description" content={descripcion} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     {url ? <link rel="canonical" href={url} /> : <meta name="robots" content="noindex, nofollow" />}
 
@@ -68,6 +71,7 @@ const urlImagenOg = imagenOg && Astro.site ? new URL(imagenOg.src, Astro.site).h
   </head>
 
   <body>
+    <LogoDefs />
     <a class="salto" href="#contenido">
       Saltar al contenido
     </a>

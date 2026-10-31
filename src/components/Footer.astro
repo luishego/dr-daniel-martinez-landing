@@ -6,6 +6,7 @@
  */
 import { getEntry } from 'astro:content';
 import { internacional } from '../lib/telefono';
+import Logo from './Logo.astro';
 
 const [sitio, contacto] = await Promise.all([
   getEntry('sitio', 'sitio'),
@@ -28,8 +29,7 @@ const anio = new Date().getFullYear();
 <footer class="pie sobre-oscuro">
   <div class="contenedor pie__fila">
     <div class="pie__marca">
-      <p class="pie__nombre">{nombre}</p>
-      <p class="pie__especialidad">{especialidad}</p>
+      <Logo class="pie__logo" variante="completo" etiqueta={`${nombre}, ${especialidad}`} />
       <p class="pie__lema">{footer.lema}</p>
     </div>
 
@@ -91,22 +91,15 @@ const anio = new Date().getFullYear();
     gap: 2rem;
   }
 
-  .pie__nombre {
-    font-size: 1.375rem;
-    font-weight: var(--peso-titulo);
-    line-height: 1.1;
-  }
-
-  .pie__especialidad {
-    margin-top: 0.25rem;
-    font-size: 0.6875rem;
-    font-weight: var(--peso-fuerte);
-    letter-spacing: var(--espaciado-marca);
-    text-transform: uppercase;
+  /* Logotipo completo en blanco sobre el petróleo (versión en negativo). */
+  :global(.pie__logo) {
+    display: block;
+    width: min(100%, 17.5rem);
+    height: auto;
   }
 
   .pie__lema {
-    margin-top: 0.875rem;
+    margin-top: 1rem;
     max-width: 28ch;
     font-size: var(--texto-lista);
   }

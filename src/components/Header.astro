@@ -8,6 +8,7 @@
  * lista las seis.
  */
 import { getEntry } from 'astro:content';
+import Logo from './Logo.astro';
 
 const sitio = await getEntry('sitio', 'sitio');
 if (!sitio) {
@@ -18,11 +19,14 @@ const { nombre, especialidad, navegacion, ctaHeader } = sitio.data;
 const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
 ---
 
-<header class="header">
+<header class="header sobre-oscuro">
   <div class="contenedor header__fila">
     <a class="marca" href="#inicio">
-      <span class="marca__nombre">{nombre}</span>
-      <span class="marca__especialidad">{especialidad}</span>
+      <Logo class="marca__logo" variante="simbolo" />
+      <span class="marca__texto">
+        <span class="marca__nombre">{nombre}</span>
+        <span class="marca__especialidad">{especialidad}</span>
+      </span>
     </a>
 
     <nav class="nav" aria-label="Secciones del sitio">
@@ -100,6 +104,17 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
 </header>
 
 <script>
+  // Al desplazarse hacia abajo el header se vuelve translúcido (ver CSS). El
+  // atributo solo cambia al cruzar el umbral, no en cada evento de scroll.
+  const header = document.querySelector<HTMLElement>('.header');
+  if (header) {
+    const actualizar = () => {
+      header.toggleAttribute('data-desplazado', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', actualizar, { passive: true });
+    actualizar();
+  }
+
   const boton = document.getElementById('abrir-menu');
   const menu = document.getElementById('menu-movil');
   const rotulo = boton?.querySelector<HTMLElement>('.hamburguesa__texto');
@@ -159,8 +174,51 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-line);
+    /* Petróleo, como el footer: el logo y el texto van en blanco. */
+    background-color: var(--color-primary);
+    color: var(--color-on-dark);
+    transition:
+      background-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  /* Con la página desplazada el petróleo se vuelve translúcido y desenfoca lo que
+     pasa por debajo. El 88% es el piso que mantiene el texto blanco en AA (≥5:1)
+     aun sobre fondo blanco; el rótulo de la especialidad pasa de arena a blanco
+     porque la arena ya no alcanza 4.5:1 sobre ese fondo. */
+  .header[data-desplazado] {
+    background-color: rgb(0 95 115 / 0.88);
+    background-color: color-mix(in srgb, var(--color-primary) 88%, transparent);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.14),
+      0 8px 24px rgb(0 18 25 / 0.14);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  .header[data-desplazado] .marca__especialidad {
+    color: var(--color-on-dark);
+  }
+
+  /* El panel del menú móvil deja ver el mismo fondo translúcido del header. */
+  .header[data-desplazado] .menu {
+    background-color: transparent;
+  }
+
+  /* Sin soporte de desenfoque o con transparencia reducida en el sistema, el
+     header se queda opaco: la translucidez sin desenfoque estorba la lectura. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .header[data-desplazado] {
+      background-color: var(--color-primary);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .header[data-desplazado] {
+      background-color: var(--color-primary);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 
   .header__fila {
@@ -173,8 +231,19 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   }
 
   .marca {
-    color: var(--color-ink);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-on-dark);
     text-decoration: none;
+  }
+
+  /* El símbolo del logo (cabeza con la Ψ) acompaña al nombre, que sigue como
+     texto: el logotipo completo no se lee a la altura del header. */
+  :global(.marca__logo) {
+    flex: none;
+    width: auto;
+    height: 2.5rem;
   }
 
   .marca__nombre {
@@ -192,7 +261,8 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     font-weight: var(--peso-fuerte);
     letter-spacing: var(--espaciado-marca);
     text-transform: uppercase;
-    color: var(--color-primary);
+    /* La arena sobre el petróleo da ~5.2:1: pasa AA a 10–11px. */
+    color: var(--color-band);
   }
 
   .nav,
@@ -207,14 +277,13 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   }
 
   .nav__enlace {
-    color: var(--color-ink);
+    color: var(--color-on-dark);
     font-size: var(--texto-menu);
     font-weight: var(--peso-fuerte);
     text-decoration: none;
   }
 
   .nav__enlace:hover {
-    color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 0.25rem;
   }
@@ -226,10 +295,10 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     justify-content: center;
     width: var(--alto-control);
     height: var(--alto-control);
-    border: 1px solid var(--color-line);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: var(--radio-campo);
     background-color: transparent;
-    color: var(--color-primary);
+    color: var(--color-on-dark);
     cursor: pointer;
   }
 
@@ -239,8 +308,8 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   }
 
   .menu {
-    border-top: 1px solid var(--color-line);
-    background-color: var(--color-surface);
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+    background-color: var(--color-primary);
   }
 
   .menu[hidden] {
@@ -263,7 +332,7 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
     display: flex;
     align-items: center;
     min-height: var(--alto-control);
-    color: var(--color-ink);
+    color: var(--color-on-dark);
     font-size: 1.0625rem;
     font-weight: var(--peso-fuerte);
     text-decoration: none;
@@ -278,6 +347,10 @@ const navEscritorio = navegacion.filter((enlace) => enlace.enEscritorio);
   @media (min-width: 48rem) {
     .header__fila {
       padding-block: 1.125rem;
+    }
+
+    :global(.marca__logo) {
+      height: 3rem;
     }
 
     .marca__nombre {
