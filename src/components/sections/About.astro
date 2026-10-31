@@ -6,7 +6,7 @@
  */
 import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
-import consultorio from '../../assets/dr-martinez-consultorio.jpeg';
+import consultorio from '../../assets/dr-martinez-retrato-1.jpeg';
 
 const sobre = await getEntry('sobre', 'sobre');
 if (!sobre) {
@@ -19,7 +19,6 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
 <section class="seccion sobre" id="sobre">
   <div class="contenedor sobre__fila">
     <div class="sobre__figura">
-      <!-- Foto provisional del consultorio; se sustituye por la definitiva. -->
       <Image
         class="sobre__foto"
         src={consultorio}
@@ -49,9 +48,6 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
           </li>
         ))}
       </ul>
-
-      <!-- Los números de cédula los entrega el cliente; el marcador entre
-           corchetes se queda a la vista para que no se publique sin ellos. -->
       <ul class="sobre__cedulas">
         {cedulas.map((cedula) => (
           <li class="pastilla">{cedula}</li>
@@ -74,9 +70,6 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
     min-width: 0;
     max-width: 24rem;
   }
-
-  /* Retrato vertical recortado a 4:5, igual que el del hero; el encuadre alto
-     deja la cara a la vista. */
   .sobre__foto {
     width: 100%;
     height: auto;
@@ -86,9 +79,6 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
     border-radius: var(--radio-imagen-grande);
     background-color: var(--color-tint);
   }
-
-  /* Mismo criterio que el hero: cuando las columnas se apilan (~940px), el
-     marco se centra en lugar de quedar pegado a la izquierda. */
   @media (max-width: 58.75rem) {
     .sobre__figura {
       margin-inline: auto;
@@ -100,9 +90,6 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
     min-width: 0;
   }
 
-  /* El lienzo pinta este antetítulo en secundario, pero a 12px el turquesa
-     (3.7:1) y el azul cielo (3.1:1) no alcanzan AA para texto pequeño, así
-     que va en primario. Es la única desviación de color respecto al diseño. */
   .sobre__antetitulo {
     margin-bottom: 0.875rem;
     color: var(--color-primary);
@@ -137,9 +124,6 @@ const { antetitulo, titulo, parrafos, imagen, tituloFormacion, formacion, cedula
     font-size: var(--texto-lista);
     line-height: 1.55;
   }
-
-  /* Viñeta decorativa: el secundario aquí no transporta texto, así que su
-     contraste de 3.7:1 es suficiente para un elemento no textual. */
   .sobre__vineta {
     flex: none;
     width: 0.5rem;
