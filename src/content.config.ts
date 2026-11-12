@@ -216,8 +216,6 @@ const privacidad = defineCollection({
   schema: z.object({
     antetitulo: z.string(),
     titulo: z.string(),
-    /** Aviso visible de que el texto es un borrador sin validar. */
-    borrador: z.string(),
     secciones: z.array(z.object({ titulo: z.string(), texto: z.string() })),
     notaInterna: z.string().optional(),
   }),
