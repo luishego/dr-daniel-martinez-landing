@@ -2,9 +2,7 @@
 /**
  * Aviso de privacidad (T-11) en un modal nativo (<dialog>). Se abre con
  * cualquier enlace a `#privacidad`: el del footer y el del formulario. Texto
- * desde `src/content/privacidad/privacidad.json`. Es un borrador hasta que lo
- * valide asesoría legal: el aviso de borrador queda visible para que no se
- * publique por descuido.
+ * desde `src/content/privacidad/privacidad.json`, validado por asesoría legal.
  *
  * Sin JavaScript el modal no se puede abrir; la página no pierde nada más.
  */
@@ -15,7 +13,7 @@ if (!privacidad) {
   throw new Error('Falta src/content/privacidad/privacidad.json');
 }
 
-const { antetitulo, titulo, borrador, secciones } = privacidad.data;
+const { antetitulo, titulo, secciones } = privacidad.data;
 ---
 
 <dialog class="privacidad" id="privacidad" aria-labelledby="titulo-privacidad">
@@ -43,8 +41,6 @@ const { antetitulo, titulo, borrador, secciones } = privacidad.data;
       </svg>
     </button>
   </div>
-
-  <p class="privacidad__borrador">{borrador}</p>
 
   {secciones.map((seccion) => (
     <div class="privacidad__bloque">
@@ -129,16 +125,6 @@ const { antetitulo, titulo, borrador, secciones } = privacidad.data;
     background-color: transparent;
     color: var(--color-primary);
     cursor: pointer;
-  }
-
-  .privacidad__borrador {
-    margin-bottom: 1.5rem;
-    padding: 0.875rem 1rem;
-    border: 2px dashed var(--color-primary);
-    border-radius: var(--radio-campo);
-    background-color: var(--color-tint);
-    font-size: var(--texto-lista);
-    font-weight: var(--peso-fuerte);
   }
 
   .privacidad__bloque + .privacidad__bloque {
