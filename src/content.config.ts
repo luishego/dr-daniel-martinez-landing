@@ -179,7 +179,6 @@ const contacto = defineCollection({
     entrada: z.string(),
     whatsapp: z.object({
       etiqueta: z.string(),
-      /** Con corchetes mientras falte el dato: el botón no será un enlace. */
       numero: z.string(),
       mensaje: z.string(),
     }),
@@ -203,7 +202,6 @@ const contacto = defineCollection({
         nombre: z.string(),
         consentimiento: z.string(),
       }),
-      /** Mensaje que se arma; `{nombre}` y `{mensaje}` se sustituyen. */
       plantilla: z.string(),
       plantillaMensaje: z.string(),
     }),
@@ -216,10 +214,7 @@ const privacidad = defineCollection({
   schema: z.object({
     antetitulo: z.string(),
     titulo: z.string(),
-    /** Aviso visible de que el texto es un borrador sin validar. */
-    borrador: z.string(),
-    secciones: z.array(z.object({ titulo: z.string(), texto: z.string() })),
-    notaInterna: z.string().optional(),
+    secciones: z.array(z.object({ titulo: z.string(), texto: z.string() }))
   }),
 });
 
